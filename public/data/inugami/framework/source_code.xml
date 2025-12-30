@@ -1,0 +1,9 @@
+<xml>
+ 
+    <src name="mvn_clean_install" type="bash" title="Maven clean install">
+        <![CDATA[
+mvn clean install
+]]>
+    </src>
+
+</xml>
