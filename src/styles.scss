@@ -11,6 +11,7 @@
     --secondary-light: #2C73CF;
     --neutral-dark: #5d6269;
     --neutral: #7a8088;
+    --info: #1F5294;
     --success: #1F812F;
     --danger:#F2594B;
     --warning:#F2B441;
@@ -259,4 +260,55 @@ figure{
 em{
     color: var(--primary);
     font-weight: bold;
+}
+
+.row-reverse{
+    display: flex;
+    flex-direction: column;
+    gap:2rem;
+}
+.size-fit{
+    flex: 1;
+}
+
+@media (min-width: 768px) {
+    .row-reverse{
+        display: flex;
+        flex-direction: row-reverse;
+        gap:2rem;
+    }
+    .size-5{
+        width: 10rem;
+    }
+    .size-10{
+        width: 10rem;
+    }
+    .size-15{
+        width: 15rem;
+    }
+    .size-20{
+        width: 15rem;
+    }
+    .padding-4{
+        padding-right: 4rem;
+    }
+}
+
+cite {
+    border-left: 0.25rem solid var(--neutral);
+    padding: 2rem;
+    margin: 2rem;
+    display: block;
+    &.info{
+        border-left: 0.25rem solid var(--info);
+    }
+    &.success{
+        border-left: 0.25rem solid var(--success);
+    }
+    &.danger{
+        border-left: 0.25rem solid var(--danger);
+    }
+    &.warning{
+        border-left: 0.25rem solid var(--warning);
+    }
 }

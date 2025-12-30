@@ -48,7 +48,47 @@
                                     </p>
                                     <inu-code url="data/inugami/inugami_gav.xml" tag="inugami_maven_springboot_run"></inu-code>
                                 
-                                    
+                                    <p>
+                                        You can find a sample Spring Boot application generated with this Maven archetype by following this link:
+                                        <a href="https://github.com/inugamiio/inugami-demo" target="_blank">https://github.com/inugamiio/inugami-demo</a>
+                                    </p>
+
+
+                                    <inu-doc-item title="Archetype architecture" [level]="3" href="inugami-project-analysis-maven-plugin#archetype-architecture" id="archetype-architecture">
+                                        <p>
+                                            The generated project follows a <em>Hexagonal Architecture</em>. This approach ensures a clean isolation of responsibilities 
+                                            for each part of the application. While this architecture may be slightly confusing
+                                            for less experienced developers, it will be explained in detail here.
+                                        </p>
+                                        
+                                        <div class="row-reverse">
+                                            <figure class="size-20 padding-right-4">
+                                                <img src="images/framework/archetype-architecture.png" alt="archetype architecture" />
+                                            </figure>
+
+                                            <div class="size-fit">
+                                                The project is broken down into the following modules:
+                                                <ul>
+                                                    <li>"demo-api": Contains all DTOs and interfaces used by the application core.</li>
+                                                    <li>"demo-core": The heart of the application. This module contains all the business logic.</li>
+                                                    <li>"demo-infrastructure": Handles database access and external web service calls to other applications.</li>
+                                                    <li>"demo-interfaces": The REST exposure layer of the application.</li>
+                                                    <li>"demo-webapp": The final module that assembles all other modules into a single Spring Boot application.</li>
+                                                </ul>
+
+                                                <cite class="info">
+                                                    By implementing the hexagonal architecture layers as distinct 
+                                                    <em>Maven modules</em>, we can guarantee strong isolation between
+                                                    the different parts of the application.
+                                                </cite>
+
+                                            </div>
+                                            
+                                        </div>
+
+
+
+                                    </inu-doc-item>
                                 </div>                                
                             </article>
                     </main>
