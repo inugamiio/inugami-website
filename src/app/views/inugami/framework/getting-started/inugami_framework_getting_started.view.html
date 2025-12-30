@@ -95,13 +95,34 @@
                                             </figure>
 
                                             <div class="size-fit">
-                                        
+                                                As with most Java projects, building the project only requires executing the following Maven command from the project root:
                                                 <inu-code url="data/inugami/framework/source_code.xml" tag="mvn_clean_install" ></inu-code>
-                                            </div>
-                                            
-                                        </div>
-                                        
 
+                                                <p>
+                                                    Compilation performance varies significantly depending on the hardware.
+                                                    For this example, the build process took approximately 2 minutes to 
+                                                    run all unit and integration tests.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <p>
+                                            From your IDE, you can run the <em>com.my.project.webapp.Application</em> class to start the Spring Boot application.
+                                        </p>
+                                        
+                                        <figure>
+                                               <img src="images/framework/run_01.png" alt="springboot run" width="70%"/>
+                                        </figure>
+                                        <figure>
+                                               <img src="images/framework/run_02.png" alt="springboot run" width="70%" />
+                                        </figure>
+                                        
+                                        Once the application is up and running, you can access the <em>OpenAPI</em> documentation here:
+                                        <a href="http://localhost:8080/swagger-ui/index.html" target="_blank">http://localhost:8080/swagger-ui/index.html</a>
+
+                                        <figure>
+                                               <img src="images/framework/openapi_01.png" alt="open api" width="70%" />
+                                        </figure>
                                     </inu-doc-item>
                                 </div>                                
                             </article>
