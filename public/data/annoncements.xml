@@ -468,8 +468,6 @@
                             </p>
                             <p>MapStruct annotation doesn't have a Runtime retention, it's required to add inugami
                                 annotation <strong>@MapStructMapper</strong> on Mapper</p>
-                            <p>To optimize classes scanning you can specify the property <strong>io.inugami.spring.mapstruct.scanner.basePackage</strong>
-                                to defined base package to scan</p>
                             ]]>
                         </description>
                     </example>
