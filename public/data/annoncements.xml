@@ -253,7 +253,7 @@
             </features>
 
             <fix>
-                <item title="[#329] FIX : io.inugami.api.marshalling.ModuleRegisterSpi: Provider io.inugami.maven.plugin.analysis.api.models.serializers.InugamiMavenPluginAnalysisApiModule not found"
+                <item title="[#329] FIX : ModuleRegisterSpi: Provider InugamiMavenPluginAnalysisApiModule not found"
                     link="https://github.com/inugamiio/inugami-project-analysis-maven-plugin-parent/commit/5cdc6b54b4fbee718ba854b909ce605b36ecdd4b">
                 </item>
             </fix>
