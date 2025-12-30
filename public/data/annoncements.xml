@@ -1,6 +1,98 @@
 <xml>
 
     <annoncements>
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.3" date="2025-12-30">
+        <features>
+          <item title="[##421] FEAT : add Spring Boot 3 JDK 21 maven archetype"
+                link="https://github.com/inugamiio/inugami/issues/421">
+          </item>
+
+
+        </features>
+        <fix>
+          <item title="[##417] FIX : clean up"
+                link="https://github.com/inugamiio/inugami/issues/417">
+          </item>
+        </fix>
+      </annoncement>
+
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.1" date="2025-12-12">
+        <features>
+          <item title="[#379] FEAT : migrate event engine to SpringBoot 3 JDK 21"
+                link="https://github.com/inugamiio/inugami/issues/379">
+          </item>
+        </features>
+      </annoncement>
+
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.0" date="2025-12-11">
+        <features>
+          <item title="[#379] FEAT : migrate event engine to SpringBoot 3 JDK 21"
+                link="https://github.com/inugamiio/inugami/issues/379">
+          </item>
+        </features>
+      </annoncement>
+
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.1.2" date="2025-10-27">
+        <fix>
+          <item title="[#384] FIX : add error code and waning jackson serializer deserializer"
+                link="https://github.com/inugamiio/inugami/pull/391">
+          </item>
+        </fix>
+      </annoncement>
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.1.1" date="2025-10-26">
+        <fix>
+          <item title="[#384] FIX : move all spi interfaces"
+                link="https://github.com/inugamiio/inugami/pull/388">
+          </item>
+        </fix>
+      </annoncement>
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.1.0" date="2025-10-19">
+        <features>
+          <item title="[#379] FEAT :migrate events kernel"
+                link="https://github.com/inugamiio/inugami/issues/379">
+          </item>
+          <item title="[#379] FEAT : FEAT : add annotation and DTO from inugami-project-analysis-maven-plugin"
+                link="https://github.com/inugamiio/inugami/pull/383/commits/17032ead447f773a33e1b2856d828b8ac54bceda">
+          </item>
+        </features>
+      </annoncement>
+
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.0.0" date="2025-09-21">
+        <features>
+          <item title="[#379] FEAT :migrate to SpringBoot 3 and JDK 21"
+                link="https://github.com/inugamiio/inugami/pull/381">
+            <example>
+              <description>
+                <![CDATA[
+                <p>
+                  <em>Inugami Major Version</em>. The transition to version <em>4</em> introduces an update to <em>JDK 21</em> using modular mode.
+                  This migration also includes a complete overhaul to <em>Spring Boot 3</em>.
+                </p>
+                <p>
+                This update introduces breaking changes, notably the shift <em>from JavaEE to JakartaEE</em>.
+                We took advantage of this forced migration to transform <em>Inugami 4</em>, emphasizing its dual nature:
+                </p>
+                <ul>
+                  <li><em>The Framework:</em> General-purpose tools useful for most Java projects.</li>
+                  <li><em>The Dashboard:</em> A dedicated component specific to Inugami’s ecosystem.</li>
+                </ul>
+                <p>
+                To learn more about the new features of Inugami, you can find the documentation by following this link:
+                <a href="http://inugami.io/inugami/framework/getting-started">Inugami Framework getting started</a>
+                </p>
+                 ]]>
+              </description>
+            </example>
+          </item>
+        </features>
+      </annoncement>
         <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
         <annoncement application="inugami" version="3.3.5" date="2023-12-04">
             <features>
@@ -8,7 +100,7 @@
                       link="https://github.com/inugamiio/inugami/pull/378/commits/6fb2bac29088ba96b8a95f8cf294e33018e869bf">
                     <example>
                         <value>
-                            <![CDATA[ 
+                            <![CDATA[
 <appender name="metrics" class="io.inugami.logs.obfuscator.appender.JsonAppender">
     <configuration>
         <encodeAsJson>true</encodeAsJson>
@@ -32,7 +124,7 @@
                       link="https://github.com/inugamiio/inugami/pull/369/commits/84320e3cf13614c6de308bbd5fece195eccb5139">
                 </item>
 
-            </features> 
+            </features>
             <fix>
                 <item title="[#375] FIX : clean partner tracking information before and after feign calls"
                       link="https://github.com/inugamiio/inugami/pull/378/commits/0f87c519b92a2627009c189bdc24900ec9f5efa4">
@@ -102,7 +194,7 @@
                 <item title="[#356] FEAT : add monitoredCallable"
                     link="https://github.com/inugamiio/inugami/pull/357/commits/0ea65a4a3c8b04f03bfc47a1601caf993b65a529">
                 </item>
-               
+
             </features>
 
             <fix>
@@ -254,7 +346,7 @@
                     <example>
                         <description>This feature allow to push directly logs into ElasticSearch with bulk protocol. This protocol is more efficient than sending each logs by REST calls.</description>
                         <value>
-                            <![CDATA[ 
+                            <![CDATA[
 <appender name="elasticsearch" class="io.inugami.logs.obfuscator.appender.JsonAppender">
     <configuration>
         <encodeAsJson>true</encodeAsJson>
@@ -303,7 +395,7 @@
                             configuration like :
                         </description>
                         <value>
-                            <![CDATA[ 
+                            <![CDATA[
 <appender name="logstash" class="io.inugami.logs.obfuscator.appender.JsonAppender">
     <configuration>
         <encodeAsJson>true</encodeAsJson>
@@ -368,7 +460,7 @@
                     link="https://github.com/inugamiio/inugami/pull/306/commits/cd7ea2d1e1a23a21a6628fa17dd066e954e98ab8">
                     <example>
                         <description>
-                            <![CDATA[ 
+                            <![CDATA[
                             <p>
                                 To activate MapStruct mappers registration in Spring context, you need to define the
                                 property <strong>io.inugami.spring.mapstruct.scanner.enabled</strong> as
@@ -572,7 +664,7 @@
                 <item title="on REST endpoint scanning we should check in parent interface if Spring endpoints definition are presents"
                     link="https://github.com/inugamiio/inugami-project-analysis-maven-plugin-parent/commit/af943a3e6ba0b1fda0b5444b9d0ace617d5f4d85">
                 </item>
-                
+
             </fix>
         </annoncement>
 
@@ -608,7 +700,7 @@
                 <item title="exclude maven-dependency-plugin from inugami-project-analysis-front-springboot"
                     link="https://github.com/inugamiio/inugami-project-analysis-maven-plugin-parent/commit/223dce85c4060ce7acd0aa7afdf37ad7f5e94779">
                 </item>
-                
+
             </features>
             <fix>
                 <item title="fix encoding on received JIRA ticket information"
@@ -638,7 +730,7 @@
                 <item title="add method who can throw runtime exception to wrap function with error code"
                     link="https://github.com/inugamiio/inugami/commit/cfc617a57c32963677b5cef44ac9f756d9923d24">
                 </item>
-                
+
             </features>
             <fix>
                 <item title="incompatible MDC field with logstash http input"
@@ -674,7 +766,7 @@
                 <item title="fix entity payload generation in release note"
                     link="https://github.com/inugamiio/inugami-project-analysis-maven-plugin-parent/pull/68/commits/2a6c8f990ea657537cdd45f64dc08299e793134b">
                 </item>
-               
+
             </fix>
         </annoncement>
 
@@ -712,8 +804,8 @@
                 <item title="Rename spring boot monitoring module name"
                     link="https://github.com/inugamiio/inugami/pull/259/commits/cf004fa15be65fd533d0cb772f3be800efbec1a9">
                 </item>
-                
-               
+
+
             </fix>
         </annoncement>
 
@@ -773,7 +865,7 @@
         <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
         <annoncement application="inugami" version="2.3.0" date="2023-04-10">
             <description>
-                <![CDATA[ 
+                <![CDATA[
                 <strong>Demo application</strong>
                 <p>
                     To demonstrate Inugami features, an application have been created.
@@ -786,7 +878,7 @@
             <features>
                 <item title="add spring boot activeMQ support"
                     link="https://github.com/inugamiio/inugami/commit/f09b361d2dab73035fdeec81cf833e6867d1d1e8" />
-                
+
 
                 <item link="https://github.com/inugamiio/inugami/commit/383ddbfe505ac6f86d22e6948d404b8ff0523c94"
                       title="add request interceptor to extract application calling" />
@@ -875,7 +967,7 @@
 
                 <item title="fix file initialization in FileWriter"
                 link="https://github.com/inugamiio/inugami/commit/8b04dd76eb1f0c11b30867133ab5e408d21f082a" />
-                
+
                 <item title="Fix filter intercepter NPE on errror resolver"
                 link="https://github.com/inugamiio/inugami/commit/0c00d0eecf9bc6c211acda23cd5163a602e961ac" />
             </fix>
@@ -888,19 +980,19 @@
             <features>
                 <item title="add url in error code"
                     link="https://github.com/inugamiio/inugami/commit/24f9a55fcea915e7e775b4f4eaacaf64902882a2"/>
-                
+
                 <item title="allow JsonAppender to write file"
                     link="https://github.com/inugamiio/inugami/commit/5576dd561ea83b11d480a0125d61b43f6eca4d7f"/>
 
                 <item title="add MDC initializer"
                     link="https://github.com/inugamiio/inugami/commit/afbfd7d481f389f575f2cfefd9380a04ebcb49fa"/>
-            
+
                 <item title="add MDC information on IOLOG"
                     link="https://github.com/inugamiio/inugami/commit/c34b024ee175a464c6d1fd9f76ab26502778812e"/>
-            
+
                 <item title="add tracking information"
                     link="https://github.com/inugamiio/inugami/commit/f9d7ac9fd1104d08dd286edf135ceab5aae004bf"/>
-        
+
                 <item title="add feign interceptor and Decoder"
                     link="https://github.com/inugamiio/inugami/commit/d52e3f0b25e4021e4c59cf092e229e752774e81a"/>
 
@@ -944,13 +1036,13 @@
                     link="https://github.com/inugamiio/inugami/commit/36bf6f40fa04ec083a47ac8098f6fb73798aada6"/>
                 <item title="Add Warnings class to be able to push warning in warings context with the same approch than Asserts class for errors"
                     link="https://github.com/inugamiio/inugami/commit/4d856c60e51f48e075ee4474b6a0aed7d3ed9433#diff-1dcbbd7bee16493b91a8c4da7e55cd819ddb376ae448a3b616cb546d3d709cdc"/>
-                
-              
+
+
             </features>
             <fix>
                 <item title="fix stackoverflow on errorCode.addDetail()"
                     link="https://github.com/inugamiio/inugami/commit/57cfc7f834ba61544fa71dd1dce7e27d99063263"/>
-              
+
             </fix>
         </annoncement>
 
@@ -961,14 +1053,14 @@
             <features>
                 <item title="Improvement on Asserts class with more assets methods"
                     link="https://github.com/inugamiio/inugami/pull/184/files"/>
-            
+
                 <item title="Improvement on Asserts class with more assets methods"
                     link="https://github.com/inugamiio/inugami/pull/184/files"/>
 
                 <item title="Improvement on UnitTestUtils class, with adding yaml file loading"
                     link="https://github.com/inugamiio/inugami/pull/183/files"/>
             </features>
-            
+
         </annoncement>
 
 
@@ -981,7 +1073,7 @@
                 <item title="Add warning context"/>
                 <item title="Improvement Spring REST method interception"/>
             </features>
-            
+
         </annoncement>
 
 
