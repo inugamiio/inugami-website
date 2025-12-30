@@ -1,0 +1,14 @@
+<xml>
+<src name="builder" title="Basic builder">
+    <![CDATA[
+package io.inugami.api.models;
+@FunctionalInterface
+public interface Builder<T> {
+    T build();
+}
+    ]]>
+</src>
+
+
+
+</xml>

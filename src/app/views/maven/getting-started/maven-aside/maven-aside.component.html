@@ -1,0 +1,95 @@
+<menu>
+    <ul>
+        <li>
+            <a target="_blank" href="https://github.com/inugamiio/inugami-project-analysis-maven-plugin-parent">GitHub</a>
+        </li>
+
+        <li>
+            <a routerLink="/maven/inugami_project_analysis_maven_plugin"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }">inugami-project-analysis-maven-plugin
+            </a>
+            <ul>
+                <li>
+                    <a  [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="introduction">Introduction</a>
+                </li>
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="quick_start">Quick start</a>
+                </li>
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="neo4j_structure">Neo4j data structure</a>
+                </li>
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="retrieve_information">Retrieve information</a>
+                    <ul>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="restServices">REST Services</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="queryDisplay">Query display</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="properties">Properties</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="queueInfo">Queue information</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="errorDisplay">Error display</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="specifics_queries">Specifics queries</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="importData">importData</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="deployment_management">Deployment management</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="encodePassword">encodePassword</a></li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="analyzers">Analyzers</a>
+                    <ul>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="feign_clients">Feign clients</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="springboot_restcontrollers">SpringBoot RestControllers</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="spring_properties">Spring properties</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="activemq">ActiveMQ</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="error_code_analyzer">Error code</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="flyway">Flyway</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="git_scm">Git SCM</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="issue_management">Issue Management</a>
+                            <ul>
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="issue_gitlab">For GitLab</a></li>
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="issue_github">For GitHub</a></li>
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="issue_jira">For Jira</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="release_note">ReleaseNote</a>
+                </li>
+
+
+                <li>
+                    <a  [routerLink]="['/maven/inugami_project_analysis_maven_plugin']"  fragment="springboot_integration">SpringBoot integration</a>
+                    <ul>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="release_note_ui">ReleaseNote UI</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="update_ban_dependencies">Update & ban dependencies</a></li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_goals">Others goals</a>
+                    <ul>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_mkdirs">mkdirs</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_delete">delete</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_loadProperties">Load properties</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_writeFile">writeFile</a></li>
+                        <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_copy">copy</a>
+                            <ul>
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_copy_file">File</a></li> 
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_copy_folder">Folder</a></li>
+                                <li><a [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_copy_maven_dependencies">Maven dependencies</a></li>
+                            </ul>
+                        </li>
+                        <li><a  [routerLink]="['/maven/inugami_project_analysis_maven_plugin']" fragment="other_unpack">unpack</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</menu>

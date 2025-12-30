@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"io.inugami.monitoring.providers.els","l":"ElasticSearchWriterTask"},{"p":"io.inugami.monitoring.providers.els","l":"ElsData"},{"p":"io.inugami.monitoring.providers.els","l":"ElsSender"}]

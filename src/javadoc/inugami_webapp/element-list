@@ -1,8 +1,0 @@
-io.inugami.webapp.exceptions
-io.inugami.webapp.filters
-io.inugami.webapp.rest
-io.inugami.webapp.rest.admin
-io.inugami.webapp.rest.alerts
-io.inugami.webapp.rest.alerts.models
-io.inugami.webapp.rest.models
-io.inugami.webapp.services

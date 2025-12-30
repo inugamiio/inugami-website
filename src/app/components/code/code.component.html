@@ -1,0 +1,18 @@
+<div class="inu-code">
+<fieldset>
+    @if(_title()){
+        <legend>{{_title()}}</legend>
+    }
+    
+@if(sourceCode()){
+<div class="source-code">
+<textarea highlight-js lang="java" >
+{{sourceCode()}}
+</textarea>
+</div>
+}
+    
+</fieldset>
+    
+
+</div>

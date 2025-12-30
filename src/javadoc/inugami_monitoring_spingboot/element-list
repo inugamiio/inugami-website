@@ -1,7 +1,0 @@
-io.inugami.monitoring.springboot.actuator
-io.inugami.monitoring.springboot.api
-io.inugami.monitoring.springboot.config
-io.inugami.monitoring.springboot.exception
-io.inugami.monitoring.springboot.filter
-io.inugami.monitoring.springboot.partnerlog.feign
-io.inugami.monitoring.springboot.request

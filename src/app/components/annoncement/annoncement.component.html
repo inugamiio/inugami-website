@@ -1,0 +1,21 @@
+<article [class]="hostClass()">
+    <header>
+        <a [href]="anchor()" class="anchor">
+            <h2>
+                @if (application()) {
+                    <span class="application">{{application()}}</span>
+                }
+                 @if (version()) {
+                    <span  class="version">{{version()}}</span>
+                }
+            </h2>
+            @if (date()) {
+               <h3 class="date">{{ date() }}</h3>
+            }
+        </a>
+    </header>
+
+    <div class="content">
+        <ng-content />
+    </div>
+</article>

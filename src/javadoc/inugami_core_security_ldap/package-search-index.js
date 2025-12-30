@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.inugami.security.ldap"},{"l":"io.inugami.security.ldap.mapper"}]

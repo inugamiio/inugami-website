@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.inugami.monitoring.springboot.activemq.config"},{"l":"io.inugami.monitoring.springboot.activemq.iolog"}]

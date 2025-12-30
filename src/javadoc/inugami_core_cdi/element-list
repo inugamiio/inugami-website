@@ -1,4 +1,0 @@
-io.inugami.core.cdi.extensions.producers
-io.inugami.core.cdi.extensions.startup
-io.inugami.core.cdi.services.dao
-io.inugami.core.cdi.services.dao.transactions

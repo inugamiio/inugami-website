@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.inugami.core.cdi.extensions.producers"},{"l":"io.inugami.core.cdi.extensions.startup"},{"l":"io.inugami.core.cdi.services.dao"},{"l":"io.inugami.core.cdi.services.dao.transactions"}]

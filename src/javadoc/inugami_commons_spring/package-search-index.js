@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.inugami.commons.spring"},{"l":"io.inugami.commons.spring.configuration"},{"l":"io.inugami.commons.spring.exception"}]

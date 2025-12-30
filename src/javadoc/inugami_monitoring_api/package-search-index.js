@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.inugami.monitoring.api.exceptions"},{"l":"io.inugami.monitoring.api.obfuscators"},{"l":"io.inugami.monitoring.api.resolvers"},{"l":"io.inugami.monitoring.api.tools"}]

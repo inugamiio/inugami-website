@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"io.inugami.data.sql","l":"DaoSql"},{"p":"io.inugami.data.commons","l":"DynamicPluginPersistenceCdi"},{"p":"io.inugami.data.commons","l":"DynamicPluginPersistenceProvider"},{"p":"io.inugami.data.sql","l":"EntityManagerSqlProducer"}]

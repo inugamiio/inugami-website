@@ -1,0 +1,62 @@
+<section id="home">
+    <header>
+        <h1>Annoncements</h1>
+    </header>
+
+
+
+
+    @for (annoncement of annoncements();track annoncement.id;) {
+    <inu-annoncement [data]="annoncement">
+        @if (annoncement.description) {
+            <div class="annoncement-description" [innerHTML]="annoncement.description">
+            </div>
+        }
+
+        <ul>
+            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            + features
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            @if (annoncement.features) {
+                <li class="feature">
+                    <span class="annoncement-feature">Features:</span>
+                    <ul>
+                        @for (feature of annoncement.features;track feature.link;) {
+                            <li>
+                                <a [href]="feature.link" target="_blank">{{feature.title}}</a>
+                                @if (feature.examples) {
+                                   @for (example of feature.examples;track example.value;) {
+                                    @if(example.description){
+                                        <p [innerHTML]="example.description"></p>
+                                    }
+                                    @if(example.value){
+                                        <inu-code [source]="example.value" [type]="example.type"></inu-code>
+                                    }
+                                   }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            + features
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            @if (annoncement.fix) {
+                <li class="fix">
+                    <span class="annoncement-fix">Issues fixed:</span>
+                    <ul>
+                        @for (fix of annoncement.fix;track fix.link;) {
+                            <li>
+                                <a [href]="fix.link" target="_blank">{{fix.title}}</a>
+                                
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </inu-annoncement>
+    }
+</section>

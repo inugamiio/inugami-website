@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"io.inugami.data.sql.h2","l":"DataSqlH2"}]

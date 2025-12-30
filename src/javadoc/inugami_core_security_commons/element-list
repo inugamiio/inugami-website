@@ -1,8 +1,0 @@
-io.inugami.core.security.commons.config
-io.inugami.core.security.commons.exceptions
-io.inugami.core.security.commons.models
-io.inugami.core.security.commons.rest
-io.inugami.core.security.commons.roles
-io.inugami.core.security.commons.roles.crud
-io.inugami.core.security.commons.services
-io.inugami.core.security.commons.services.producers

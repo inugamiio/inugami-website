@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"io.inugami.data.sql.h2","c":"DataSqlH2","l":"DataSqlH2()","url":"%3Cinit%3E()"}]

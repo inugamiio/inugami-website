@@ -1,6 +1,0 @@
-io.inugami.logs.obfuscator.api
-io.inugami.logs.obfuscator.appender
-io.inugami.logs.obfuscator.appender.writer
-io.inugami.logs.obfuscator.encoder
-io.inugami.logs.obfuscator.obfuscators
-io.inugami.logs.obfuscator.tools

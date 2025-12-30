@@ -1,0 +1,25 @@
+<menu>
+    <ul>
+        <li>
+            <a target="_blank" href="https://github.com/inugamiio/inugami/tree/master">GitHub</a>
+        </li>
+
+        <li>
+            <a routerLink="/inugami/framework/getting-started"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }">Getting started
+            </a>
+            <ul>
+                <li>
+                    <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Archetype</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a routerLink="/inugami/framework/exception"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }">Exception management
+            </a>
+        </li>
+    </ul>
+</menu>

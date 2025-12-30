@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"io.inugami.configuration.test","l":"MockCaller"},{"p":"io.inugami.configuration.test","l":"PluginListener"},{"p":"io.inugami.configuration.test","l":"PluginProcessor"},{"p":"io.inugami.configuration.test","l":"TestPlugin"}]

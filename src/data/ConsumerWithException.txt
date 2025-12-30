@@ -1,4 +1,0 @@
-@FunctionalInterface
-public interface ConsumerWithException<T> {
-    void process(final T value) throws Exception;
-}

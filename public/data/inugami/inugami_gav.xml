@@ -1,0 +1,351 @@
+<xml>
+    <!--***********************************************************************
+    * inugami_framework : inugami_api_interfaces
+    ***********************************************************************-->
+    <src name="inugami_api_interfaces" type="xml" title="inugami_api_interfaces maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_api_interfaces_module" type="java" title="inugami_api_interfaces Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.framework.interfaces;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework : inugami_api
+    ***********************************************************************-->
+    <src name="inugami_api" type="xml" title="inugami_framework maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_api_module" type="java" title="inugami_framework Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.framework.api;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework : inugami_common_components
+    ***********************************************************************-->
+    <src name="inugami_common_components" type="xml" title="inugami_common_components maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_common_components</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_common_components_module" type="java" title="inugami_common_components Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.framework.commons.components;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework : inugami_commons
+    ***********************************************************************-->
+    <src name="inugami_commons" type="xml" title="inugami_commons maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_commons_module" type="java" title="inugami_commons Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.framework.commons;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework : inugami_commons_spring
+    ***********************************************************************-->
+    <src name="inugami_commons_spring" type="xml" title="inugami_commons_spring maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_spring</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_commons_spring_module" type="java" title="inugami_commons_spring Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.framework.commons.spring;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework : inugami_commons_test
+    ***********************************************************************-->
+    <src name="inugami_commons_test" type="xml" title="inugami_commons_test maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_test</artifactId>
+    <version>4.2.2</version>
+    <scope>test</scope>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_commons_test_module" type="java" title="inugami_commons_test Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.commons.test;
+}
+]]>
+    </src>
+
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_logs_obfuscator
+    ***********************************************************************-->
+    <src name="inugami_logs_obfuscator" type="xml" title="inugami_logs_obfuscator maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_logs_obfuscator</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_logs_obfuscator_module" type="java" title="inugami_logs_obfuscator Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.logs.obfuscator;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_api
+    ***********************************************************************-->
+    <src name="inugami_monitoring_api" type="xml" title="inugami_monitoring_api maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_api</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_api_module" type="java" title="inugami_monitoring_api Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.api;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_core
+    ***********************************************************************-->
+    <src name="inugami_monitoring_core" type="xml" title="inugami_monitoring_core maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_core</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_core_module" type="java" title="inugami_monitoring_core Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.core;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_providers_els
+    ***********************************************************************-->
+    <src name="inugami_monitoring_providers_els" type="xml" title="inugami_monitoring_providers_els maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring.providers</groupId>
+    <artifactId>inugami_monitoring_providers_els</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_providers_els_module" type="java" title="inugami_monitoring_providers_els Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.providers.els;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_providers_graphite
+    ***********************************************************************-->
+    <src name="inugami_monitoring_providers_graphite" type="xml" title="inugami_monitoring_providers_graphite maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring.providers</groupId>
+    <artifactId>inugami_monitoring_providers_graphite</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_providers_graphite_module" type="java" title="inugami_monitoring_providers_graphite Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.providers.graphite;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_providers_log
+    ***********************************************************************-->
+    <src name="inugami_monitoring_providers_log" type="xml" title="inugami_monitoring_providers_log maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring.providers</groupId>
+    <artifactId>inugami_monitoring_providers_log</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_providers_log_module" type="java" title="inugami_monitoring_providers_log Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.providers.logs;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_sensors_default
+    ***********************************************************************-->
+    <src name="inugami_monitoring_sensors_default" type="xml" title="inugami_monitoring_sensors_default maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring.sensors</groupId>
+    <artifactId>inugami_monitoring_sensors_default</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_sensors_default_module" type="java" title="inugami_monitoring_sensors_default Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.sensors.defaults;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_springboot
+    ***********************************************************************-->
+    <src name="inugami_monitoring_springboot" type="xml" title="inugami_monitoring_springboot maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_springboot_module" type="java" title="inugami_monitoring_springboot Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.springboot;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami_framework monitoring : inugami_monitoring_springboot_activemq
+    ***********************************************************************-->
+    <src name="inugami_monitoring_springboot_activemq" type="xml" title="inugami_monitoring_springboot_activemq maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot_activemq</artifactId>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_monitoring_springboot_activemq_module" type="java" title="inugami_monitoring_springboot_activemq Java module">
+        <![CDATA[
+open module my.module {
+    requires io.inugami.monitoring.springboot.activemq;
+}
+]]>
+    </src>
+
+    <!--***********************************************************************
+    * inugami maven : inugami_maven_springboot
+    ***********************************************************************-->
+    <src name="inugami_maven_springboot" type="xml" title="inugami_maven_springboot maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.maven</groupId>
+    <artifactId>inugami_maven_springboot</artifactId>
+    <packaging>maven-archetype</packaging>
+    <version>4.2.2</version>
+</dependency>
+]]>
+    </src>
+
+    <src name="inugami_maven_springboot_run" type="bash" >
+        <![CDATA[
+mvn archetype:generate \
+  -DarchetypeGroupId=io.inugami.maven \
+  -DarchetypeArtifactId=inugami_maven_springboot \
+  -DarchetypeVersion=4.2.2 \
+  -DgroupId=com.my.project \
+  -DartifactId=demo \
+  -DinteractiveMode=true
+]]>
+    </src>
+
+
+</xml>
