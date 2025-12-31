@@ -160,6 +160,8 @@ nav.navbar{
 
 @media (min-width: 768px) {
    .page-section{
+        padding-left: 2rem;
+        padding-right: 2rem;
         .bd-sidebar{
             position:fixed;
             border-right: 0.15rem solid #9e9e9e;
@@ -312,3 +314,31 @@ cite {
         border-left: 0.25rem solid var(--warning);
     }
 }
+
+dl {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  border-radius: 8px;
+    dt {
+        flex: 0 0 30%;
+        font-weight: bold;
+        color: var(--secondary); 
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        &:hover {
+            color: var(--primary); /* Ton rouge d'emphase à 3% */
+        }
+    }
+
+    dd {
+        flex: 0 0 70%;
+        margin-left: 0;
+        padding: 10px 0;
+        color: #333333;
+        border-bottom: 1px solid #f0f0f0;
+    }
+}
+

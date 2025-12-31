@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FrameworkAsideComponent } from '../framework-aside/framework-aside.component';
 import { InuCodeComponent } from '../../../../components/code/code.component';
 import { InuDocItemComponent } from '../../../../components/doc-item/doc-item.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     templateUrl: './inugami_framework_getting_started.view.html',
@@ -9,7 +10,8 @@ import { InuDocItemComponent } from '../../../../components/doc-item/doc-item.co
     imports:[
             FrameworkAsideComponent,
             InuCodeComponent,
-            InuDocItemComponent
+            InuDocItemComponent,
+            RouterLink
     ]
 })
 export class InugamiFrameworkGettingStartedView{

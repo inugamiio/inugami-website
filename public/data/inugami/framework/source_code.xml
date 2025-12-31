@@ -6,4 +6,119 @@ mvn clean install
 ]]>
     </src>
 
+	<src name="iolog" type="text" title="IOLOG">
+        <![CDATA[
+ [31/12 07:20:14]|IOLOG|INFO |http-nio-8080-exec-8|[POST] /ws/user
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	content-length: 116
+	content-type: application/json
+	cookie: JSESSIONID=032FBAB561005F1AC0F658AFDE4EC26C
+	host: localhost:8080
+	postman-token: 5c5e83f4-4d72-442c-b5a2-8cc7c06be0e2
+	user-agent: PostmanRuntime/7.29.2
+payload :
+[
+    {
+        "firstName":"John",
+        "lastName":"Smith",
+        "email":"john.smith.mock@inugami.io"
+    }
+]
+[31/12 07:20:14]|IOLOG|INFO |http-nio-8080-exec-8|[POST] /ws/user
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	content-length: 116
+	content-type: application/json
+	cookie: JSESSIONID=032FBAB561005F1AC0F658AFDE4EC26C
+	host: localhost:8080
+	postman-token: 5c5e83f4-4d72-442c-b5a2-8cc7c06be0e2
+	user-agent: PostmanRuntime/7.29.2
+payload :
+[
+    {
+        "firstName":"John",
+        "lastName":"Smith",
+        "email":"john.smith.mock@inugami.io"
+    }
+]
+response:
+	status:200
+	datetime:1767162014169
+	duration:9
+	contentType:application/json
+	headers:
+		Access-Control-Allow-Credentials: true
+		Access-Control-Allow-Headers: 
+		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+		Access-Control-Allow-Origin: *
+		Access-Control-Expose-Headers: 
+		Content-Type: application/json
+		accept: */*
+		accept-encoding: gzip, deflate, br
+		cache-control: no-cache
+		connection: keep-alive
+		content-length: 116
+		content-type: application/json
+		cookie: JSESSIONID=032FBAB561005F1AC0F658AFDE4EC26C
+		host: localhost:8080
+		postman-token: 5c5e83f4-4d72-442c-b5a2-8cc7c06be0e2
+		user-agent: PostmanRuntime/7.29.2
+		x-b3-traceid: 335f7176-8871-4f04-ad5e-d1c8c9b49f7b
+		x-correlation-id: 3d69a6dc-9cc5-49fd-9812-03beb8dc34c3
+		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
+	payload:[{"audit":{"createdBy":"system","createdDate":"2025-12-31T06:20:14.164320179","version":1},"email":"john.smith.mock@inugami.io","firstName":"John","lastName":"Smith","uid":"31bd235a-8060-4f65-856b-33b7de38cc48"}]
+]]>
+    </src>
+
+	<src name="error_response" type="json" title="Error response example">
+        <![CDATA[
+{
+    "cause": {
+        "errors": [],
+        "message": "uid required to find user",
+        "parameters": []
+    },
+    "detail": "",
+    "details": {
+        "errorCode": "USER-2_0",
+        "fields": [],
+        "version": "@project.version@",
+        "errorType": "functional",
+        "rollback": false,
+        "retryable": false,
+        "errorDomain": "USER",
+        "service": "UserRestController_getById"
+    },
+    "errors": [],
+    "message": "uid required to find user",
+    "parameters": [],
+    "reasonPhrase": "Bad Request",
+    "status": 400
+}
+]]>
+    </src>
+
+
+ 
+    <src name="demo-api" type="java" title="Module demo-api">
+        <![CDATA[
+open module com.my.project.api {
+    requires lombok;
+    requires jdk.compiler;
+    requires org.jspecify;
+    requires io.inugami.framework.interfaces;
+
+    exports com.my.project.api.domain.user;
+    exports com.my.project.api.domain.user.dto;
+    exports com.my.project.api.domain.user.exception;
+}
+]]>
+    </src>
 </xml>

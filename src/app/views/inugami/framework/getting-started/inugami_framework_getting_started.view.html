@@ -82,50 +82,171 @@
                                                     the different parts of the application.
                                                 </cite>
 
+                                                <cite class="info">
+                                                    Each module is also pre-configured as a Java Module <em>(JPMS)</em>.
+                                                </cite>
+
                                             </div>
                                             
                                         </div>
                                     </inu-doc-item>
-
-                                    <inu-doc-item title="First run" [level]="3" href="inugami-project-analysis-maven-plugin#first-run" id="first-run">
- 
-                                        <div class="row-reverse">
-                                            <figure class="size-20 padding-right-4">
-                                               <img src="images/framework/mvn-clean-install.png" alt="maven run" style="width: 20rem;" />
-                                            </figure>
-
-                                            <div class="size-fit">
-                                                As with most Java projects, building the project only requires executing the following Maven command from the project root:
-                                                <inu-code url="data/inugami/framework/source_code.xml" tag="mvn_clean_install" ></inu-code>
-
-                                                <p>
-                                                    Compilation performance varies significantly depending on the hardware.
-                                                    For this example, the build process took approximately 2 minutes to 
-                                                    run all unit and integration tests.
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <p>
-                                            From your IDE, you can run the <em>com.my.project.webapp.Application</em> class to start the Spring Boot application.
-                                        </p>
-                                        
-                                        <figure>
-                                               <img src="images/framework/run_01.png" alt="springboot run" width="70%"/>
-                                        </figure>
-                                        <figure>
-                                               <img src="images/framework/run_02.png" alt="springboot run" width="70%" />
-                                        </figure>
-                                        
-                                        Once the application is up and running, you can access the <em>OpenAPI</em> documentation here:
-                                        <a href="http://localhost:8080/swagger-ui/index.html" target="_blank">http://localhost:8080/swagger-ui/index.html</a>
-
-                                        <figure>
-                                               <img src="images/framework/openapi_01.png" alt="open api" width="70%" />
-                                        </figure>
-                                    </inu-doc-item>
                                 </div>                                
                             </article>
+
+
+                        <!--****************************************************************************************
+                        ** First run
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                    <a href="inugami/framework/getting-started#first-run"><h2 id="first-run">First run</h2></a>
+                            </header>
+                             <div class="row-reverse">
+                                <figure class="size-20 padding-right-4">
+                                    <img src="images/framework/mvn-clean-install.png" alt="maven run" style="width: 20rem;" />
+                                </figure>
+
+                                <div class="size-fit">
+                                    As with most Java projects, building the project only requires executing the following Maven command from the project root:
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="mvn_clean_install" ></inu-code>
+
+                                    <p>
+                                        Compilation performance varies significantly depending on the hardware.
+                                        For this example, the build process took approximately 2 minutes to 
+                                        run all unit and integration tests.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p>
+                                From your IDE, you can run the <em>com.my.project.webapp.Application</em> class to start the Spring Boot application.
+                            </p>
+                            
+                            <figure>
+                                    <img src="images/framework/run_01.png" alt="springboot run" width="70%"/>
+                            </figure>
+                            <figure>
+                                    <img src="images/framework/run_02.png" alt="springboot run" width="70%" />
+                            </figure>
+                            
+                            Once the application is up and running, you can access the <em>OpenAPI</em> documentation here:
+                            <a href="http://localhost:8080/swagger-ui/index.html" target="_blank">http://localhost:8080/swagger-ui/index.html</a>
+
+                            <figure>
+                                    <img src="images/framework/openapi_01.png" alt="open api" width="70%" />
+                            </figure>
+
+
+                            <p>
+                                A Postman collection is provided in the <em>local-integration-test</em> directory to help you test the generated application.
+                            </p>
+                            <figure>
+                                    <img src="images/framework/postman_01.png" alt="postman call success" width="70%" />
+                            </figure>
+
+                            <p>
+                                For every request to the application, a log named IOLOG is generated:
+                            </p>
+                            <ul>
+                                <li>One upon the initial request</li>
+                                <li>A second one upon the response</li>
+                            </ul>
+                            <p>
+                                These IOLOGs allow you to precisely track the instructions sent to the server and follow
+                                the different calls associated with a specific user.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="iolog"></inu-code>
+
+                            <p>
+                                Every application must handle its errors, and the Postman collection also allows you to observe 
+                                the application's behavior when an error occurs. Inugami includes a Spring service that 
+                                intercepts all errors and returns a detailed error response compliant with the <em>RFC 9457</em> standard.
+                            </p>
+                            <cite class="info">
+                               If you would like to learn more about the RFC 9457 specification, 
+                               please refer to the following documentation: <a href="https://datatracker.ietf.org/doc/rfc9457/" target="_blank">https://datatracker.ietf.org/doc/rfc9457</a>
+                            </cite>
+
+                            <figure>
+                                    <img src="images/framework/postman_02.png" alt="postman call success" width="70%" />
+                            </figure>
+                            
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="error_response"></inu-code>
+
+                            <cite class="info">
+                                For further details on how Inugami manages errors, please refer to the relevant section :
+                                <a routerLink="/inugami/framework/exception">Exception management</a>
+                            </cite>
+                        </article>
+
+                        <!--****************************************************************************************
+                        ** MODULES DETAILS
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                    <a href="inugami/framework/getting-started#modules-details"><h2 id="modules-details">Modules details</h2></a>
+                            </header>
+
+                            <inu-doc-item title="Module API" [level]="3" href="inugami-project-analysis-maven-plugin#module-api" id="module-api">
+                                <p>
+                                    The demo-api module serves as the central contract layer. It houses all the DTOs used by the application core.
+                                    Its purpose is to facilitate data exchange:
+                                </p>
+
+                                <ul>
+                                    <li>Between REST controllers and the domain.</li>
+                                    <li>Among internal core services.</li>
+                                    <li>Between the core and the infrastructure layer.</li>
+                                </ul>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api"></inu-code>
+                                <p>
+                                    Following standard Java modularity, each module includes a module-info.java file at its root.
+                                </p>
+
+                                <cite class="danger">
+                                    It is mandatory for Java module names to match their base package. 
+                                    Deviating from this standard will cause module import failures.
+                                </cite>
+
+
+                                <div class="row-reverse">
+                                    <figure class="size-20 padding-right-4">
+                                        <img src="images/framework/module_api_01.png" alt="module-api" />
+                                    </figure>
+
+                                    <div class="size-fit">
+                                        <p>
+                                            The demo-api module is straightforward. We have implemented only one domain
+                                        (<em>users</em>) for demonstration purposes. In a production-grade application,
+                                        this identical structure would be replicated across all application domains.
+                                        </p>
+                                       
+                                        <dl>
+                                            <dt>UserDTO</dt>
+                                            <dd>The primary DTO containing user information.</dd>
+
+                                            <dt>UserDTOSearchRequestDTO</dt>
+                                            <dd>The DTO containing the various search parameters for a user.</dd>
+
+                                            <dt>UserFilters</dt>
+                                            <dd>Information filtering requires knowing the criteria types (inclusive parameters, exact matches, range-based boundaries, etc.).</dd>
+
+                                            <dt>UserErrors</dt>
+                                            <dd>All domain-specific error codes are defined via an enumeration.</dd>
+
+
+                                            <dt>IUserDao</dt>
+                                            <dd>The interface for the user data access service.</dd>
+
+                                            <dt>IUserService</dt>
+                                            <dd>The main service providing CRUD operations (Create, Read, Update, Delete) for users.</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </inu-doc-item>
+                        </article>
                     </main>
                 </section>
             </div>
