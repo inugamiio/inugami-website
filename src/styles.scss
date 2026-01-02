@@ -423,3 +423,34 @@ cite {
         }
     }
 }
+
+
+#navbarToggler{
+    &.show{
+            position: fixed;
+            top: 3.1rem;
+            background-color: rgb(255, 255, 255);
+            width: 100%;
+            padding: 1rem;
+            border-bottom: 1px solid;
+            a{
+                color: var(--neutral-dark);
+                text-decoration: none;
+                &:hover{
+                    text-decoration: underline;
+                }
+                &.active{
+                    color: var(--primary-dark);
+                    font-weight: bold;
+                }
+            }
+            .sublink{
+                ul{
+                    li{
+                        list-style: square;
+                    }
+                }
+            }
+            
+    }
+}

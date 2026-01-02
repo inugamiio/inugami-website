@@ -22,14 +22,16 @@ export class App implements OnInit{
       path: 'inugami/framework',
       children: [
         {
-          title: 'Getting started',
           links: [
             {
-              title: 'Setup',
-              path: 'inugami/framework/getting_started#setup'
+              title: 'Getting started',
+              path: '/inugami/framework/getting-started'
+            },
+             {
+              title: 'Exception',
+              path: 'inugami/framework/exception'
             }
           ]
-
         }
       ]
     },
