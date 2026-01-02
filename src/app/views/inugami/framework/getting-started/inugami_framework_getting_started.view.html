@@ -328,8 +328,173 @@
                                     </cite>
                                 </inu-doc-item>
 
+                                <inu-doc-item title="UserDTOSearchRequestDTO" [level]="4" href="inugami/framework/getting-started#demo-api-userDTOSearchRequestDTO" id="demo-api-userDTOSearchRequestDTO">
+                                    <p>
+                                        <em>UserDTOSearchRequestDTO</em> holds the search criteria and closely mirrors the UserDTO.
+                                        Since this DTO is never stored in collections or maps, it does not need to override equals or hashCode.
+                                    </p>
+                                    
+                                    
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-userDTOSearchRequestDTO"></inu-code>
 
-                                
+                                    <p>
+                                        Similar to the UserDTO test, this implementation specifies that <em>equals and hashCode validation should be bypassed</em>.
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-userDTOSearchRequestDTO-test"></inu-code>
+                                </inu-doc-item>
+
+
+
+
+                                <inu-doc-item title="UserDTOSearchRequestDTO" [level]="4" href="inugami/framework/getting-started#demo-api-userDTOSearchRequestDTO" id="demo-api-userDTOSearchRequestDTO">
+                                    <p>
+                                        <em>UserDTOSearchRequestDTO</em> holds the search criteria and closely mirrors the UserDTO.
+                                        Since this DTO is never stored in collections or maps, it does not need to override equals or hashCode.
+                                    </p>
+                                    
+                                    
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-userDTOSearchRequestDTO"></inu-code>
+
+                                    <p>
+                                        Similar to the UserDTO test, this implementation specifies that <em>equals and hashCode validation should be bypassed</em>.
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-userDTOSearchRequestDTO-test"></inu-code>
+                                </inu-doc-item>
+
+
+                                <inu-doc-item title="UserFilters" [level]="4" href="inugami/framework/getting-started#demo-api-userFilters" id="demo-api-userFilters">
+                                    <p>
+                                        The <em>UserFilters</em> utility class maps the search logic to the various fields provided in the <strong>UserDTOSearchRequestDTO</strong>.
+                                    </p>
+                                    <cite class="info">
+                                        At present, Inugami does not provide full support for search filters.
+                                        Future releases will leverage them to automatically generate search predicates.
+                                    </cite>
+                                    
+                                    
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userFilters"></inu-code>
+
+                                    <p>
+                                        Unit testing is essential for validating class behavior. 
+                                        <em>Inugami</em> contributes specialized utility methods to simplify the testing process for these objects.
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userFiltersTest"></inu-code>
+
+
+                                    <p>
+                                        This unit test provides a great example of how to use two especially useful methods from the UnitTestHelper class:
+                                    </p>
+
+
+
+                                    <dl>
+                                        <dt>assertUtilityClassLombok</dt>
+                                        <dd>This method validates that the @UtilityClass annotation is working as expected
+                                            by checking that the target class meets all utility class requirements
+                                            (e.g., private constructor, final class).
+                                        </dd>
+
+                                        <dt>assertText</dt>
+                                        <dd>Arguably the most essential method in UnitTestHelper. It performs a complete
+                                            object verification by using Jackson projection to compare the object's state.
+                                        </dd>
+                                    </dl>
+
+                                    <cite class="info">
+
+                                        <div class="images-flex">
+                                            <figure>
+                                                <img src="images/framework/asserttext-01.png" alt="assertText failure current value"  style="height:40rem" />
+                                            </figure>
+                                            <figure>
+                                                <img src="images/framework/asserttext-02.png" alt="assertText failure diff" style="height:40rem"/>
+                                            </figure>
+                                        </div>
+                                        <p>
+                                            If a test fails, the assertText method outputs the actual object projection 
+                                            along with a differential comparison to the reference value. 
+                                            Lines containing differences are marked in red for easy identification of the issues.
+                                        </p>
+
+                                    </cite>
+                                </inu-doc-item>
+
+                                <inu-doc-item title="Services interfaces" [level]="4" href="inugami/framework/getting-started#demo-api-service" id="demo-api-service">
+                                    <p>
+                                        To handle data related to the user domain, both a service class and a data access 
+                                        class are required. Consequently, two interfaces for these services are defined within the API layer (IUserService and IUserDao).
+                                    </p>
+                                    <p>
+                                        According to the archetype example, the services are limited to standard CRUD operations.
+                                    </p>
+
+                                    
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-iUserService"></inu-code>
+                                    <p>
+                                        Given that our service handles only pure CRUD operations, it can directly implement
+                                        <em>the Inugami Crud interface</em>. This interface provides all the standard CRUD method definitions.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="crud"></inu-code>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-iUserDao"></inu-code>
+                                    <p>
+                                        The same applies to the DAO layer.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="crudDao"></inu-code>
+                                </inu-doc-item>
+                            
+                                <inu-doc-item title="UserErrors" [level]="4" href="inugami/framework/getting-started#demo-api-userErrors" id="demo-api-userErrors">
+                                    <p>
+                                        Exception management is often a thorny issue in application development. 
+                                        Many projects create custom exceptions to implement their error-handling logic.
+                                        While this approach is common, it is only relevant when a workaround or recovery
+                                        action is actually possible. Unfortunately, in the majority of cases, no such workaround exists.
+                                        It is therefore preferable to have an exception-handling mechanism that reflects
+                                        the reality of modern applications.
+                                    </p>
+                                        
+                                    <p>
+                                        Another drawback of creating specific exceptions is the difficulty—or even 
+                                        impossibility—of achieving high granularity. It is impractical to define a unique 
+                                        exception for every potential error case. This approach mechanically forces 
+                                        developers to reduce the number of exceptions, thereby drowning out the precision
+                                        of error detection.
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userErrors"></inu-code>
+
+                                    <p>
+                                       Error codes provide significant context, making them highly effective for both 
+                                       MDC logging and frontend integration, particularly for handling form validation errors.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="errorCode"></inu-code>
+
+                                    <cite class="danger">
+                                        <p>
+                                            Error codes are required to be unique. To ensure compliance, unit tests must
+                                            be implemented for all error enums within each domain.
+                                        </p>
+                                        <p>
+                                            To perform these tests, Inugami includes methods within the UnitTestHelper
+                                            class to simplify their implementation:
+                                        </p>
+
+                                        <dl>
+                                            <dt>assertErrorCodeUnique</dt>
+                                            <dd>To verify that no duplicates are present within the enumerations.</dd>
+
+                                            <dt>assertErrorCode</dt>
+                                            <dd>To guarantee the proper definition of the various error codes.</dd>
+                                        </dl>
+                                        
+                                        <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
+                                    </cite>
+                                    
+                                    
+                                </inu-doc-item>
                             </inu-doc-item>
                         </article>
                     </main>

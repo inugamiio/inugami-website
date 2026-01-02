@@ -198,4 +198,612 @@ class UserDTOTest {
 }
 ]]>
     </src>
+
+	 
+    <src name="demo-api-userDto-userDTOSearchRequestDTO" type="java" title="UserDTOSearchRequestDTO">
+        <![CDATA[
+@ToString
+@Setter
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTOSearchRequestDTO implements SearchRequest , Serializable {
+    private static final long         serialVersionUID = -6646958578723667636L;
+    // SearchRequest
+    private Integer                   page;
+    private Integer                   pageSize;
+    private String                    sortFields;
+    private SortOrder                 sortOrder;
+    @Singular("createdBy")
+    private Collection<String>        createdBy;
+    @Singular("createdDate")
+    private Collection<LocalDateTime> createdDate;
+    @Singular("lastModifiedBy")
+    private Collection<String>        lastModifiedBy;
+    @Singular("lastModifiedDate")
+    private Collection<LocalDateTime> lastModifiedDate;
+
+    // UserDTOSearchRequestDTO
+    @Singular("uid")
+    private Collection<String> uid;
+    @Singular("firstName")
+    private Collection<String> firstName;
+    @Singular("lastName")
+    private Collection<String> lastName;
+    @Singular("email")
+    private Collection<String> email;
+}
+]]>
+    </src>
+
+	 
+    <src name="demo-api-userDto-userDTOSearchRequestDTO-test" type="java" title="UserDTOSearchRequestDTOTest">
+        <![CDATA[
+class UserDTOSearchRequestDTOTest {
+    @Test
+    void userDTOSearchRequestDTO() {
+        assertDto(AssertDtoContext.<UserDTOSearchRequestDTO>builder()
+                                  .objectClass(UserDTOSearchRequestDTO.class)
+                                  .cloneFunction(i -> i.toBuilder().build())
+                                  .noArgConstructor(UserDTOSearchRequestDTO::new)
+                                  .fullArgConstructor(this::buildUserDTOSearchRequestDTO)
+                                  .fullArgConstructorRefPath("api/domain/user/dto/userDTOSearchRequestDTO/model.json")
+                                  .getterRefPath("api/domain/user/dto/userDTOSearchRequestDTO/getter.json")
+                                  .toStringRefPath("api/domain/user/dto/userDTOSearchRequestDTO/toString.txt")
+                                  .checkEquals(false)
+                                  .checkSetters(true)
+                                  .build());
+    }
+
+
+    private UserDTOSearchRequestDTO buildUserDTOSearchRequestDTO() {
+        return UserDTOSearchRequestDTO.builder()
+                                      .page(0)
+                                      .pageSize(10)
+                                      .sortFields("name")
+                                      .sortOrder(SortOrder.ASC)
+                                      .createdBy("system")
+                                      .clearCreatedBy()
+                                      .createdBy(List.of("system"))
+                                      .createdDate(UnitTestData.DATE_TIME.minusDays(5))
+                                      .clearCreatedDate()
+                                      .createdDate(List.of(UnitTestData.DATE_TIME.minusDays(5)))
+                                      .lastModifiedBy("system2")
+                                      .clearLastModifiedBy()
+                                      .lastModifiedBy(List.of("system2"))
+                                      .lastModifiedDate(UnitTestData.DATE_TIME)
+                                      .clearLastModifiedDate()
+                                      .lastModifiedDate(List.of(UnitTestData.DATE_TIME))
+                                      //------------------------------------------------------------------------------
+                                      .uid(UnitTestData.UID)
+                                      .clearUid()
+                                      .uid(List.of(UnitTestData.UID))
+
+                                      .firstName(UnitTestData.FIRSTNAME)
+                                      .clearFirstName()
+                                      .firstName(List.of(UnitTestData.FIRSTNAME))
+
+                                      .lastName(UnitTestData.LASTNAME)
+                                      .clearLastName()
+                                      .lastName(List.of(UnitTestData.LASTNAME))
+
+                                      .email(UnitTestData.EMAIL)
+                                      .clearEmail()
+                                      .email(List.of(UnitTestData.EMAIL))
+
+                                      //------------------------------------------------------------------------------
+                                      .build()
+                                      .toBuilder()
+                                      .build();
+    }
+]]>
+    </src>
+
+
+	<src name="demo-api-userFilters" type="java" title="UserFilters">
+        <![CDATA[
+@UtilityClass
+public class UserFilters {
+
+    public static final String UID        = "uid";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME  = "lastName";
+    public static final String EMAIL      = "email";
+
+
+    public static final List<QueryFilterDTO<?>> FILTERS = buildFilters(
+            QueryFilterDTO.<String>builder()
+                          .field(UID)
+                          .matchType(MatchType.IN)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(FIRST_NAME)
+                          .matchType(MatchType.CONTAINS)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(LAST_NAME)
+                          .matchType(MatchType.CONTAINS)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(EMAIL)
+                          .matchType(MatchType.IN)
+                          .build()
+                                                                      );
+}
+]]>
+    </src>
+
+		<src name="demo-api-userFilters" type="java" title="UserFilters">
+        <![CDATA[
+@UtilityClass
+public class UserFilters {
+
+    public static final String UID        = "uid";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME  = "lastName";
+    public static final String EMAIL      = "email";
+
+
+    public static final List<QueryFilterDTO<?>> FILTERS = buildFilters(
+            QueryFilterDTO.<String>builder()
+                          .field(UID)
+                          .matchType(MatchType.IN)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(FIRST_NAME)
+                          .matchType(MatchType.CONTAINS)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(LAST_NAME)
+                          .matchType(MatchType.CONTAINS)
+                          .build(),
+            QueryFilterDTO.<String>builder()
+                          .field(EMAIL)
+                          .matchType(MatchType.IN)
+                          .build()
+                                                                      );
+}
+]]>
+    </src>
+
+			<src name="demo-api-userFiltersTest" type="java" title="UserFiltersTest">
+        <![CDATA[
+class UserFiltersTest {
+    @Test
+    void assertUtilityClass() {
+        UnitTestHelper.assertUtilityClassLombok(UserFilters.class);
+    }
+
+
+    @Test
+    void assertFilters() {
+        assertText(UserFilters.FILTERS,
+                   """
+                           [ {
+                             "field" : "uid",
+                             "matchType" : "IN"
+                           }, {
+                             "field" : "firstName",
+                             "matchType" : "CONTAINS"
+                           }, {
+                             "field" : "lastName",
+                             "matchType" : "CONTAINS"
+                           }, {
+                             "field" : "email",
+                             "matchType" : "IN"
+                           }, {
+                             "field" : "createdBy",
+                             "matchType" : "CONTAINS"
+                           }, {
+                             "field" : "createdDate",
+                             "matchType" : "BETWEEN"
+                           }, {
+                             "field" : "lastModifiedBy",
+                             "matchType" : "CONTAINS"
+                           }, {
+                             "field" : "lastModifiedDate",
+                             "matchType" : "BETWEEN"
+                           }, {
+                             "field" : "version",
+                             "matchType" : "BETWEEN"
+                           } ]
+                           """);
+    }
+}
+]]>
+    </src>
+
+
+	<src name="demo-api-iUserService" type="java" title="IUserService">
+        <![CDATA[
+import io.inugami.framework.interfaces.models.crud.Crud;
+//...
+
+public interface IUserService extends Crud<UserDTO,String, UserDTOSearchRequestDTO> {
+}
+]]>
+    </src>
+
+		<src name="crud" type="java" title="Crud">
+        <![CDATA[
+package io.inugami.framework.interfaces.models.crud;
+
+public interface Crud<T,PK,SR extends SearchRequest> {
+    // =================================================================================================================
+    // CREATE
+    // =================================================================================================================
+    Collection<T> create(final Collection<T> values);
+
+    // =================================================================================================================
+    // READ
+    // =================================================================================================================
+    SearchResponse<T> search(final SR searchRequest);
+
+    T getById(final PK id, final Boolean full);
+
+    boolean contains(final Collection<String> uids);
+
+    Collection<T> getByIds(final Collection<PK> ids);
+
+    // =================================================================================================================
+    // UPDATE
+    // =================================================================================================================
+    Collection<T> update(final Collection<T> values, final boolean force);
+
+    // =================================================================================================================
+    // DELETE
+    // =================================================================================================================
+    void delete(final Collection<PK> ids);
+}
+]]>
+    </src>
+
+	<src name="demo-api-iUserDao" type="java" title="IUserDao">
+        <![CDATA[
+import io.inugami.framework.interfaces.models.crud.CrudDao;
+//..
+
+public interface IUserDao extends CrudDao<UserDTO,String, UserDTOSearchRequestDTO> {
+
+}
+]]>
+    </src>
+
+		
+	<src name="crudDao" type="java" title="CrudDao">
+        <![CDATA[
+package io.inugami.framework.interfaces.models.crud;
+
+//...
+
+public interface CrudDao<T,PK,SR extends SearchRequest> {
+    // =================================================================================================================
+    // CREATE
+    // =================================================================================================================
+    Collection<T> create(final Collection<T> values);
+
+    // =================================================================================================================
+    // READ
+    // =================================================================================================================
+    SearchResponse<T> search(final SR searchRequest, final Collection<QueryFilterDTO<?>> requestFilters);
+
+    T getById(final PK id, final Boolean full);
+
+    boolean contains(final Collection<String> uids);
+
+    Collection<T> getByIds(final Collection<PK> ids);
+
+    // =================================================================================================================
+    // UPDATE
+    // =================================================================================================================
+    Collection<T> update(final Collection<T> values);
+
+    // =================================================================================================================
+    // DELETE
+    // =================================================================================================================
+    void delete(final Collection<PK> ids);
+}
+]]>
+    </src>
+
+
+	<src name="UserErrors" type="java" title="UserErrors">
+        <![CDATA[
+public enum UserErrors implements ErrorCode {
+    //==================================================================================================================
+    // 0 - GENERIC
+    //==================================================================================================================
+    UNDEFINED(newBuilder().errorCode("USER-0_0")
+                          .message("Undefined error occurs")
+                          .domain(Constants.USER)
+                          .statusCode(500)
+                          .errorTypeTechnical()),
+
+    //==================================================================================================================
+    // 1 - CREATE
+    //==================================================================================================================
+    CREATE_INVALID_DATA(newBuilder().errorCode("USER-1_0")
+                                    .message("invalid data for user creation")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+
+    CREATE_UID_FORBIDDEN(newBuilder().errorCode("USER-1_1")
+                                     .message("uid is forbidden for user creation")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+
+    CREATE_FIRSTNAME_INVALID(newBuilder().errorCode("USER-1_2")
+                                         .message("invalid firstname")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+
+    CREATE_LASTNAME_INVALID(newBuilder().errorCode("USER-1_3")
+                                        .message("invalid lastname")
+                                        .domain(Constants.USER)
+                                        .statusCode(400)
+                                        .errorTypeFunctional()),
+
+    CREATE_EMAIL_INVALID(newBuilder().errorCode("USER-1_4")
+                                     .message("invalid email")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+
+    //==================================================================================================================
+    // 2 - READ
+    //==================================================================================================================
+    READ_USER_UID_REQUIRED(newBuilder().errorCode("USER-2_0")
+                                       .message("uid required to find user")
+                                       .domain(Constants.USER)
+                                       .statusCode(400)
+                                       .errorTypeFunctional()),
+    READ_USER_NOT_FOUND(newBuilder().errorCode("USER-2_1")
+                                    .message("user not found")
+                                    .domain(Constants.USER)
+                                    .statusCode(404)
+                                    .errorTypeFunctional()),
+    //==================================================================================================================
+    // 3 - UPDATE
+    //==================================================================================================================
+    UPDATE_INVALID_DATA(newBuilder().errorCode("USER-3_0")
+                                    .message("invalid data for user modification")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+    UPDATE_USERS_NOT_FOUND(newBuilder().errorCode("USER-3_1")
+                                       .message("users not found")
+                                       .domain(Constants.USER)
+                                       .statusCode(404)
+                                       .errorTypeFunctional()),
+
+    UPDATE_UID_REQUIRED(newBuilder().errorCode("USER-3_2")
+                                    .message("uid is required for user modification")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+
+    UPDATE_FIRSTNAME_INVALID(newBuilder().errorCode("USER-3_3")
+                                         .message("invalid firstname")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+
+    UPDATE_LASTNAME_INVALID(newBuilder().errorCode("USER-3_4")
+                                        .message("invalid lastname")
+                                        .domain(Constants.USER)
+                                        .statusCode(400)
+                                        .errorTypeFunctional()),
+
+    UPDATE_EMAIL_INVALID(newBuilder().errorCode("USER-3_5")
+                                     .message("invalid email")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+    //==================================================================================================================
+    // 4 - DELETE
+    //==================================================================================================================
+    DELETE_USER_UID_REQUIRED(newBuilder().errorCode("USER-4_0")
+                                         .message("uid required to delete users")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+    DELETE_USERS_NOT_FOUND(newBuilder().errorCode("USER-4_1")
+                                       .message("users not found")
+                                       .domain(Constants.USER)
+                                       .statusCode(404)
+                                       .errorTypeFunctional())
+    ;
+
+
+    private final ErrorCode errorCode;
+
+    private UserErrors(final DefaultErrorCode.DefaultErrorCodeBuilder errorBuilder) {
+        errorCode = errorBuilder.build();
+    }
+
+    @Override
+    public ErrorCode getCurrentErrorCode() {
+        return errorCode;
+    }
+
+    private static class Constants {
+        public static final String USER = "USER";
+    }
+}
+]]>
+    </src>
+
+	<src name="userErrors" type="java" title="UserErrors">
+        <![CDATA[
+public enum UserErrors implements ErrorCode {
+    //==================================================================================================================
+    // 0 - GENERIC
+    //==================================================================================================================
+    UNDEFINED(newBuilder().errorCode("USER-0_0")
+                          .message("Undefined error occurs")
+                          .domain(Constants.USER)
+                          .statusCode(500)
+                          .errorTypeTechnical()),
+
+    //==================================================================================================================
+    // 1 - CREATE
+    //==================================================================================================================
+    CREATE_INVALID_DATA(newBuilder().errorCode("USER-1_0")
+                                    .message("invalid data for user creation")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+
+    CREATE_UID_FORBIDDEN(newBuilder().errorCode("USER-1_1")
+                                     .message("uid is forbidden for user creation")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+
+    CREATE_FIRSTNAME_INVALID(newBuilder().errorCode("USER-1_2")
+                                         .message("invalid firstname")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+
+    CREATE_LASTNAME_INVALID(newBuilder().errorCode("USER-1_3")
+                                        .message("invalid lastname")
+                                        .domain(Constants.USER)
+                                        .statusCode(400)
+                                        .errorTypeFunctional()),
+
+    CREATE_EMAIL_INVALID(newBuilder().errorCode("USER-1_4")
+                                     .message("invalid email")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+
+    //==================================================================================================================
+    // 2 - READ
+    //==================================================================================================================
+    READ_USER_UID_REQUIRED(newBuilder().errorCode("USER-2_0")
+                                       .message("uid required to find user")
+                                       .domain(Constants.USER)
+                                       .statusCode(400)
+                                       .errorTypeFunctional()),
+    READ_USER_NOT_FOUND(newBuilder().errorCode("USER-2_1")
+                                    .message("user not found")
+                                    .domain(Constants.USER)
+                                    .statusCode(404)
+                                    .errorTypeFunctional()),
+    //==================================================================================================================
+    // 3 - UPDATE
+    //==================================================================================================================
+    UPDATE_INVALID_DATA(newBuilder().errorCode("USER-3_0")
+                                    .message("invalid data for user modification")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+    UPDATE_USERS_NOT_FOUND(newBuilder().errorCode("USER-3_1")
+                                       .message("users not found")
+                                       .domain(Constants.USER)
+                                       .statusCode(404)
+                                       .errorTypeFunctional()),
+
+    UPDATE_UID_REQUIRED(newBuilder().errorCode("USER-3_2")
+                                    .message("uid is required for user modification")
+                                    .domain(Constants.USER)
+                                    .statusCode(400)
+                                    .errorTypeFunctional()),
+
+    UPDATE_FIRSTNAME_INVALID(newBuilder().errorCode("USER-3_3")
+                                         .message("invalid firstname")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+
+    UPDATE_LASTNAME_INVALID(newBuilder().errorCode("USER-3_4")
+                                        .message("invalid lastname")
+                                        .domain(Constants.USER)
+                                        .statusCode(400)
+                                        .errorTypeFunctional()),
+
+    UPDATE_EMAIL_INVALID(newBuilder().errorCode("USER-3_5")
+                                     .message("invalid email")
+                                     .domain(Constants.USER)
+                                     .statusCode(400)
+                                     .errorTypeFunctional()),
+    //==================================================================================================================
+    // 4 - DELETE
+    //==================================================================================================================
+    DELETE_USER_UID_REQUIRED(newBuilder().errorCode("USER-4_0")
+                                         .message("uid required to delete users")
+                                         .domain(Constants.USER)
+                                         .statusCode(400)
+                                         .errorTypeFunctional()),
+    DELETE_USERS_NOT_FOUND(newBuilder().errorCode("USER-4_1")
+                                       .message("users not found")
+                                       .domain(Constants.USER)
+                                       .statusCode(404)
+                                       .errorTypeFunctional())
+    ;
+
+
+    private final ErrorCode errorCode;
+
+    private UserErrors(final DefaultErrorCode.DefaultErrorCodeBuilder errorBuilder) {
+        errorCode = errorBuilder.build();
+    }
+
+    @Override
+    public ErrorCode getCurrentErrorCode() {
+        return errorCode;
+    }
+
+    private static class Constants {
+        public static final String USER = "USER";
+    }
+}
+]]>
+    </src>
+
+
+	<src name="errorCode" type="java" title="Inugami interface ErrorCode">
+        <![CDATA[
+public interface ErrorCode {
+    public ErrorCode                                 getCurrentErrorCode();
+    default int                                      getStatusCode() { }
+    default String                                   getErrorCode() { }
+    default String                                   getMessage() { }
+    default String                                   getMessageDetail() { }
+    default boolean                                  isExploitationError() { }
+    default String                                   getErrorType() { }
+    default String                                   getDomain() { }
+    default String                                   getSubDomain() { }
+    default String                                   getPayload() { }
+    default String                                   getUrl() { }
+    default boolean                                  isRollbackRequire() { }
+    default boolean                                  isRetryable() { }
+    default BiConsumer<String, Exception>            getErrorHandler() { }
+    default ErrorCode                                addDetail(final String detail, final Object... values) { }
+    default String                                   getCategory() { }
+    default String                                   getField() { }
+    default DefaultErrorCode.DefaultErrorCodeBuilder toBuilder() { }
+    default Map<String, Serializable>                toMap() { }
+    default List<String>                             keysSet() { }
+}
+]]>
+    </src>
+
+	<src name="userErrorsTest" type="java" title="UserErrorsTest">
+        <![CDATA[
+class UserErrorsTest {
+    @Test
+    void assertUserErrors() {
+        UnitTestHelper.assertErrorCodeUnique(UserErrors.values());
+        UnitTestHelper.assertErrorCode("api/domain/user/exception/assertUserErrors.json",
+                                       UserErrors.values());
+    }
+}
+]]>
+    </src>
 </xml>

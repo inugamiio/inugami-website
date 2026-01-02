@@ -357,3 +357,9 @@ cite {
         border-left: 0.25rem solid var(--warning);
     }
 }
+
+.images-flex{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
