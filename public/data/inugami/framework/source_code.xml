@@ -121,4 +121,81 @@ open module com.my.project.api {
 }
 ]]>
     </src>
+
+	 
+    <src name="demo-api-userDto" type="java" title="UserDTO">
+        <![CDATA[
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserDTO implements Serializable {
+    private static final long serialVersionUID = -8615427425887155741L;
+
+    @ToString.Include
+    private String uid;
+    @ToString.Include
+    private String firstName;
+    @ToString.Include
+    private String lastName;
+    @ToString.Include
+    @EqualsAndHashCode.Include
+    private String email;
+
+    private AuditDTO audit;
+}
+]]>
+    </src>
+
+		 
+    <src name="demo-api-userDto-test" type="java" title="UserDTOTest">
+        <![CDATA[
+class UserDTOTest {
+
+    @Test
+    void userDTO() {
+        assertDto(AssertDtoContext.<UserDTO>builder()
+                                  .objectClass(UserDTO.class)
+                                  .cloneFunction(i -> i.toBuilder().build())
+                                  .noArgConstructor(UserDTO::new)
+                                  .fullArgConstructor(this::buildUserDTO)
+                                  .fullArgConstructorRefPath("api/domain/user/dto/userDTO/model.json")
+                                  .getterRefPath("api/domain/user/dto/userDTO/getter.json")
+                                  .toStringRefPath("api/domain/user/dto/userDTO/toString.txt")
+                                  .noEqualsFunction(this::notEquals)
+                                  .checkSetters(true)
+                                  .build());
+    }
+
+    private void notEquals(final UserDTO instance) {
+        assertThat(instance).isNotEqualTo(null);
+        assertThat(instance).isNotEqualTo(instance.toBuilder());
+        //
+        assertThat(instance).isNotEqualTo(instance.toBuilder().email(null).build());
+        assertThat(instance.toBuilder().email(null).build()).isNotEqualTo(instance);
+        assertThat(instance).isNotEqualTo(instance.toBuilder().email(UnitTestData.OTHER).build());
+        assertThat(instance.toBuilder().email(UnitTestData.OTHER).build()).isNotEqualTo(instance);
+        assertThat(instance.hashCode()).isNotEqualTo(instance.toBuilder().email(null).build().hashCode());
+        assertThat(instance.hashCode()).isNotEqualTo(instance.toBuilder()
+                                                             .email(UnitTestData.OTHER)
+                                                             .build()
+                                                             .hashCode());
+    }
+
+    private UserDTO buildUserDTO() {
+        return UserDTO.builder()
+                      .uid(UnitTestData.UID)
+                      .firstName(UnitTestData.FIRSTNAME)
+                      .lastName(UnitTestData.LASTNAME)
+                      .email(UnitTestData.EMAIL)
+                      .build()
+                      .toBuilder()
+                      .build();
+    }
+}
+]]>
+    </src>
 </xml>

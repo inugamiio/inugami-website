@@ -68,14 +68,24 @@
 
                                             <div class="size-fit">
                                                 The project is broken down into the following modules:
-                                                <ul>
-                                                    <li>"demo-api": Contains all DTOs and interfaces used by the application core.</li>
-                                                    <li>"demo-core": The heart of the application. This module contains all the business logic.</li>
-                                                    <li>"demo-infrastructure": Handles database access and external web service calls to other applications.</li>
-                                                    <li>"demo-interfaces": The REST exposure layer of the application.</li>
-                                                    <li>"demo-webapp": The final module that assembles all other modules into a single Spring Boot application.</li>
-                                                </ul>
+                                                
+                                                <dl>
+                                                    <dt>demo-api</dt>
+                                                    <dd>Contains all DTOs and interfaces used by the application core.</dd>
 
+                                                    <dt>demo-core</dt>
+                                                    <dd>The heart of the application. This module contains all the business logic.</dd>
+
+                                                    <dt>demo-infrastructure</dt>
+                                                    <dd>Handles database access and external web service calls to other applications.</dd>
+
+                                                    <dt>demo-interfaces</dt>
+                                                    <dd>The REST exposure layer of the application.</dd>
+
+                                                    <dt>demo-webapp</dt>
+                                                    <dd>The final module that assembles all other modules into a single Spring Boot application.</dd>
+                                                </dl>
+                                                
                                                 <cite class="info">
                                                     By implementing the hexagonal architecture layers as distinct 
                                                     <em>Maven modules</em>, we can guarantee strong isolation between
@@ -245,6 +255,76 @@
                                         </dl>
                                     </div>
                                 </div>
+
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto"></inu-code>
+                                <p>
+                                    These DTOs follow standard Java conventions. <em>Lombok</em> is integrated to handle 
+                                    the generation of redundant methods (getters, setters, etc.), reducing boilerplate code.
+                                </p>
+                                <cite class="danger">
+                                    <p>
+                                        All DTOs must define the following methods:
+                                    </p>
+                                    <ul>
+                                        <li>equals</li>
+                                        <li>hashCode</li>
+                                        <li>getters / setters</li>
+                                    </ul>
+                                    Additionally, they must implement the Serializable interface. Since DTOs may be 
+                                    stored in collections or Maps, these methods are essential for their proper behavior.
+                                </cite>
+
+                                <p>
+                                    To guarantee that these essential DTO methods function correctly, unit testing is necessary.
+                                    Many projects neglect testing their DTOs; while this may seem excessive, they are at
+                                    the very heart of the business logic. Tools like <em>Lombok</em> and <em>MapStruct</em> perform invisible
+                                    transformations in the source code. If a DTO or an entity is modified, server responses can change.
+                                    Such changes can cause side effects on the frontend or, even worse, within the business logic itself.
+                                </p>
+                                
+                                <p>
+                                    Tester ses DTO peut être long et fastidieux, du fait qu'il faut s'assurer de la structure du DTO.
+                                    Pour aider à cela, Inugami contient une classe utilitaire nommé UnitTestHelper. Cette classe contient
+                                    beaucoup d'utilitaires pour faciliter les tests unitaires, dont la méthode assertDto.
+                                </p>
+
+                                <p>
+                                    The <em>UnitTestHelper</em> class is included in the inugami_commons_test module:
+                                </p>
+                                <inu-code url="data/inugami/inugami_gav.xml" tag="inugami_commons_test"></inu-code>
+
+                                <cite class="warning">
+                                    Even though it is a standard Java module (<em>io.inugami.commons.test</em>), 
+                                    it should be added to your project using the test scope, unless you are building 
+                                    a custom testing framework.
+                                </cite>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-test"></inu-code>
+
+                                <p>
+                                    We configure the assertDto context to validate the DTO’s integrity. This example covers:
+                                </p>
+                                <ul>
+                                    <li><strong>toBuilder</strong> functionality.</li>
+                                    <li><strong>No-argument and all-argument</strong> constructors.</li>
+                                    <li><strong>Jackson serialization</strong> through a reference file (specified by fullArgConstructorRefPath).</li>
+                                    <li><strong>Getter-based projection</strong> validation against reference data.</li>
+                                    <li><strong>Standard Object methods</strong>: toString, equals, and hashCode.</li>
+                                    <li><strong>Setter</strong> logic verification.</li>
+                                </ul>
+
+                                <cite class="success">
+                                    <p>
+                                        Inugami mandates the construction of a fully populated DTO for testing purposes. 
+                                        Implementing a generator method for this DTO is highly beneficial for:
+                                    </p>
+                                    <ul>
+                                        <li><strong>Core-level</strong> business logic testing.</li>
+                                        <li>Validating <strong>DTO/Entity</strong> mapping.</li>
+                                        <li>Ensuring consistency between <strong>internal DTOs</strong> and the <strong>models</strong> used by REST interfaces.</li>
+                                    </ul>
+                                </cite>
                             </inu-doc-item>
                         </article>
                     </main>
