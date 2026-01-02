@@ -3,6 +3,7 @@ import { InuAnnoncement } from '../../components/annoncement/annoncement.compone
 import { HttpServices } from '../../services/http.service';
 import { Annoncement, AnnoncementExample, AnnoncementItem } from '../../components/annoncement/annoncement.model';
 import { InuCodeComponent } from '../../components/code/code.component';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 @Component({
     templateUrl: './home.view.html',
@@ -18,12 +19,13 @@ export class HomeView implements OnInit {
     // ATTRIBUTES
     //==================================================================================================================
     private readonly httpServices = inject(HttpServices);
-
+    private readonly gaService = inject(GoogleAnalyticsService);
 
     protected annoncements = signal<Annoncement[]>([]);
 
 
     ngOnInit(): void {
+        this.gaService.pageView("/home")
         this.httpServices.getSourceCode('data/annoncements.xml')
             .subscribe({
                 next: res => {

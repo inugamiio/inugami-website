@@ -34,7 +34,8 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "ngx-highlight-js": "21.0.0",
-    "highlight.js":"11.11.1"
+    "highlight.js":"11.11.1",
+    "ngx-google-analytics":"14.0.1"
   },
   "devDependencies": {
     "@angular/build": "^21.0.4",
