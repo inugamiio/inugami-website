@@ -87,13 +87,24 @@
                                                 </dl>
                                                 
                                                 <cite class="info">
-                                                    By implementing the hexagonal architecture layers as distinct 
-                                                    <em>Maven modules</em>, we can guarantee strong isolation between
-                                                    the different parts of the application.
+                                                     <header>
+                                                        <i></i>
+                                                        <div>
+                                                            By implementing the hexagonal architecture layers as distinct 
+                                                            <em>Maven modules</em>, we can guarantee strong isolation between
+                                                            the different parts of the application.
+                                                        </div>
+                                                    </header>
+                                                    
                                                 </cite>
 
                                                 <cite class="info">
-                                                    Each module is also pre-configured as a Java Module <em>(JPMS)</em>.
+                                                    <header>
+                                                        <i></i>
+                                                        <div>
+                                                            Each module is also pre-configured as a Java Module <em>(JPMS)</em>.
+                                                        </div>
+                                                    </header>
                                                 </cite>
 
                                             </div>
@@ -112,8 +123,8 @@
                                     <a href="inugami/framework/getting-started#first-run"><h2 id="first-run">First run</h2></a>
                             </header>
                              <div class="row-reverse">
-                                <figure class="size-20 padding-right-4">
-                                    <img src="images/framework/mvn-clean-install.png" alt="maven run" style="width: 20rem;" />
+                                <figure class="padding-right-4">
+                                    <img src="images/framework/mvn-clean-install.png" alt="maven run" style="width: 100%; max-width: 25rem;" />
                                 </figure>
 
                                 <div class="size-fit">
@@ -174,8 +185,14 @@
                                 intercepts all errors and returns a detailed error response compliant with the <em>RFC 9457</em> standard.
                             </p>
                             <cite class="info">
-                               If you would like to learn more about the RFC 9457 specification, 
-                               please refer to the following documentation: <a href="https://datatracker.ietf.org/doc/rfc9457/" target="_blank">https://datatracker.ietf.org/doc/rfc9457</a>
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        If you would like to learn more about the RFC 9457 specification, 
+                                        please refer to the following documentation: <a href="https://datatracker.ietf.org/doc/rfc9457/" target="_blank">https://datatracker.ietf.org/doc/rfc9457</a>
+                                    </div>
+                                </header>
+                               
                             </cite>
 
                             <figure>
@@ -185,8 +202,13 @@
                             <inu-code url="data/inugami/framework/source_code.xml" tag="error_response"></inu-code>
 
                             <cite class="info">
-                                For further details on how Inugami manages errors, please refer to the relevant section :
-                                <a routerLink="/inugami/framework/exception">Exception management</a>
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        For further details on how Inugami manages errors, please refer to the relevant section :
+                                        <a routerLink="/inugami/framework/exception">Exception management</a>
+                                    </div>
+                                </header>
                             </cite>
                         </article>
 
@@ -216,14 +238,19 @@
                                 </p>
 
                                 <cite class="danger">
-                                    It is mandatory for Java module names to match their base package. 
-                                    Deviating from this standard will cause module import failures.
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            It is mandatory for Java module names to match their base package. 
+                                            Deviating from this standard will cause module import failures.
+                                        </div>
+                                    </header>
                                 </cite>
 
 
                                 <div class="row-reverse">
-                                    <figure class="size-20 padding-right-4">
-                                        <img src="images/framework/module_api_01.png" alt="module-api" />
+                                    <figure class="padding-right-4">
+                                        <img src="images/framework/module_api_01.png" alt="module-api" width="256px" />
                                     </figure>
 
                                     <div class="size-fit">
@@ -264,9 +291,10 @@
                                         the generation of redundant methods (getters, setters, etc.), reducing boilerplate code.
                                     </p>
                                     <cite class="danger">
-                                        <p>
-                                            All DTOs must define the following methods:
-                                        </p>
+                                        <header>
+                                            <i></i>
+                                            <div>All DTOs must define the following methods:</div>
+                                        </header>
                                         <ul>
                                             <li>equals</li>
                                             <li>hashCode</li>
@@ -296,9 +324,14 @@
                                     <inu-code url="data/inugami/inugami_gav.xml" tag="inugami_commons_test"></inu-code>
 
                                     <cite class="warning">
-                                        Even though it is a standard Java module (<em>io.inugami.commons.test</em>), 
-                                        it should be added to your project using the test scope, unless you are building 
-                                        a custom testing framework.
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                Even though it is a standard Java module (<em>io.inugami.commons.test</em>), 
+                                                it should be added to your project using the test scope, unless you are building 
+                                                a custom testing framework.
+                                            </div>
+                                        </header>
                                     </cite>
 
                                     <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-test"></inu-code>
@@ -316,10 +349,13 @@
                                     </ul>
 
                                     <cite class="success">
-                                        <p>
-                                            Inugami mandates the construction of a fully populated DTO for testing purposes. 
-                                            Implementing a generator method for this DTO is highly beneficial for:
-                                        </p>
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                Inugami mandates the construction of a fully populated DTO for testing purposes. 
+                                                Implementing a generator method for this DTO is highly beneficial for:
+                                            </div>
+                                        </header>
                                         <ul>
                                             <li><strong>Core-level</strong> business logic testing.</li>
                                             <li>Validating <strong>DTO/Entity</strong> mapping.</li>
@@ -350,8 +386,13 @@
                                         The <em>UserFilters</em> utility class maps the search logic to the various fields provided in the <strong>UserDTOSearchRequestDTO</strong>.
                                     </p>
                                     <cite class="info">
-                                        At present, Inugami does not provide full support for search filters.
-                                        Future releases will leverage them to automatically generate search predicates.
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                At present, Inugami does not provide full support for search filters.
+                                                Future releases will leverage them to automatically generate search predicates.
+                                            </div>
+                                        </header>
                                     </cite>
                                     
                                     
@@ -386,17 +427,18 @@
 
                                     <cite class="info">
                                         <header>
-                                            <strong>Tips: </strong>
-                                            <p>
-                                                Use assertText to avoid writing dozens of manual assertEquals. It provides a visual diff in your CI/CD logs.
-                                            </p>
+                                            <i></i>
+                                            <div>
+                                                <strong>Tips: </strong> Use assertText to avoid writing dozens of manual
+                                                assertEquals. It provides a visual diff in your CI/CD logs.
+                                            </div>
                                         </header>
                                         <div class="images-flex">
                                             <figure>
-                                                <img src="images/framework/asserttext-01.png" alt="assertText failure current value"  style="height:40rem" />
+                                                <img src="images/framework/asserttext-01.png" alt="assertText failure current value" />
                                             </figure>
                                             <figure>
-                                                <img src="images/framework/asserttext-02.png" alt="assertText failure diff" style="height:40rem"/>
+                                                <img src="images/framework/asserttext-02.png" alt="assertText failure diff"/>
                                             </figure>
                                         </div>
                                         <p>
@@ -458,25 +500,28 @@
                                     <inu-code url="data/inugami/framework/source_code.xml" tag="errorCode"></inu-code>
 
                                     <cite class="danger">
-                                        <p>
-                                            Error codes are required to be unique. To ensure compliance, unit tests must
-                                            be implemented for all error enums within each domain.
-                                        </p>
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                Error codes are required to be unique. To ensure compliance, unit tests must
+                                                be implemented for all error enums within each domain.
+                                            </div>
+                                        </header>
                                         <p>
                                             To perform these tests, Inugami includes methods within the UnitTestHelper
                                             class to simplify their implementation:
                                         </p>
-
-                                        <dl>
-                                            <dt>assertErrorCodeUnique</dt>
-                                            <dd>To verify that no duplicates are present within the enumerations.</dd>
-
-                                            <dt>assertErrorCode</dt>
-                                            <dd>To guarantee the proper definition of the various error codes.</dd>
-                                        </dl>
-
-                                        <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
                                     </cite>
+
+                                    <dl>
+                                        <dt>assertErrorCodeUnique</dt>
+                                        <dd>To verify that no duplicates are present within the enumerations.</dd>
+
+                                        <dt>assertErrorCode</dt>
+                                        <dd>To guarantee the proper definition of the various error codes.</dd>
+                                    </dl>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
                                     
                                     
                                 </inu-doc-item>
