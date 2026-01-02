@@ -344,6 +344,10 @@ cite {
     padding: 2rem;
     margin: 2rem;
     display: block;
+    header{
+        display: flex;
+        margin-bottom: 1rem;
+    }
     &.info{
         border-left: 0.25rem solid var(--info);
     }

@@ -404,7 +404,12 @@
                                     </dl>
 
                                     <cite class="info">
-
+                                        <header>
+                                            <strong>Tips: </strong>
+                                            <p>
+                                                Use assertText to avoid writing dozens of manual assertEquals. It provides a visual diff in your CI/CD logs.
+                                            </p>
+                                        </header>
                                         <div class="images-flex">
                                             <figure>
                                                 <img src="images/framework/asserttext-01.png" alt="assertText failure current value"  style="height:40rem" />
@@ -418,7 +423,6 @@
                                             along with a differential comparison to the reference value. 
                                             Lines containing differences are marked in red for easy identification of the issues.
                                         </p>
-
                                     </cite>
                                 </inu-doc-item>
 
@@ -489,7 +493,7 @@
                                             <dt>assertErrorCode</dt>
                                             <dd>To guarantee the proper definition of the various error codes.</dd>
                                         </dl>
-                                        
+
                                         <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
                                     </cite>
                                     
