@@ -806,4 +806,216 @@ class UserErrorsTest {
 }
 ]]>
     </src>
+
+	<src name="core_module" type="java" title="Core module">
+        <![CDATA[
+open module com.my.project.core {
+    requires com.fasterxml.jackson.annotation;
+    requires io.inugami.framework.commons.spring;
+    requires io.inugami.framework.commons;
+    requires io.inugami.framework.configurations.configuration;
+    requires io.inugami.framework.api;
+    requires io.inugami.framework.interfaces;
+    requires jakarta.annotation;
+    requires jdk.compiler;
+    requires lombok;
+    requires org.jspecify;
+    requires org.slf4j;
+    requires spring.beans;
+    requires spring.boot;
+    requires spring.context;
+    requires spring.tx;
+    //
+    requires com.my.project.api;
+    //
+    exports com.my.project.core.domain.user;
+}
+]]>
+    </src>
+
+
+		<src name="userService" type="java" title="UserService">
+        <![CDATA[
+import com.my.project.api.domain.user.*;
+import com.my.project.api.domain.user.dto.*;
+import io.inugami.framework.interfaces.models.search.SearchResponse;
+import io.inugami.framework.interfaces.tools.ListUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.my.project.api.domain.user.exception.UserErrors.*;
+import static io.inugami.framework.interfaces.exceptions.Asserts.*;
+import static io.inugami.framework.interfaces.exceptions.DefaultErrorCode.fromErrorCode;
+import static io.inugami.framework.interfaces.functionnals.FunctionalUtils.applyIfNotNull;
+
+@RequiredArgsConstructor
+@Service
+public class UserService implements IUserService {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+	//...
+
+    private final IUserDao userDao;
+
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    @Transactional
+    @Override
+    public Collection<UserDTO> create(final Collection<UserDTO> values) {
+        //
+    }
+
+    //==================================================================================================================
+    // READ
+    //==================================================================================================================
+    @Override
+    public SearchResponse<UserDTO> search(final UserDTOSearchRequestDTO searchRequest) {
+        //
+    }
+
+    @Override
+    public UserDTO getById(final String id, final Boolean full) {
+       //
+    }
+
+    @Override
+    public boolean contains(final Collection<String> uids) {
+       //
+    }
+
+    @Override
+    public Collection<UserDTO> getByIds(final Collection<String> uids) {
+        //
+    }
+
+    //==================================================================================================================
+    // UPDATE
+    //==================================================================================================================
+    @Transactional
+    @Override
+    public Collection<UserDTO> update(final Collection<UserDTO> values, final boolean force) {
+        //
+    }
+
+ 
+
+    //==================================================================================================================
+    // DELETE
+    //==================================================================================================================
+    @Transactional
+    @Override
+    public void delete(final Collection<String> ids) {
+       //
+    }
+}
+]]>
+    </src>
+
+
+<src name="userService_create" type="java" title="UserService creation method">
+        <![CDATA[
+//...
+protected static final String FIELD_UID       = "{0}.uid";
+protected static final String FIELD_FIRSTNAME = "{0}.firstName";
+protected static final String FIELD_LASTNAME  = "{0}.lastName";
+protected static final String FIELD_EMAIL     = "{0}.email";
+protected static final int    MAX_SIZE        = 256;
+
+//==================================================================================================================
+// CREATE
+//==================================================================================================================
+@Transactional
+@Override
+public Collection<UserDTO> create(final Collection<UserDTO> values) {
+	assertNotEmpty(CREATE_INVALID_DATA, values);
+
+	assertModel(values,
+		(v, index) -> assertNull(fromErrorCode(CREATE_UID_FORBIDDEN)
+						.addField(FIELD_UID, index)
+						.build(), v.getUid()),
+
+		(v, index) -> {
+			assertNotEmpty(fromErrorCode(CREATE_FIRSTNAME_INVALID)
+						.addField(FIELD_FIRSTNAME, index)
+						.build(), v.getFirstName());
+
+			v.setFirstName(v.getFirstName().trim());
+			assertLowerOrEquals(fromErrorCode(CREATE_FIRSTNAME_INVALID)
+						.addField(FIELD_FIRSTNAME, index)
+						.build(), MAX_SIZE, v.getFirstName().length());
+		},
+
+		(v, index) -> {
+			assertNotEmpty(fromErrorCode(CREATE_LASTNAME_INVALID)
+						.addField(FIELD_LASTNAME, index)
+						.build(), v.getLastName());
+			v.setLastName(v.getLastName().trim());
+			assertLowerOrEquals(fromErrorCode(CREATE_LASTNAME_INVALID)
+						.addField(FIELD_LASTNAME, index)
+						.build(), MAX_SIZE, v.getLastName().length());
+		},
+
+		(v, index) -> {
+			assertNotEmpty(fromErrorCode(CREATE_EMAIL_INVALID)
+						.addField(FIELD_EMAIL, index)
+						.build(), v.getEmail());
+			v.setEmail(v.getEmail().trim());
+			assertRegexMatch(fromErrorCode(CREATE_EMAIL_INVALID)
+						.addField(FIELD_EMAIL, index)
+						.build(), EMAIL_REGEX, v.getEmail());
+		});
+
+	return userDao.create(values);
+}
+]]>
+    </src>
+
+	<src name="userService_create_error_test" type="java" title="Verify error code">
+        <![CDATA[
+@Test
+void create_withEmptyData() {
+	assertThrows(CREATE_INVALID_DATA, () -> userService.create(null));
+	assertThrows(CREATE_INVALID_DATA, () -> userService.create(List.of()));
+}
+]]>
+	</src>
+
+		<src name="userServiceTest" type="java" title="UserServiceTest">
+        <![CDATA[
+@ExtendWith(MockitoExtension.class)
+class UserServiceTest {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    @Mock
+    private IUserDao    userDao;
+    @InjectMocks
+    private UserService userService;
+
+   
+
+    //==================================================================================================================
+    // TOOLS
+    //==================================================================================================================
+    private UserDTO buildUserDTO() {
+        return UserDTO.builder()
+                      .uid(UnitTestData.UID)
+                      .firstName(UnitTestData.FIRSTNAME)
+                      .lastName(UnitTestData.LASTNAME)
+                      .email(UnitTestData.EMAIL)
+                      .audit(AuditDTO.builder()
+                                     .createdBy("system")
+                                     .createdDate(UnitTestData.DATE_TIME.minusDays(5))
+                                     .lastModifiedBy("user-1")
+                                     .lastModifiedDate(UnitTestData.DATE_TIME)
+                                     .version(1L)
+                                     .build())
+                      .build();
+    }
+}
+]]>
+    </src>
 </xml>

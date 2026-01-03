@@ -527,6 +527,129 @@
                                     
                                 </inu-doc-item>
                             </inu-doc-item>
+
+
+                            <inu-doc-item title="Module CORE" [level]="3" href="inugami/framework/getting-started#module-core" id="module-core">
+                                <p>
+                                    <em>The core module</em> handles the implementation of business logic. Within the archetype,
+                                     it is intentionally minimalist, focusing exclusively on executing <strong>CRUD actions</strong> for the user domain.
+                                     Following this structure, the UserService is the sole class residing in this module.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="core_module"></inu-code>
+
+                                <p>
+                                    The core module needs to include the API layer as a dependency in order to utilize the classes defined in that module.
+                                </p>
+                                <cite class="info">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Given the Spring Boot nature of the project, the core module relies on declaring
+                                            the primary Spring modules to function correctly.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>
+                                    By using the Inugami Crud interface, we are mandated to implement the full set of CRUD operations 
+                                    (refer to <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">the API module documentation</a>).
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService"></inu-code>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The full implementation is available via the following link:
+                                            <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/main/java/com/my/project/core/domain/user/UserService.java"
+                                               target="_blank">UserService.java</a>
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>
+                                    The first method to implement is the one responsible for creation. Its primary role
+                                    is to <strong>validate</strong> the data received from the REST interface before invoking 
+                                    the persistence layer for storage. This is a very standard pattern found in many projects.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create"></inu-code>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            We can see that there is no workaround when data fails validation. 
+                                            Rather than relying on custom exceptions, which are unnecessary here, 
+                                            <em>Inugami</em> leverages error codes and the <strong>Asserts</strong> utility to enforce 
+                                            <em>Design by Contract principles</em>.
+                                            ( <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userErrors">refer to error codes documentation</a>)
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>
+                                    The <strong>Asserts</strong> utility class contains many different methods to perform validation, the main ones being:
+                                </p>
+
+                                <dl>
+                                    <dt>assertNotNull</dt>
+                                    <dd>Verifies that an object is not null (related methods: assertNull).</dd>
+
+                                    <dt>assertNotEmpty</dt>
+                                    <dd>Highly useful for collections or strings, verifying that they are not empty.</dd>
+
+                                    <dt>assertTrue</dt>
+                                    <dd>Verifies that a given condition is true (related methods: assertFalse).</dd>
+
+                                    <dt>assertEquals</dt>
+                                    <dd>Verifies the equality of two objects (related methods: assertNotEquals).</dd>
+
+                                    <dt>assertRegexMatch</dt>
+                                    <dd>Allows using Regular Expressions for data validation.(related methods: assertRegexNotMatch, assertRegexFind, assertRegexNotFind).</dd>
+
+                                    <dt>assertHigher</dt>
+                                    <dd>Verifies that a number is greater than a given value (includes related methods: assertLower, assertLowerOrEquals, assertHigherOrEquals).</dd>
+
+                                    <dt>assertAfter</dt>
+                                    <dd>For date validation (the related method assertBefore checks if a date is prior to a reference date).</dd>
+
+                                    <dt>assertFileExists</dt>
+                                    <dd>For file management (related methods: assertFileReadable, assertFileWritable, assertFileExecutable, assertFolderExists).</dd>
+                                </dl>
+
+                                <p>
+                                    When validating a collection, you can use the <em>assertModel</em> method. This method iterates
+                                    through the various elements of the collection to perform validation. Unlike other 
+                                    assertion methods, it collects all encountered errors and groups them together 
+                                    to return a complete list. This approach is essential 
+                                    for scenarios such as form validation.
+                                </p>
+                                <p>
+                                    To identify exactly which element is causing an issue during validation,
+                                    the error code must include the element's index and the offending field. Consequently,
+                                    the fromErrorCode method is used to return a builder, allowing for the creation of 
+                                    a specific new error code with this information. All that remains is to specify 
+                                    the field attribute using a pattern.
+                                </p>
+
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create_error_test"></inu-code>
+                                <p>
+                                    To ensure that the correct error codes are being triggered, you can use the <em>assertThrows</em> method provided by the <strong>UnitTestHelper</strong> utility.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userServiceTest"></inu-code>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The full implementation is available via the following link:
+                                            <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/test/java/com/my/project/core/domain/user/UserServiceTest.java"
+                                               target="_blank">UserService.java</a>
+                                        </div>
+                                    </header>
+                                </cite>
+                            </inu-doc-item>
                         </article>
                     </main>
                 </section>
