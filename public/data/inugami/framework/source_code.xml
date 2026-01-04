@@ -1599,4 +1599,450 @@ public interface LineMatcher {
 }
 ]]>
 </src>
+
+
+<src name="UserRestClient" type="java" title="UserRestClient">
+        <![CDATA[
+@RequestMapping(path = "ws/user")
+public interface UserRestClient {
+    // =================================================================================================================
+    // CREATE
+    // =================================================================================================================
+    @GenericHeaders
+    @UserRestClientDOC.DocCreate
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    Collection<UserAPI> create(@RequestBody final Collection<UserAPI> values);
+
+    // =================================================================================================================
+    // READ
+    // =================================================================================================================
+    @GenericHeaders
+    @UserRestClientDOC.DocSearch
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    SearchResponse<UserAPI> search(final UserDTOSearchRequestAPI searchRequest);
+
+	// ...
+}
+]]>
+</src>
+<src name="UserAPI" type="java" title="UserAPI">
+        <![CDATA[
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserAPI  implements Serializable {
+
+    private static final long serialVersionUID = -1256033411307961652L;
+    @ToString.Include
+    private String uid;
+    @ToString.Include
+    private String firstName;
+    @ToString.Include
+    private String lastName;
+    @ToString.Include
+    @EqualsAndHashCode.Include
+    private String email;
+
+    private AuditDTO audit;
+}
+]]>
+</src>
+
+
+<src name="UserRestClient" type="java" title="UserRestClient">
+        <![CDATA[
+@RequestMapping(path = "ws/user")
+public interface UserRestClient {
+    // =================================================================================================================
+    // CREATE
+    // =================================================================================================================
+    @GenericHeaders
+    @UserRestClientDOC.DocCreate
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    Collection<UserAPI> create(@RequestBody final Collection<UserAPI> values);
+
+    // =================================================================================================================
+    // READ
+    // =================================================================================================================
+    @GenericHeaders
+    @UserRestClientDOC.DocSearch
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    SearchResponse<UserAPI> search(final UserDTOSearchRequestAPI searchRequest);
+
+	// ...
+}
+]]>
+</src>
+<src name="UserRestController" type="java" title="UserRestController">
+        <![CDATA[
+@RequiredArgsConstructor
+@Builder
+@RestController
+public class UserRestController implements UserRestClient {
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    private final IUserService  userService;
+    private final UserAPIMapper userAPIMapper;
+
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    @Override
+    public Collection<UserAPI> create(final Collection<UserAPI> values) {
+        final var request = userAPIMapper.convertToCore(values);
+        return userAPIMapper.convertToRest(userService.create(request));
+    }
+	// ...
+}
+]]>
+</src>
+
+
+<src name="UserRestControllerTest" type="java" title="UserRestControllerTest">
+        <![CDATA[
+
+@ExtendWith(MockitoExtension.class)
+class UserRestControllerTest {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    private static final String BASE_FOLDER  = "interfaces/api/domain/user/userRestClient/";
+    private static final String CREATE       = BASE_FOLDER + "create";
+    private static final String GET_BY_ID    = BASE_FOLDER + "getById";
+    private static final String SEARCH       = BASE_FOLDER + "search";
+    private static final String UPDATE_FORCE = BASE_FOLDER + "updateForce";
+    private static final String UPDATE       = BASE_FOLDER + "update";
+    private static final String DELETE       = BASE_FOLDER + "delete";
+    public static final  String BASE_PATH    = "/user";
+
+    @Mock
+    private IUserService userService;
+
+    @AfterAll
+    public static void generateOpenApi() {
+        MockGenerator.generateOpenApiDocumentation(MockOpenApiContext.builder()
+                                                                     .restClientClass(UserRestClient.class)
+                                                                     .folders(List.of(CREATE, GET_BY_ID, SEARCH, UPDATE_FORCE, UPDATE, DELETE))
+                                                                     .build());
+    }
+
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    @Test
+    void create_nominal() {
+        when(userService.create(any())).thenReturn(List.of(buildUserDTO()));
+        final var request  = List.of(buildUserAPI());
+        final var response = controller().create(request);
+        assertText(response, """
+                [ {
+                  "audit" : {
+                    "createdBy" : "system",
+                    "createdDate" : "2023-05-27T12:00:00",
+                    "lastModifiedBy" : "user-1",
+                    "lastModifiedDate" : "2023-06-01T12:00:00",
+                    "version" : 1
+                  },
+                  "email" : "john.smith@mock.org",
+                  "firstName" : "John",
+                  "lastName" : "Smith",
+                  "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+                } ]
+                """);
+
+        MockGenerator.generate(MockContext.builder()
+                                          .folder(CREATE)
+                                          .post(BASE_PATH)
+                                          .addRequestHeaderTracking()
+                                          .addResponseHeaderTracking()
+                                          .statusSuccess()
+                                          .requestPayload(request)
+                                          .responsePayload(response)
+                                          .build());
+
+        final List<ErrorCode> errors = List.of(CREATE_INVALID_DATA,
+                                               CREATE_UID_FORBIDDEN,
+                                               CREATE_FIRSTNAME_INVALID,
+                                               CREATE_LASTNAME_INVALID,
+                                               CREATE_EMAIL_INVALID);
+        for (ErrorCode error : errors) {
+            MockGenerator.generate(MockContext.builder()
+                                              .folder(CREATE)
+                                              .post(BASE_PATH)
+                                              .addRequestHeaderTracking()
+                                              .addResponseHeaderTracking()
+                                              .statusSuccess()
+                                              .requestPayload(request)
+                                              .errorCode(error)
+                                              .build());
+        }
+    }
+	
+	// ....
+	//==================================================================================================================
+    // TOOLS
+    //==================================================================================================================
+    private UserRestController controller() {
+        return UserRestController.builder()
+                                 .userService(userService)
+                                 .userAPIMapper(new UserRestMapperConfiguration().userAPIMapper())
+                                 .build();
+    }
+
+    private UserDTO buildUserDTO() {
+        return UserDTO.builder()
+                      .uid(UnitTestData.UID)
+                      .firstName(UnitTestData.FIRSTNAME)
+                      .lastName(UnitTestData.LASTNAME)
+                      .email(UnitTestData.EMAIL)
+                      .audit(AuditDTO.builder()
+                                     .createdBy("system")
+                                     .createdDate(UnitTestData.DATE_TIME.minusDays(5))
+                                     .lastModifiedBy("user-1")
+                                     .lastModifiedDate(UnitTestData.DATE_TIME)
+                                     .version(1L)
+                                     .build())
+                      .build();
+    }
+}
+]]>
+</src>
+
+
+<src name="generateOpenApiDocumentation" type="java" title="generateOpenApiDocumentation">
+        <![CDATA[
+@AfterAll
+    public static void generateOpenApi() {
+        MockGenerator.generateOpenApiDocumentation(MockOpenApiContext.builder()
+                                                                     .restClientClass(UserRestClient.class)
+                                                                     .folders(List.of(CREATE, GET_BY_ID, SEARCH, UPDATE_FORCE, UPDATE, DELETE))
+                                                                     .build());
+    }
+
+]]>
+</src>
+
+<src name="context_json" type="json" title="REST mock context as json">
+        <![CDATA[
+{
+  "contentType" : "application/json",
+  "encoding" : "UTF-8",
+  "request" : "[ {\n  \"email\" : \"john.smith@mock.org\",\n  \"firstName\" : \"John\",\n  \"lastName\" : \"Smith\"\n} ]",
+  "requestHeaders" : {
+    "x-device-identifier" : "a3bb49a3-b408-469f-8598-2f51bb7d4d74",
+    "x-correlation-id" : "f525874d-dfe6-4ebf-b646-26996fe2625d"
+  },
+  "response" : "[ {\n  \"audit\" : {\n    \"createdBy\" : \"system\",\n    \"createdDate\" : \"2023-05-27T12:00:00\",\n    \"lastModifiedBy\" : \"user-1\",\n    \"lastModifiedDate\" : \"2023-06-01T12:00:00\",\n    \"version\" : 1\n  },\n  \"email\" : \"john.smith@mock.org\",\n  \"firstName\" : \"John\",\n  \"lastName\" : \"Smith\",\n  \"uid\" : \"bb895294-efe7-484b-b670-14d004eaf461\"\n} ]",
+  "responseHeaders" : {
+    "x-device-identifier" : "a3bb49a3-b408-469f-8598-2f51bb7d4d74",
+    "x-correlation-id" : "f525874d-dfe6-4ebf-b646-26996fe2625d",
+    "x-b3-traceid" : "c6a6c77e-3a39-49f5-9de1-5017ff0edacd"
+  },
+  "status" : 200,
+  "url" : "/user",
+  "verb" : "POST"
+}
+]]>
+</src>
+
+
+
+<src name="generateOpenApiDocumentation" type="java" title="generateOpenApiDocumentation">
+        <![CDATA[
+@AfterAll
+    public static void generateOpenApi() {
+        MockGenerator.generateOpenApiDocumentation(MockOpenApiContext.builder()
+                                                                     .restClientClass(UserRestClient.class)
+                                                                     .folders(List.of(CREATE, GET_BY_ID, SEARCH, UPDATE_FORCE, UPDATE, DELETE))
+                                                                     .build());
+    }
+
+]]>
+</src>
+
+<src name="UserRestClientDOC" type="java" title="UserRestClientDOC">
+        <![CDATA[
+
+@UtilityClass
+public class UserRestClientDOC  {
+     @PotentialErrors({
+          @PotentialError(errorCode="USER-1_0", httpStatus=400, type="functional", domain="USER", errorMessage="invalid data for user creation", errorMessageDetail="invalid data for user creation"),
+          @PotentialError(errorCode="USER-1_1", httpStatus=400, type="functional", domain="USER", errorMessage="uid is forbidden for user creation", errorMessageDetail="uid is forbidden for user creation"),
+          @PotentialError(errorCode="USER-1_2", httpStatus=400, type="functional", domain="USER", errorMessage="invalid firstname", errorMessageDetail="invalid firstname"),
+          @PotentialError(errorCode="USER-1_3", httpStatus=400, type="functional", domain="USER", errorMessage="invalid lastname", errorMessageDetail="invalid lastname"),
+          @PotentialError(errorCode="USER-1_4", httpStatus=400, type="functional", domain="USER", errorMessage="invalid email", errorMessageDetail="invalid email")
+     })
+     @ApiResponses({
+         @ApiResponse(
+         	responseCode="200",
+         	description="Successful operation",
+         	content={
+                      @Content(
+                      	mediaType="application/json",
+                      	examples={                 
+                                       @ExampleObject(
+                                       	name="Nominal",
+                                       	value="""
+                                                [ {
+                                                  "audit" : {
+                                                    "createdBy" : "system",
+                                                    "createdDate" : "2023-05-27T12:00:00",
+                                                    "lastModifiedBy" : "user-1",
+                                                    "lastModifiedDate" : "2023-06-01T12:00:00",
+                                                    "version" : 1
+                                                  },
+                                                  "email" : "john.smith@mock.org",
+                                                  "firstName" : "John",
+                                                  "lastName" : "Smith",
+                                                  "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+                                                } ]
+                                       """
+                                       )
+                      
+                      	}
+                      )
+         		}
+         	)
+         ,
+         @ApiResponse(
+         	responseCode="400",
+         	description="Functional error on executing operation",
+         	content={
+                      @Content(
+                      	mediaType="application/json",
+                      	examples={                 
+                                       @ExampleObject(
+                                       	name="Error codes",
+                                       	value="""
+                                                [
+                                                "USER-1_0  |  functional  |  USER        |  invalid data for user creation",
+                                                "USER-1_1  |  functional  |  USER        |  uid is forbidden for user creation",
+                                                "USER-1_2  |  functional  |  USER        |  invalid firstname",
+                                                "USER-1_3  |  functional  |  USER        |  invalid lastname",
+                                                "USER-1_4  |  functional  |  USER        |  invalid email"
+                                                ]
+                                       """
+                                       ),
+                                       @ExampleObject(
+                                       	name="Response with error code",
+                                       	value="""
+                                                {
+                                                  "details" : {
+                                                    "errorCode" : {
+                                                      "statusCode" : 400,
+                                                      "domain" : "USER",
+                                                      "errorCode" : "USER-1_0",
+                                                      "errorType" : "functional",
+                                                      "message" : "invalid data for user creation",
+                                                      "exploitationError" : false,
+                                                      "rollbackRequire" : false,
+                                                      "retryable" : false
+                                                    }
+                                                  },
+                                                  "errors" : [ ],
+                                                  "parameters" : [ ],
+                                                  "status" : 400
+                                                }
+                                       """
+                                       )
+                      
+                      	}
+                      )
+         		}
+         	)
+     })
+     @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+     @Retention(RetentionPolicy.RUNTIME)
+     @Inherited
+     public @interface DocCreate  {}
+
+	 // ...
+}
+]]>
+</src>
+
+
+<src name="UserRestClient_withDoc" type="java" title="UserRestClient">
+        <![CDATA[
+@RequestMapping(path = "ws/user")
+public interface UserRestClient {
+    
+    @GenericHeaders
+    @UserRestClientDOC.DocCreate
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    Collection<UserAPI> create(@RequestBody final Collection<UserAPI> values);
+	// ...
+}
+]]>
+</src>
+
+<src name="assembly" type="xml" title="Build assembly and OpenApi contracts">
+        <![CDATA[
+	<!--================================================================================================================
+    = BUILD
+    =================================================================================================================-->
+    <build>
+        <plugins>
+            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            + GENERATE OPEN API CONTRACTS
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <plugin>
+                <groupId>io.github.kbuntrock</groupId>
+                <artifactId>openapi-maven-plugin</artifactId>
+                <version>0.0.28</version>
+                <executions>
+                    <execution>
+                        <id>documentation-global</id>
+                        <goals>
+                            <goal>documentation</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <apiConfiguration>
+                                <library>SPRING_MVC</library>
+                                <tagAnnotations>
+                                    <annotation>RequestMapping</annotation>
+                                </tagAnnotations>
+                            </apiConfiguration>
+                            <apis>
+                                <api>
+                                    <locations>
+                                        <location>com.my.project.interfaces.api.domain</location>
+                                    </locations>
+                                </api>
+                            </apis>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            + GENERATE OPEN API CONTRACTS
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mocks</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+]]>
+</src>
 </xml>

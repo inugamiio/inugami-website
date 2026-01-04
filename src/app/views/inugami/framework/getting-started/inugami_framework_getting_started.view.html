@@ -1058,7 +1058,10 @@
 
 
                                     <p>
-                                        Si vous avez la nécessisté de crééer votre propre matcher, il est tout à fait possible en implémentant la classe LineMatcher
+                                        Inugami is designed to be extensible. If your project requires a specific 
+                                        validation logic that isn't covered by the built-in strategies, you can 
+                                        create your own <strong>Custom Matcher</strong> by implementing the 
+                                        <code>LineMatcher</code> interface.
                                     </p>
 
                                     <inu-code url="data/inugami/framework/source_code.xml" tag="LineMatcher"></inu-code>
@@ -1075,6 +1078,234 @@
                                         </header>
                                     </cite>
                                 </inu-doc-item>
+
+                            </inu-doc-item>
+
+                            <inu-doc-item title="Module INTERFACES" [level]="3" href="inugami/framework/getting-started#module-interfaces" id="module-interfaces">
+                                
+
+                                <div class="row-reverse">
+                                    <figure class="size-20 padding-right-4">
+                                        <img src="images/framework/interfaces_modules.png" alt="interfaces modules" />
+                                    </figure>
+
+                                    <div class="size-fit">
+                                        <p>
+                                            The REST interface layer is structured into three specialized sub-modules to ensure maximum decoupling:
+                                        </p>
+                                         <dl>
+                                            <dt>interfaces-api</dt>
+                                            <dd>This is the contract. It hosts the pure Java interfaces and the DTOs. It is lightweight and can be shared with clients.
+                                            </dd>
+
+                                            <dt>interfaces-core</dt>
+                                            <dd>This is the implementation. It contains 
+                                                the Spring Boot <code>@RestController</code> classes that implement the 
+                                                API interfaces.
+                                            </dd>
+
+                                            <dt>interfaces-feign</dt>
+                                            <dd>This is the consumer. It provides 
+                                                pre-configured Feign clients based on the API interfaces, perfect for 
+                                                <strong>Back-for-Front (BFF)</strong> or inter-service communication.
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    
+                                </div>
+
+                                <inu-doc-item title="REST interfaces" [level]="4" href="inugami/framework/getting-started#module-interfaces-api" id="module-interfaces-api">
+                                    <p>
+                                        The <code>UserRestClient</code> interface follows standard Spring Boot 
+                                        development patterns. It defines the various <strong>CRUD</strong> operations 
+                                        (Create, Read, Update, Delete) managed by our service, using familiar 
+                                        annotations to map HTTP verbs to business actions.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClient"></inu-code>
+
+                                    <p>
+                                        Exposing data via REST often requires specific transformations to suit client needs. 
+                                        It is also a core design principle that the <strong>interfaces-api</strong> module 
+                                        has no dependency on the core <strong>api</strong> module.
+                                    </p>
+                                    <p>
+                                        Consequently, DTOs must be duplicated across these layers. To ensure clear 
+                                        differentiation and avoid naming conflicts, REST API DTOs are always 
+                                        suffixed with <strong>API</strong> (e.g., <code>UserAPI</code>).
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserAPI"></inu-code>
+
+                                    <cite class="info">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                Some DTOs centralized in a common library can be used directly, such as the <code>AuditDTO</code> in our example.
+                                            </div>
+                                        </header>
+                                    </cite>
+                                </inu-doc-item>
+                                
+                                <inu-doc-item title="REST controllers" [level]="4" href="inugami/framework/getting-started#module-interfaces-api" id="module-interfaces-core">
+                                    
+                                    <p>
+                                        The REST controllers follow standard Spring conventions. In our example, 
+                                        the <strong>UserRestController</strong> class implements the 
+                                        <strong>UserRestClient</strong> interface.
+                                    </p>
+                                    <p>
+                                        By implementing the interface, the controller is forced to respect the 
+                                        defined contract, ensuring that the server-side implementation always 
+                                        aligns with the API definition shared with clients.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestController"></inu-code>
+                                   
+                                    <p>
+                                        The controller acts as an orchestrator: it utilizes the <strong>IUserService</strong> 
+                                        to execute business logic and the <strong>UserAPIMapper</strong> to handle 
+                                        the translation between the <strong>REST DTOs</strong> (external) and 
+                                        the <strong>CORE DTOs</strong> (internal).
+                                    </p>
+                                    <p>
+                                       The implementation of the mappers follows exactly the same principle as previously mentioned
+                                       (<a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct Mappers</a>).
+                                    </p>
+
+                                    <p>
+                                        Unit testing controllers in Inugami goes beyond simple assertions. These 
+                                        tests are fundamental to the development lifecycle as they:
+                                    </p>
+
+                                    <ul>
+                                        <li>
+                                            <strong>Validate Mappers</strong>: They ensure that the data transformation 
+                                            logic between CORE DTOs and API DTOs is accurate and robust.
+                                        </li>
+                                        <li>
+                                            <strong>Generate Documentation & Mocks</strong>: They automatically produce 
+                                            the OpenAPI specifications and JSON mock files, ensuring your 
+                                            documentation is always a "living" reflection of your code.
+                                        </li>
+                                    </ul>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Test-Driven Reliability</strong>: By tying OpenAPI generation 
+                                                to unit tests, Inugami guarantees that your API documentation is 
+                                                never an afterthought—it's a verified byproduct of your 
+                                                testing suite.
+                                            </div>
+                                        </header>
+                                    </cite>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestControllerTest"></inu-code>
+                                    
+                                    <p>
+                                        Just like in other layers, assertText methods are heavily used here to validate the response structure.
+                                        To generate the documentation, we call the generate method of the MockGenerator class, 
+                                        providing it with a specific context (input payload, response, headers, etc.). 
+                                        This context can also include various error codes for documented failure scenarios.
+                                    </p>
+
+                                    <p>
+                                        While individual tests collect data, the <strong>actual generation</strong> 
+                                        of the OpenAPI specification is performed by the 
+                                        <code>generateOpenApiDocumentation</code> method within the 
+                                        <code>MockGenerator</code> class.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="generateOpenApiDocumentation"></inu-code>
+
+                                    <p>
+                                        The <code>generateOpenApiDocumentation</code> method produces two essential artifacts:
+                                    </p>
+
+                                    <ul>
+                                        <li>
+                                            <strong>Execution Mocks</strong>: These files store the complete state of 
+                                            the exchange (request, response, headers, and status), providing a 
+                                            ready-to-use dataset for frontend developers.
+                                        </li>
+                                        <li>
+                                            <strong>Decoupled OpenAPI Annotations</strong>: Instead of cluttering your 
+                                            Java code, the metadata is generated as external attributes, which are 
+                                            then seamlessly integrated to build the final API contract.
+                                        </li>
+                                    </ul>
+                                    <cite class="warning">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <p>
+                                                    The generation process requires a target destination. You must define the 
+                                                    <code>mock.generator.path</code> property using one of the following methods:
+                                                </p>
+
+                                                <ul>
+                                                    <li>
+                                                        <strong>JVM Argument</strong>: Add <code>-Dmock.generator.path=../demo-interfaces-api/</code> 
+                                                        to your test execution command.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Maven Property</strong>: Define it within your <code>pom.xml</code> <div class=""></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </header>
+                                    </cite>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="context_json"></inu-code>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClientDOC"></inu-code>
+
+                                    <p>
+                                        Once the generation process is complete, the final step is to link the 
+                                        produced metadata back to your interface. This is done by adding the 
+                                        generated annotations:
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClient_withDoc"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                Clean Interfaces through Composed Annotations
+                                            </div>
+                                        </header>
+                                        <p>
+                                            Inugami solves the "Annotation Hell" problem by generating a dedicated 
+                                            documentation utility class. Instead of polluting your REST interfaces 
+                                            with dozens of lines of Swagger metadata, the <code>MockGenerator</code> 
+                                            produces a companion class like <code>UserRestClientDOC</code>.
+                                        </p>
+
+                                        <p>
+                                            By using these <strong>Composed Annotations</strong>, your REST interface 
+                                            remains concise and focused on its primary role: defining the API contract. 
+                                            The heavy lifting of documentation is offloaded to these generated markers.
+                                        </p>
+                                    </cite>
+
+                                    <p>
+                                        Inugami automates the delivery of API assets. The <code>interfaces-api</code> 
+                                        module is configured to produce a specialized <strong>assembly</strong> 
+                                        during the build process.
+                                    </p>
+                                    <ul>
+                                        <li>
+                                            <strong>Mock Bundling</strong>: All JSON mocks generated during unit 
+                                            tests are packaged together, providing a ready-to-use sandbox for 
+                                            consumer teams.
+                                        </li>
+                                        <li>
+                                            <strong>OpenAPI Publishing</strong>: The final OpenAPI contract is 
+                                            extracted and versioned alongside your code, ensuring perfect 
+                                            traceability between the implementation and the documentation.
+                                        </li>
+                                    </ul>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="assembly"></inu-code>
+                                </inu-doc-item>
+
+                                
 
                             </inu-doc-item>
                         </article>
