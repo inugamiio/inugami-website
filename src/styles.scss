@@ -298,6 +298,10 @@ dl {
     width: 100%;
     padding: 20px;
     border-radius: 8px;
+    &.no-flex{
+        flex: none !important;
+        display: block;
+    }
     dt {
         font-weight: bold;
         color: var(--secondary);
@@ -384,6 +388,7 @@ dl {
         flex-direction: row;
     }
 }
+
 
 cite {
     border-left: 0.25rem solid var(--neutral);

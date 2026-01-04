@@ -983,6 +983,35 @@ void create_withEmptyData() {
 ]]>
 	</src>
 
+	<src name="userService_getById" type="java" title="UserService getById">
+        <![CDATA[
+    @Override
+    public UserDTO getById(final String id, final Boolean full) {
+        assertRegexMatch(READ_USER_UID_REQUIRED, UID_REGEX, id);
+
+        final var result = userDao.getById(id, full);
+
+        assertNotNull(READ_USER_NOT_FOUND, result);
+        return result;
+    }
+]]>
+    </src>
+
+		<src name="UID_REGEX" type="text" title="Standard UUID regex">
+        <![CDATA[
+([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+]]>
+  </src>
+
+		<src name="EMAIL_REGEX" type="text" title="Standard HTML5 email regex">
+        <![CDATA[
+^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+]]>
+    </src>
+
+
+
+
 		<src name="userServiceTest" type="java" title="UserServiceTest">
         <![CDATA[
 @ExtendWith(MockitoExtension.class)
@@ -995,7 +1024,35 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-   
+	//==================================================================================================================
+    // READ
+    //==================================================================================================================
+	@Test
+    void getById_nominal() {
+        when(userDao.getById(UnitTestData.UID, true)).thenReturn(buildUserDTO());
+        assertText(userService.getById(UnitTestData.UID, true),
+                   """
+                           {
+                             "audit" : {
+                               "createdBy" : "system",
+                               "createdDate" : "2023-05-27T12:00:00",
+                               "lastModifiedBy" : "user-1",
+                               "lastModifiedDate" : "2023-06-01T12:00:00",
+                               "version" : 1
+                             },
+                             "email" : "john.smith@mock.org",
+                             "firstName" : "John",
+                             "lastName" : "Smith",
+                             "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+                           }
+                           """);
+    }
+
+    @Test
+    void getById_withErrors() {
+        assertThrows(READ_USER_UID_REQUIRED, () -> userService.getById(UnitTestData.OTHER, true));
+        assertThrows(READ_USER_NOT_FOUND, () -> userService.getById(UnitTestData.UID, true));
+    }
 
     //==================================================================================================================
     // TOOLS
@@ -1013,6 +1070,255 @@ class UserServiceTest {
                                      .lastModifiedDate(UnitTestData.DATE_TIME)
                                      .version(1L)
                                      .build())
+                      .build();
+    }
+}
+]]>
+    </src>
+
+	<src name="UnitTestData" type="java" title="UnitTestData">
+        <![CDATA[
+@UtilityClass
+public class UnitTestData {
+
+    // =========================================================================
+    // DATA
+    // =========================================================================
+    public static final long          ID                = 1L;
+    public static final long          ID_OTHER          = 2L;
+    public static final String        OTHER             = "XXX";
+    public static final String[]      LOREM             = DataGeneratorUtils.LOREM;
+    public static final String[]      CATEGORY          = DataGeneratorUtils.CATEGORY;
+    public static final LocalDate     TODAY             = LocalDate.now();
+    public static final LocalDateTime NOW_UTC           = LocalDateTime.now(ZoneOffset.UTC);
+    public static final LocalDateTime DATE_TIME         = LocalDateTime.of(2023, 6, 1, 12, 0, 0);
+    public static final String        UID               = "bb895294-efe7-484b-b670-14d004eaf461";
+    public static final String        UID_CONTRACTED    = "bb895294efe7484bb67014d004eaf461";
+    public static final String        DEVICE_IDENTIFIER = "4547abf0-4bd2-4ff7-ac6c-4eb27cd83c10";
+    public static final String        CORRELATION_ID    = "57f5a259-87e0-41c9-b56e-0332dcd81887";
+    public static final String        CONVERSATION_ID   = "90b79730-7276-402b-9fe2-be1543f484e4";
+    public static final String        TRACE_ID          = "edff7c9651a5";
+    public static final String        EMAIL             = "john.smith@mock.org";
+    public static final String        FIRSTNAME         = "John";
+    public static final String        LASTNAME          = "Smith";
+    public static final String        LASTNAME2         = "Lalonde";
+    public static final String        LOREM_IPSUM       = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+    public static final String        LOREM_IPSUM_2     = "Suspendisse in quam in felis mollis ullamcorper ac in lectus";
+    public static final String        LOREM_IPSUM_3     = "Nulla non leo vitae nunc aliquam mollis";
+    public static final String        LOREM_IPSUM_4     = "Duis fringilla facilisis dui sed luctus.";
+    public static final String        NAVS13_1          = "7564971247732";
+    public static final String        NAVS13_2          = "7560769504407";
+    public static final String        NAVS13_3          = "7566987985080";
+    public static final String        PHONE_NUMBER_1    = "0615031522";
+    public static final String        PHONE_NUMBER_2    = "0225993475";
+    public static final String        PHONE_NUMBER_3    = "0624455065";
+
+    public static final String      STREET_NAME   = "du Château";
+    public static final String      STREET_TYPE   = "Chem.";
+    public static final String      CITY          = "Cheseaux-sur-Lausanne";
+    public static final String      ZIP_CODE      = "1033";
+    public static final String      STREET_NUMBER = "10";
+    public static final String      CANTON        = "VD";
+    public static final String      NATIONALITY   = "CH";
+    // =========================================================================
+    // USERS
+    // =========================================================================
+    public static final UserDataDTO USER_1        = UserDataDTO.builder()
+                                                               .id(1L)
+                                                               .sex(UserDataDTO.Sex.FEMALE)
+                                                               .firstName("Émilie")
+                                                               .lastName(LASTNAME2)
+                                                               .email("emilie.lalonde@mock.org")
+                                                               .phoneNumber(PHONE_NUMBER_1)
+                                                               .old(35)
+                                                               .birthday(LocalDate.of(1988, 4, 12))
+                                                               .socialId(NAVS13_1)
+                                                               .nationality(NATIONALITY)
+                                                               .canton(CANTON)
+                                                               .streetName(STREET_NAME)
+                                                               .streetNumber(STREET_NUMBER)
+                                                               .streetType(STREET_TYPE)
+                                                               .zipCode(ZIP_CODE)
+                                                               .city(CITY)
+                                                               .deviceIdentifier("401f0498-c43f-43ad-a3f4-2888838332ad")
+                                                               .build();
+
+
+    public static final UserDataDTO USER_2 = UserDataDTO.builder()
+                                                        .id(2L)
+                                                        .sex(UserDataDTO.Sex.FEMALE)
+                                                        .firstName("Jessamine")
+                                                        .lastName(LASTNAME2)
+                                                        .email("jessamine.lalonde@mock.org")
+                                                        .phoneNumber(PHONE_NUMBER_2)
+                                                        .old(10)
+                                                        .birthday(LocalDate.of(2013, 6, 21))
+                                                        .socialId(NAVS13_2)
+                                                        .nationality(NATIONALITY)
+                                                        .canton(CANTON)
+                                                        .streetName(STREET_NAME)
+                                                        .streetNumber(STREET_NUMBER)
+                                                        .streetType(STREET_TYPE)
+                                                        .zipCode(ZIP_CODE)
+                                                        .city(CITY)
+                                                        .deviceIdentifier("46bfaa1a-0adf-4660-994a-e56f4b059c8f")
+                                                        .build();
+
+
+    public static final UserDataDTO USER_3 = UserDataDTO.builder()
+                                                        .id(3L)
+                                                        .sex(UserDataDTO.Sex.MALE)
+                                                        .firstName("Théodore")
+                                                        .lastName(LASTNAME2)
+                                                        .email("theodore.lalonde@mock.org")
+                                                        .phoneNumber(PHONE_NUMBER_3)
+                                                        .old(38)
+                                                        .birthday(LocalDate.of(1985, 7, 10))
+                                                        .socialId(NAVS13_3)
+                                                        .nationality(NATIONALITY)
+                                                        .canton(CANTON)
+                                                        .streetName(STREET_NAME)
+                                                        .streetNumber(STREET_NUMBER)
+                                                        .streetType(STREET_TYPE)
+                                                        .zipCode(ZIP_CODE)
+                                                        .city(CITY)
+                                                        .deviceIdentifier("45fa3dd1-714e-4887-b27d-9792b327ad56")
+                                                        .build();
+
+    // =========================================================================
+    // RANDOM
+    // =========================================================================
+    static String getRandomUid() {  }
+
+    static String getRandomWord() { }
+
+    static String getRandomCategory() { }
+
+    static String getRandomLabel() { }
+
+    static String getRandomPhrase() { }
+
+    static String getRandomPhrase(final int nbWordMin, final int nbWordMax, final boolean isLabel) { }
+
+    static String getRandomSection() { }
+
+    static String getRandomSection(final int nbLine, final int nbWordMin, final int nbWordMax) { }
+
+    static double getRandomDouble(final double min, final double max) { }
+
+    static int getRandomBetween(final int start, final int end) { }
+}
+
+]]>
+    </src>
+
+
+
+	<src name="UserDao" type="java" title="UserDao">
+        <![CDATA[
+@RequiredArgsConstructor
+@Builder
+@Service
+public class UserDao implements IUserDao {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    private final UserEntityRepository userEntityRepository;
+    private final UserEntityMapper     userEntityMapper;
+
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    @Transactional
+    @Override
+    public Collection<UserDTO> create(final Collection<UserDTO> values) {
+        final var result = userEntityRepository.saveAll(userEntityMapper.convertToEntity(values));
+        return userEntityMapper.convertToDto(result);
+    }
+
+    //==================================================================================================================
+    // READ
+    //==================================================================================================================
+   	//...
+
+    @Override
+    public UserDTO getById(final String uid, final Boolean full) {
+        return Optional.ofNullable(full).orElse(false).booleanValue()
+               ? userEntityRepository.findById(uid).map(userEntityMapper::convertToDto).orElse(null)
+               : userEntityRepository.findByUidProjected(uid)
+                                     .map(userEntityMapper::convertProjectionToDto)
+                                     .orElse(null);
+    }
+	
+	//...
+}
+]]>
+    </src>
+
+		<src name="UserEntityMapper" type="java" title="UserEntityMapper">
+        <![CDATA[
+@Mapper
+public interface UserEntityMapper {
+
+    UserEntity convertToEntity(final UserDTO value);
+
+    default Collection<UserEntity> convertToEntity(final Collection<UserDTO> values) {
+        return Optional.ofNullable(values)
+                       .orElse(List.of())
+                       .stream().map(this::convertToEntity)
+                       .toList();
+    }
+
+    @Mapping(target = "audit", expression = "java(AuditEntityMapperUtils.convertToAuditDTO(value))")
+    UserDTO convertProjectionToDto(final UserProjection value);
+
+    @Mapping(target = "audit", expression = "java(AuditEntityMapperUtils.convertToAuditDTO(value))")
+    UserDTO convertToDto(final UserEntity value);
+
+    default Collection<UserDTO> convertToDto(final Collection<UserEntity> values) {
+        return Optional.ofNullable(values)
+                       .orElse(List.of())
+                       .stream().map(this::convertToDto)
+                       .toList();
+    }
+}
+]]>
+    </src>
+
+			<src name="DatasourceEntityMapperConfiguration" type="java" title="DatasourceEntityMapperConfiguration">
+        <![CDATA[
+@Configuration
+public class DatasourceEntityMapperConfiguration {
+
+    @Bean
+    public UserEntityMapper userEntityMapper(){
+        return Mappers.getMapper(UserEntityMapper.class);
+    }
+}
+]]>
+</src>
+
+<src name="UserDaoTest" type="java" title="UserDaoTest">
+        <![CDATA[
+@ExtendWith(MockitoExtension.class)
+class UserDaoTest {
+
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    @Mock
+    private UserEntityRepository userEntityRepository;
+
+
+	// ...
+
+    //==================================================================================================================
+    // TOOLS
+    //==================================================================================================================
+    UserDao dao() {
+        return UserDao.builder()
+                      .userEntityRepository(userEntityRepository)
+                      .userEntityMapper(new DatasourceEntityMapperConfiguration().userEntityMapper())
                       .build();
     }
 }

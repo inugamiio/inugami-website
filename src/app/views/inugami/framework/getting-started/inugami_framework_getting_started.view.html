@@ -551,104 +551,288 @@
                                     </header>
                                 </cite>
 
+                                <inu-doc-item title="Standard CRUD" [level]="4" href="inugami/framework/getting-started#module-core" id="module-core-standard-crud">
+                                    <p>
+                                        By using the Inugami Crud interface, we are mandated to implement the full set of CRUD operations 
+                                        (refer to <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">the API module documentation</a>).
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userService"></inu-code>
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                The full implementation is available via the following link:
+                                                <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/main/java/com/my/project/core/domain/user/UserService.java"
+                                                target="_blank">UserService.java</a>
+                                            </div>
+                                        </header>
+                                    </cite>
+
+                                    <p>
+                                        The first method to implement is the one responsible for creation. Its primary role
+                                        is to <strong>validate</strong> the data received from the REST interface before invoking 
+                                        the persistence layer for storage. This is a very standard pattern found in many projects.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                We can see that there is no workaround when data fails validation. 
+                                                Rather than relying on custom exceptions, which are unnecessary here, 
+                                                <em>Inugami</em> leverages error codes and the <strong>Asserts</strong> utility to enforce 
+                                                <em>Design by Contract principles</em>.
+                                                ( <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userErrors">refer to error codes documentation</a>)
+                                            </div>
+                                        </header>
+                                    </cite>
+
+                                    <p>
+                                        The <strong>Asserts</strong> utility class contains many different methods to perform validation, the main ones being:
+                                    </p>
+
+                                    <dl>
+                                        <dt>assertNotNull</dt>
+                                        <dd>Verifies that an object is not null (related methods: assertNull).</dd>
+
+                                        <dt>assertNotEmpty</dt>
+                                        <dd>Highly useful for collections or strings, verifying that they are not empty.</dd>
+
+                                        <dt>assertTrue</dt>
+                                        <dd>Verifies that a given condition is true (related methods: assertFalse).</dd>
+
+                                        <dt>assertEquals</dt>
+                                        <dd>Verifies the equality of two objects (related methods: assertNotEquals).</dd>
+
+                                        <dt>assertRegexMatch</dt>
+                                        <dd>Allows using Regular Expressions for data validation.(related methods: assertRegexNotMatch, assertRegexFind, assertRegexNotFind).</dd>
+
+                                        <dt>assertHigher</dt>
+                                        <dd>Verifies that a number is greater than a given value (includes related methods: assertLower, assertLowerOrEquals, assertHigherOrEquals).</dd>
+
+                                        <dt>assertAfter</dt>
+                                        <dd>For date validation (the related method assertBefore checks if a date is prior to a reference date).</dd>
+
+                                        <dt>assertFileExists</dt>
+                                        <dd>For file management (related methods: assertFileReadable, assertFileWritable, assertFileExecutable, assertFolderExists).</dd>
+                                    </dl>
+
+                                    <p>
+                                        When validating a collection, you can use the <em>assertModel</em> method. This method iterates
+                                        through the various elements of the collection to perform validation. Unlike other 
+                                        assertion methods, it collects all encountered errors and groups them together 
+                                        to return a complete list. This approach is essential 
+                                        for scenarios such as form validation.
+                                    </p>
+                                    <p>
+                                        To identify exactly which element is causing an issue during validation,
+                                        the error code must include the element's index and the offending field. Consequently,
+                                        the fromErrorCode method is used to return a builder, allowing for the creation of 
+                                        a specific new error code with this information. All that remains is to specify 
+                                        the field attribute using a pattern.
+                                    </p>
+
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create_error_test"></inu-code>
+                                    <p>
+                                        To ensure that the correct error codes are being triggered, you can use the <em>assertThrows</em> method provided by the <strong>UnitTestHelper</strong> utility.
+                                    </p>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                The full implementation is available via the following link:
+                                                <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/test/java/com/my/project/core/domain/user/UserServiceTest.java"
+                                                target="_blank">UserService.java</a>
+                                            </div>
+                                        </header>
+                                    </cite>
+                                </inu-doc-item>
+                                
+
+                                
+
+                                <inu-doc-item title="Design by Contract" [level]="4" href="inugami/framework/getting-started#module-core" id="module-core-dbc">
+                                    <p>
+                                        The <em>getById</em> method is the most representative of Design by Contract. 
+                                        
+                                    </p>
+                                    <ul>
+                                        <li>
+                                            At the start of the method, we verify that the ID is a valid UID using a regular expression. 
+                                            If it is not, the server returns the <em>READ_USER_UID_REQUIRED</em> error code (<strong>HTTP 400</strong>).
+                                        </li>
+                                        <li>
+                                            At the end of the method, we verify that the DAO successfully found the user.
+                                            If not, the <em>READ_USER_NOT_FOUND</em> error code is returned (<strong>HTTP 404</strong>).
+                                        </li>
+                                    </ul>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userService_getById"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                The Asserts class includes two very common regular expressions:
+                                            </div>
+                                        </header>
+                                        <dl class="no-flex">
+                                            <dt>UID_REGEX</dt>
+                                            <dd>Used for UID validation, following the pattern :
+                                                <inu-code url="data/inugami/framework/source_code.xml" tag="UID_REGEX"></inu-code>
+                                            </dd>
+
+                                            <dt>EMAIL_REGEX</dt>
+                                            <dd>Used for email address validation. This regex is compatible with HTML5 email validation standards.
+                                                <inu-code url="data/inugami/framework/source_code.xml" tag="EMAIL_REGEX"></inu-code>
+                                            </dd>
+                                        </dl>
+                                    </cite>
+
+                                    <p>
+                                        The advantage of <strong>Hexagonal Architecture</strong> lies in its ability to test each module independently
+                                        and with extreme simplicity. The <strong>Core module</strong> can use mocks to simulate the behavior 
+                                        of the <strong>Infrastructure module</strong>, allowing for the simulation of scenarios that would 
+                                        be very complex to reproduce in reality. Furthermore, as the Core module contains 
+                                        all the business logic, it must include extensive unit testing to ensure proper behavior.
+                                        Relying solely on unit tests using <em>Mockito</em>, instead of Spring Boot integration tests,
+                                        significantly optimizes execution time.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="userServiceTest"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                By using assertText and assertThrows, you reduce your test code volume
+                                            </div>
+                                        </header>
+                                        <p>
+                                            This writing simplicity is what makes it possible to reach and maintain thousands 
+                                            of unit tests without them becoming a burden for the team.
+                                        </p>
+                                    </cite>
+
+
+                                    <p>
+                                        The <em>UnitTestData</em> class is a cornerstone for writing unit tests with a consistent 
+                                        and reliable dataset. By centralizing common constants (UIDs, Emails, Phone Numbers)
+                                        and pre-built DTOs (like USER_1, USER_2), it ensures that all tests across the project
+                                        use the same referential data. This significantly reduces "magic values" and boilerplate
+                                        code when setting up mocks. Additionally, it integrates <em>DataGeneratorUtils</em> to provide
+                                        random but structured data when specific values are not required.
+
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UnitTestData"></inu-code>
+                                    
+                                </inu-doc-item>
+                                
+
+                                
+                            </inu-doc-item>
+
+
+                            <inu-doc-item title="Module INFRASTRUCTURE" [level]="3" href="inugami/framework/getting-started#module-infrastructure" id="module-infrastructure">
                                 <p>
-                                    By using the Inugami Crud interface, we are mandated to implement the full set of CRUD operations 
-                                    (refer to <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">the API module documentation</a>).
+                                    The Infrastructure module is the most standard part of the framework compared to typical
+                                    Spring Boot development. <em>Inugami</em> does not aim to replace <em>Spring</em>; instead,
+                                    its purpose is to standardize and streamline its development.
                                 </p>
-                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService"></inu-code>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserDao"></inu-code>
+
+                                <p>
+                                    The <strong>UserDao</strong> implementation naturally implements the <strong>IUserDao</strong> interface.
+                                    This DAO leverages a <em>Spring Data repository</em> and a <em>MapStruct mapper</em>.
+                                    This approach is the most common in <em>Spring Boot</em> application development.
+                                </p>
+
+                                <p>
+                                    Validation is already handled by the <strong>Core module</strong>. The DAO is only accessed through 
+                                    services exposed by the Core. Consequently, performing checks within the DAO is unnecessary.
+                                    In the event of a failure (such as a constraint violation), errors are allowed to bubble 
+                                    up to the service. It is the service's responsibility to verify these constraints before
+                                    invoking the DAO and to handle error cases as needed.
+                                </p>
                                 <cite class="success">
                                     <header>
                                         <i></i>
                                         <div>
-                                            The full implementation is available via the following link:
-                                            <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/main/java/com/my/project/core/domain/user/UserService.java"
-                                               target="_blank">UserService.java</a>
+                                            As a result, DAO code is considerably simplified, allowing it to focus solely
+                                            on its primary objective: <strong>persistence</strong>.
                                         </div>
                                     </header>
                                 </cite>
 
-                                <p>
-                                    The first method to implement is the one responsible for creation. Its primary role
-                                    is to <strong>validate</strong> the data received from the REST interface before invoking 
-                                    the persistence layer for storage. This is a very standard pattern found in many projects.
-                                </p>
-                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create"></inu-code>
+                                <inu-doc-item title="MapStruct Mappers" [level]="4" href="inugami/framework/getting-started#module-infrastructure-mapper" id="module-infrastructure-mapper">
+                                   <cite class="danger">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Avoid Spring-managed Mappers</strong>:  Defining MapStruct mappers 
+                                                as Spring Beans is a common but detrimental practice. 
+                                            </div>
+                                        </header>
+                                        <p>
+                                            It forces unit tests
+                                            to depend on the Spring Context, significantly slowing down the test suite.
+                                            <em>Inugami</em> advocates for stateless mappers approach. 
+                                            This ensures that data transformation remains pure Java,
+                                            enabling lightning-fast unit tests and eliminating the need for reflection
+                                            or complex dependency injection within the mapping layer.
+                                        </p>
+                                    </cite>
 
-                                <cite class="success">
-                                    <header>
-                                        <i></i>
-                                        <div>
-                                            We can see that there is no workaround when data fails validation. 
-                                            Rather than relying on custom exceptions, which are unnecessary here, 
-                                            <em>Inugami</em> leverages error codes and the <strong>Asserts</strong> utility to enforce 
-                                            <em>Design by Contract principles</em>.
-                                            ( <a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userErrors">refer to error codes documentation</a>)
-                                        </div>
-                                    </header>
-                                </cite>
+                                    <p>
+                                        <strong>Decoupled Mapper Configuration</strong>: To maintain strict separation between
+                                        data transformation and the framework, Inugami recommends a two-step approach:
 
-                                <p>
-                                    The <strong>Asserts</strong> utility class contains many different methods to perform validation, the main ones being:
-                                </p>
-
-                                <dl>
-                                    <dt>assertNotNull</dt>
-                                    <dd>Verifies that an object is not null (related methods: assertNull).</dd>
-
-                                    <dt>assertNotEmpty</dt>
-                                    <dd>Highly useful for collections or strings, verifying that they are not empty.</dd>
-
-                                    <dt>assertTrue</dt>
-                                    <dd>Verifies that a given condition is true (related methods: assertFalse).</dd>
-
-                                    <dt>assertEquals</dt>
-                                    <dd>Verifies the equality of two objects (related methods: assertNotEquals).</dd>
-
-                                    <dt>assertRegexMatch</dt>
-                                    <dd>Allows using Regular Expressions for data validation.(related methods: assertRegexNotMatch, assertRegexFind, assertRegexNotFind).</dd>
-
-                                    <dt>assertHigher</dt>
-                                    <dd>Verifies that a number is greater than a given value (includes related methods: assertLower, assertLowerOrEquals, assertHigherOrEquals).</dd>
-
-                                    <dt>assertAfter</dt>
-                                    <dd>For date validation (the related method assertBefore checks if a date is prior to a reference date).</dd>
-
-                                    <dt>assertFileExists</dt>
-                                    <dd>For file management (related methods: assertFileReadable, assertFileWritable, assertFileExecutable, assertFolderExists).</dd>
-                                </dl>
-
-                                <p>
-                                    When validating a collection, you can use the <em>assertModel</em> method. This method iterates
-                                    through the various elements of the collection to perform validation. Unlike other 
-                                    assertion methods, it collects all encountered errors and groups them together 
-                                    to return a complete list. This approach is essential 
-                                    for scenarios such as form validation.
-                                </p>
-                                <p>
-                                    To identify exactly which element is causing an issue during validation,
-                                    the error code must include the element's index and the offending field. Consequently,
-                                    the fromErrorCode method is used to return a builder, allowing for the creation of 
-                                    a specific new error code with this information. All that remains is to specify 
-                                    the field attribute using a pattern.
-                                </p>
+                                    </p>
 
 
-                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create_error_test"></inu-code>
-                                <p>
-                                    To ensure that the correct error codes are being triggered, you can use the <em>assertThrows</em> method provided by the <strong>UnitTestHelper</strong> utility.
-                                </p>
+                                    <dl>
+                                        <dt>The Mapper Interface:</dt>
+                                        <dd>
+                                            Defined as a pure MapStruct interface. It remains
+                                            framework-agnostic and fully testable in isolation.
+                                        </dd>
 
-                                <inu-code url="data/inugami/framework/source_code.xml" tag="userServiceTest"></inu-code>
-                                <cite class="success">
-                                    <header>
-                                        <i></i>
-                                        <div>
-                                            The full implementation is available via the following link:
-                                            <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/test/java/com/my/project/core/domain/user/UserServiceTest.java"
-                                               target="_blank">UserService.java</a>
-                                        </div>
-                                    </header>
-                                </cite>
+                                        <dt>The Configuration Class:</dt>
+                                        <dd>A dedicated Spring @Configuration class is used to
+                                            expose the mapper as a Bean. This keeps the mapping logic clean while allowing
+                                            the DAO to benefit from standard dependency injection.</dd>
+                                    </dl>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserEntityMapper"></inu-code>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="DatasourceEntityMapperConfiguration"></inu-code>
+
+                                    <p>
+                                        Using the <strong>DatasourceEntityMapperConfiguration</strong> class within unit tests allows for
+                                        the creation of real mapper instances. This dual approach enables you to test the
+                                        DAO with actual mapping logic while simultaneously validating the configuration class itself.
+                                        It ensures that the <strong>"wiring"</strong> of your infrastructure is verified
+                                        long before reaching the integration phase.
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserDaoTest"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Handling Complex Mapping</strong>: When a mapper requires
+                                                complex transformation logic, it should delegate these actions to a
+                                                dedicated Utility Class. This keeps the mapper interface declarative
+                                                and easy to read, while centralizing complex logic in reusable, stateless,
+                                                and easily testable utility methods.
+                                            </div>
+                                        </header>
+                                    </cite>
+                                </inu-doc-item>
+
                             </inu-doc-item>
                         </article>
                     </main>

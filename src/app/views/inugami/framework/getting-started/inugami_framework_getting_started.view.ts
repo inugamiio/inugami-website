@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FrameworkAsideComponent } from '../framework-aside/framework-aside.component';
 import { InuCodeComponent } from '../../../../components/code/code.component';
 import { InuDocItemComponent } from '../../../../components/doc-item/doc-item.component';
