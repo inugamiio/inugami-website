@@ -1298,30 +1298,305 @@ public class DatasourceEntityMapperConfiguration {
 ]]>
 </src>
 
-<src name="UserDaoTest" type="java" title="UserDaoTest">
+<src name="pom_integration_test" type="xml" title="Configure integration-test in your project">
         <![CDATA[
-@ExtendWith(MockitoExtension.class)
-class UserDaoTest {
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!--================================================================================================================
+	= PARENT
+	=================================================================================================================-->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.8</version>
+	</parent>
+	
+	<!--================================================================================================================
+	= PROJECT
+	=================================================================================================================-->
+	<groupId>com.my.project</groupId>
+	<artifactId>demo</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	
+	<!--================================================================================================================
+	= BUILD
+	=================================================================================================================-->
+	<build>
+		<resources>
+			<resource>
+			<directory>src/main/resources</directory>
+			<filtering>false</filtering>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+			</resource>
+			<resource>
+			<directory>src/main/resources-filtered</directory>
+			<filtering>true</filtering>
+			<includes>
+				<include>**/*.*</include>
+			</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+			<directory>src/test/resources</directory>
+			<filtering>false</filtering>
+			</testResource>
+			<testResource>
+			<directory>src/test_it/resources</directory>
+			<filtering>true</filtering>
+			</testResource>
+		</testResources>
 
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${org.codehaus.mojo.version}</version>
+				<executions>
+					<execution>
+					<id>add-integration-test-source</id>
+					<phase>generate-test-sources</phase>
+					<goals>
+						<goal>add-test-source</goal>
+					</goals>
+					<configuration>
+						<sources>
+						<source>src/test_it/java</source>
+						</sources>
+					</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx1024M -Dfile.encoding=${encoding} ${maven.plugins.surfire.argLine}</argLine>
+					<systemPropertyVariables>
+					<mock.generator.path>${mock.generator.path}</mock.generator.path>
+					</systemPropertyVariables>
+					<includes>
+					<include>**/*Test.java</include>
+					</includes>
+					<excludes>
+					<exclude>**/*IT.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+					<phase>integration-test</phase>
+					<goals>
+						<goal>integration-test</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>verify</id>
+					<goals>
+						<goal>verify</goal>
+					</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<argLine>-Dfile.encoding=${encoding} ${failsafe-custom-args} ${maven.plugins.failsafe.argLine}
+							</argLine>
+					<includes>
+					<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<formats>
+					<format>XML</format>
+					<format>HTML</format>
+					</formats>
+					<excludes>
+					<exclude>**/*DTOBuilder*</exclude>
+					<exclude>**/*Entity</exclude>
+					<exclude>**/*EntityBuilder*</exclude>
+					<exclude>**/*Properties</exclude>
+					<exclude>**org/jboss/resteasy/logging/*</exclude>
+					<exclude>**/engine/js/*</exclude>
+					<exclude>**/FeatureInterceptor</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+					<id>prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+					<phase>compile</phase>
+					<configuration>
+						<append>true</append>
+						<propertyName>maven.plugins.surfire.argLine</propertyName>
+					</configuration>
+					</execution>
+					<execution>
+					<id>prepare-agent-integration-test</id>
+					<goals>
+						<goal>prepare-agent-integration</goal>
+					</goals>
+					<phase>compile</phase>
+					<configuration>
+						<append>true</append>
+						<propertyName>maven.plugins.failsafe.argLine</propertyName>
+					</configuration>
+					</execution>
+					<execution>
+					<id>report</id>
+					<goals>
+						<goal>report</goal>
+					</goals>
+					<phase>package</phase>
+					</execution>
+					<execution>
+					<id>report-integration</id>
+					<goals>
+						<goal>report-integration</goal>
+					</goals>
+					<phase>post-integration-test</phase>
+					</execution>
+				</executions>
+				</plugin>
+		</plugins>
+	</build>
+</project>
+]]>
+    </src>
+
+
+			<src name="SpringBootIntegrationRunner" type="java" title="SpringBootIntegrationRunner">
+        <![CDATA[
+@ActiveProfiles("test")
+@SpringBootTest(classes={SpringBootITConfiguration.class})
+public class SpringBootIntegrationRunner {
+
+}
+]]>
+</src>
+			<src name="SpringBootITConfiguration" type="java" title="SpringBootITConfiguration">
+        <![CDATA[
+@ComponentScan({
+        Inugami.BASE_PACKAGE,
+        "com.my.project.infrastructure"
+})
+@EnableAutoConfiguration
+@SpringBootApplication
+public class SpringBootITConfiguration {
+
+}
+
+]]>
+</src>
+			<src name="infra-application-test" type="yaml" title="application-test.yaml">
+        <![CDATA[
+spring:
+  datasource:
+    url: jdbc:h2:mem:inugami_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+jpa:
+  database-platform: org.hibernate.dialect.H2Dialect
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+  properties:
+    hibernate:
+      format_sql: true
+]]>
+</src>
+
+			<src name="UserDaoIT" type="java" title="UserDaoIT">
+        <![CDATA[
+class UserDaoIT extends SpringBootIntegrationRunner {
     //==================================================================================================================
     // ATTRIBUTES
     //==================================================================================================================
-    @Mock
-    private UserEntityRepository userEntityRepository;
+    @Autowired
+    private UserDao userDao;
 
+    //==================================================================================================================
+    // CRUD
+    //==================================================================================================================
+    @Test
+    void crud_nominal() {
+        //--------------------------------------------------------------------------------------------------------------
+        // CREATE
+        //--------------------------------------------------------------------------------------------------------------
+        final var user = userDao.create(List.of(buildUserDTO())).stream().findFirst().orElse(null);
+        assertText(user,
+                   """
+                           {
+                             "audit" : {
+                               "createdBy" : "system",
+                               "createdDate" : "2025-12-28T14:55:06.818512023",
+                               "version" : 1
+                             },
+                             "email" : "john.smith@mock.org",
+                             "firstName" : "John",
+                             "lastName" : "Smith",
+                             "uid" : "8cb82298-0dd4-46ab-a427-587147ebd09a"
+                           }
+                           """,
+                   LocalDateTimeLineMatcher.of(3),
+                   UuidLineMatcher.of(9));
 
-	// ...
+        //--------------------------------------------------------------------------------------------------------------
+        // READ
+        //--------------------------------------------------------------------------------------------------------------
+        assertTextIntegration(userDao.getById(user.getUid(), false),
+                              "infrastructure/database/dao/userDaoIT/getById.nominal.json",
+                              LocalDateTimeLineMatcher.of(3),
+                              UuidLineMatcher.of(9));
+
+		// ...
+    }
 
     //==================================================================================================================
     // TOOLS
     //==================================================================================================================
-    UserDao dao() {
-        return UserDao.builder()
-                      .userEntityRepository(userEntityRepository)
-                      .userEntityMapper(new DatasourceEntityMapperConfiguration().userEntityMapper())
+    private UserDTO buildUserDTO() {
+        return UserDTO.builder()
+                      .firstName(UnitTestData.FIRSTNAME)
+                      .lastName(UnitTestData.LASTNAME)
+                      .email(UnitTestData.EMAIL)
                       .build();
     }
 }
 ]]>
-    </src>
+</src>
+
+<src name="LineMatcher" type="java" title="LineMatcher">
+        <![CDATA[
+public interface LineMatcher {
+    boolean accept(int index, String value, String reference);
+
+    boolean skip(int index, String value, String reference);
+
+    boolean match(int index, String value, String reference);
+
+    default boolean acceptReplace(int index, String value) {
+        return false;
+    }
+
+    default String replace(int index, String value) {
+        return value;
+    }
+}
+]]>
+</src>
 </xml>

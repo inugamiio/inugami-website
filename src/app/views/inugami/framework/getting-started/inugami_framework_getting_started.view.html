@@ -833,6 +833,249 @@
                                     </cite>
                                 </inu-doc-item>
 
+                                <inu-doc-item title="Integration tests" [level]="4" href="inugami/framework/getting-started#module-infrastructure-it" id="module-infrastructure-it">
+                                    <p>
+                                        The infrastructure module must include integration tests. This module handles
+                                        data persistence and calls to external web services. While web service calls can
+                                        be simulated using mocks, database access is more complex.
+                                        Therefore, starting a Spring context with a database (such as <strong>H2</strong>) is necessary 
+                                        to verify the behavior of <strong>JPQL</strong> queries.
+                                    </p>
+
+
+                                    <div class="row-reverse">
+                                        <figure class="size-20 padding-right-4">
+                                            <img src="images/framework/integration_test.png" alt="test structure" />
+                                        </figure>
+
+                                        <div class="size-fit">
+                                            
+                                            <p>
+                                                Physical Separation of Concerns: To maintain a clear distinction between testing layers,
+                                                Inugami enforces a strict directory structure.
+                                            </p>
+                                            <dl>
+                                                <dt>/src/test</dt>
+                                                <dd>
+                                                    Reserved exclusively for unit tests. These must remain framework-independent and execute instantly.
+                                                </dd>
+
+                                                <dt>/src/test_it</dt>
+                                                <dd>Dedicated to integration tests. This folder contains tests requiring a Spring Context,
+                                                    database interactions (H2), or HTTP stubbing.</dd>
+                                            </dl>
+                                            <cite class="info">
+                                                <header>
+                                                    <i></i>
+                                                    <div>
+                                                        This <strong>physical separation</strong> prevents accidental dependencies and allows
+                                                        for <strong>optimized CI/CD pipelines</strong> by isolating long-running integration
+                                                        suites from lightning-fast unit tests.
+                                                    </div>
+                                                </header>
+                                            </cite>
+                                        </div>
+                                    </div>
+
+                                    <p>
+                                        To enable the /src/test_it structure, the project's reactor POM must explicitly
+                                        define additional test source folders and resources.
+                                        This is achieved using the <strong>build-helper-maven-plugin</strong> to register the new directory
+                                        during the compilation phase, and by configuring the <strong>maven-resources-plugin</strong> to ensure
+                                        that integration snapshots (JSON files) are correctly bundled into the test classpath.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="pom_integration_test"></inu-code>
+
+                                    <p>
+                                        The reactor POM configuration reveals several critical architectural choices:
+                                    </p>
+                                    <dl>
+                                        <dt>Resource Management</dt>
+                                        <dd>
+                                            The <strong>src/test/resources</strong> directory is explicitly added to the test resources to ensure configuration availability.
+                                        </dd>
+
+                                        <dt>Classpath Extension</dt>
+                                        <dd>The <strong>build-helper-maven-plugin</strong> is used to register integration tests
+                                            into the test classpath, enabling physical separation of test types</dd>
+
+                                        <dt>Specialized Plugins</dt>
+                                        <dd>
+                                            <ul>
+                                                <li>
+                                                    The <strong>maven-surefire-plugin</strong> is strictly dedicated to executing unit tests for rapid feedback.
+                                                </li>
+                                                <li>
+                                                    The <strong>maven-failsafe-plugin</strong> is leveraged for integration tests. The Maven integration-test lifecycle
+                                                    includes a specific "pre" phase, which is ideal for orchestrating external
+                                                    dependencies such as starting Docker containers or specialized stubs.
+                                                </li>
+                                            </ul>
+                                        </dd>
+                                        <dt>Quality Metrics</dt>
+                                        <dd>
+                                            To ensure rigorous testing standards, the <strong>jacoco-maven-plugin</strong> is
+                                             integrated and configured to aggregate coverage data across both unit and integration suites.
+                                        </dd>
+                                    </dl>
+
+                                    <p>
+                                        Une fois cette configuration apportée sur le projet on peut créé le runner SpringBoot pour nos test unitaires.
+                                        
+                                    </p>
+                                    <cite class="warning">
+                                           <header>
+                                            <i></i>
+                                            <div>
+                                                The Spring Boot container for integration tests must start only once.
+                                            </div>
+                                           </header> 
+                                           <p>
+                                            Since container initialization is a time-consuming process, it is essential 
+                                            to group all integration tests within a shared context to maintain acceptable 
+                                            compilation and build times.
+                                            </p>
+                                            <p>
+                                            By centralizing the configuration, Inugami ensures that the heavy lifting of
+                                            starting the application, the database, and technical stubs occurs only once,
+                                            leveraging Spring's context caching to keep the feedback loop fast and efficient.
+                                           </p>
+                                    </cite>
+
+                                    <p>
+                                        The Spring Boot runner is a standard class in Spring Boot integration testing.
+                                        Its purpose is strictly limited to defining the active profile and the
+                                        associated configuration class.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="SpringBootIntegrationRunner"></inu-code>
+
+                                    <p>
+                                        The <strong>SpringBootITConfiguration</strong> class closely resembles the main application class.
+                                        It is annotated with <strong>@SpringBootApplication</strong> and enables Spring component scanning.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="SpringBootITConfiguration"></inu-code>
+
+                                    <p>
+                                        Integration tests also require their own configuration; therefore, an <strong>application-test.yaml</strong> file must be added to the project.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="infra-application-test"></inu-code>
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                For more complex scenarios, it may be necessary to include a Liquibase configuration to inject specific test data.
+                                            </div>
+                                        </header>
+                                        <p>
+                                            When using Liquibase, it is essential to clearly decouple your scripts:
+                                        </p>
+                                        <dl>
+                                                <dt>Schema creation</dt>
+                                                <dd>First, the scripts to create the database tables, with one dedicated script per table.</dd>
+
+                                                <dt>Data injection</dt>
+                                                <dd>Next, scripts for populating the data, also using one script per table.</dd>
+
+                                                <dt>Constraints</dt>
+                                                <dd>Finally, the scripts for defining constraints (keys, indexes, etc.), with one script per table.</dd>
+                                            </dl>
+                                        <p>
+                                            For more information on integrating Liquibase with Spring Boot, please refer to the documentation : 
+                                            <a href="https://www.baeldung.com/liquibase-refactor-schema-of-java-app">https://www.baeldung.com/liquibase-refactor-schema-of-java-app</a>
+                                            
+                                        </p>
+                                    </cite>
+
+                                    <p>
+                                        It is now time to write our integration test. The <code>UserDaoIT</code> class 
+                                        will inherit from the <code>SpringBootIntegrationRunner</code> class. 
+                                        This inheritance also enables the injection of the DAO using the 
+                                        <strong>@Autowired</strong> annotation.
+                                    </p>
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="UserDaoIT"></inu-code>
+
+                                    <p>
+                                        Integration tests also leverage the <code>assertText</code> method to simplify 
+                                        assertions. When dealing with large datasets, the <strong>assertTextIntegration</strong> 
+                                        method from the <code>UnitTestHelper</code> class can be used to improve 
+                                        test readability.
+                                    </p>
+                                    <p>
+                                        This method functions identically to <code>assertText</code>, but uses an 
+                                        external file as the reference. This file must be placed in the 
+                                        <strong>/src/test_it/resources</strong> directory.
+                                    </p>
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Snapshot Integrity</strong>: Using 
+                                                <strong>assertTextIntegration</strong> allows you to validate complex 
+                                                database results or API responses against external files, keeping 
+                                                your test code clean and focused on logic rather than data 
+                                                boilerplate.
+                                            </div>
+                                        </header>
+                                    </cite>
+                                    <p>
+                                        In integration tests, certain data is generated by subsystems like 
+                                        <strong>Hibernate</strong> or <strong>Spring Data</strong> (e.g., auto-generated 
+                                        IDs or timestamps). 
+                                    </p>
+                                    <p>
+                                        To handle this, <code>assertText</code> and <code>assertTextIntegration</code> 
+                                        can be configured with specific matchers. Instead of a strict equality check, 
+                                        classes like <strong>LocalDateTimeLineMatcher</strong> and <strong>UuidLineMatcher</strong> 
+                                        validate that the generated string follows the expected format.
+                                    </p>
+
+                                    <p>
+                                        Inugami provides several matching strategies to handle non-deterministic or dynamic data:
+                                    </p>
+                                    
+                                    <dl>
+                                        <dt>SkipLineMatcher</dt>
+                                        <dd>The simplest strategy; it completely ignores the line during comparison.</dd>
+
+                                        <dt>UuidLineMatcher</dt>
+                                        <dd>Validates that the content is a correctly formatted UUID.</dd>
+
+                                        <dt>LocalDateLineMatcher</dt>
+                                        <dd>Ensures the value is an ISO-formatted date.</dd>
+
+                                        <dt>LocalDateTimeLineMatcher</dt>
+                                        <dd>Verifies the presence of an ISO-formatted date and time.</dd>
+
+                                        <dt>NumberLineMatcher</dt>
+                                        <dd>Validates that the line contains a numeric value.</dd>
+
+                                        <dt>RegexLineMatcher</dt>
+                                        <dd>Enables validation through a custom regular expression.</dd>
+
+                                        <dt>RegexLineReplacer</dt>
+                                        <dd>Slightly different, this strategy allows for modifying specific information via regex before the comparison occurs.</dd>
+                                    </dl>
+
+
+                                    <p>
+                                        Si vous avez la nécessisté de crééer votre propre matcher, il est tout à fait possible en implémentant la classe LineMatcher
+                                    </p>
+
+                                    <inu-code url="data/inugami/framework/source_code.xml" tag="LineMatcher"></inu-code>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Deterministic Testing</strong>: By using these matchers, you 
+                                                ensure that your integration tests only fail when there is a real 
+                                                regression, effectively ignoring the "noise" created by generated 
+                                                IDs and timestamps.
+                                            </div>
+                                        </header>
+                                    </cite>
+                                </inu-doc-item>
+
                             </inu-doc-item>
                         </article>
                     </main>
