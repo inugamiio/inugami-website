@@ -1359,6 +1359,32 @@
                                     managing properties, security policies, and the overall application lifecycle 
                                     without interfering with the business logic defined in the Core.
                                 </p>
+
+                                
+                                <p>
+                                    The webapp module assembles all of our modules and starts the Spring Boot application.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="Application"></inu-code>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="webapp_module"></inu-code>
+
+                                <p>
+                                    An Inugami application is never "just" a Spring Boot app. It is automatically 
+                                    enhanced by the <code>monitoring.springboot</code> module, which acts as the 
+                                    technical backbone for production-grade stability:
+                                </p>
+
+                                <ul>
+                                    <li>
+                                        <strong>Unified Exception Handling</strong>: The global <code>@ControllerAdvice</code> 
+                                        ensures that every business error is translated into a consistent 
+                                        response format, simplifying frontend integration.
+                                    </li>
+                                    <li>
+                                        <strong>Request Tracing</strong>: An integrated HTTP filter intercepts 
+                                        incoming traffic to provide deep insights and traceability for every call.
+                                    </li>
+                                </ul>
                             </inu-doc-item>
                         </article>
                     </main>

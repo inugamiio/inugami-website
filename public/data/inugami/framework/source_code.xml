@@ -2093,4 +2093,44 @@ public class ProjectFeignConfiguration {
 }
 ]]>
 </src>
+
+
+<src name="Application" type="java" title="Application">
+        <![CDATA[
+@ComponentScan(basePackages={
+        ConfigConfiguration.INUGAMI,
+        "com.my.project"
+})
+@EnableAutoConfiguration
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+
+]]>
+</src>
+
+
+<src name="webapp_module" type="java" title="Webapp module">
+        <![CDATA[
+open module com.my.project.interfaces.feign {
+    requires com.my.project.interfaces.api;
+    requires feign.core;
+    requires feign.jackson;
+    requires feign.okhttp;
+    requires io.inugami.framework.commons.spring;
+    requires io.inugami.framework.interfaces;
+    requires io.inugami.monitoring.springboot;
+    requires spring.beans;
+    requires spring.boot.autoconfigure;
+    requires spring.cloud.openfeign.core;
+    requires spring.context;
+
+    exports com.my.project.interfaces.feign;
+}
+]]>
+</src>
 </xml>
