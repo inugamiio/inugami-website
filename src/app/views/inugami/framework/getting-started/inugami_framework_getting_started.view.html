@@ -1305,7 +1305,46 @@
                                     <inu-code url="data/inugami/framework/source_code.xml" tag="assembly"></inu-code>
                                 </inu-doc-item>
 
-                                
+                                <inu-doc-item title="REST feign" [level]="4" href="inugami/framework/getting-started#module-interfaces-feign" id="module-interfaces-feign">
+                                   <p>
+                                        Consuming your own API shouldn't require boilerplate code. The 
+                                        <strong>interfaces-feign</strong> module is designed for simplicity, 
+                                        containing only a single Spring configuration class to bootstrap your 
+                                        web service clients.
+                                    </p>
+                                    <p>
+                                        This module acts as a bridge, allowing other services to inject 
+                                        your API as a standard Java bean, with all the HTTP complexity 
+                                        abstracted away by Feign and pre-configured by Inugami.
+                                    </p>
+
+                                    <cite class="success">
+                                        <header>
+                                            <i></i>
+                                            <div>
+                                                <strong>Effortless Integration</strong>: Because the 
+                                                <strong>interfaces-feign</strong> module relies on the already 
+                                                defined <strong>interfaces-api</strong>, adding a new client 
+                                                to a BFF or another microservice is as simple as importing 
+                                                the dependency and its configuration class.
+                                            </div>
+                                        </header>
+                                    </cite>
+                                     <inu-code url="data/inugami/framework/source_code.xml" tag="ProjectFeignConfiguration"></inu-code>
+                                     <p>
+                                        The <code>ProjectFeignConfiguration</code> class serves as the control tower 
+                                        for all outbound REST communications. By leveraging a unified 
+                                        <strong>FeignBuilder</strong>, it ensures that every client follows the 
+                                        same technical standards for logging, security, and error handling.
+                                    </p>
+
+                                    <p>
+                                        This setup offers a major advantage: <strong>Type Safety</strong>. 
+                                        The <code>userRestClient</code> bean injected elsewhere in your application 
+                                        is a direct implementation of your <code>UserRestClient</code> interface, 
+                                        making cross-service calls as natural as local method calls.
+                                    </p>
+                                </inu-doc-item>
 
                             </inu-doc-item>
                         </article>

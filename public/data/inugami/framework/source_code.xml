@@ -2045,4 +2045,52 @@ public interface UserRestClient {
     </build>
 ]]>
 </src>
+
+
+<src name="ProjectFeignConfiguration" type="java" title="ProjectFeignConfiguration">
+        <![CDATA[
+	@Configuration
+public class ProjectFeignConfiguration {
+    public static final String PACKAGE = "com.my.project.interfaces.feign";
+
+    @ConditionalOnMissingBean
+    @Bean
+    public PartnerConfigurationDTO demoPartnerConfiguration(@Value("${application.partners.demo.baseUrl: http://localhost:8080}") final String baseUrl,
+                                                               @Value("${application.partners.demo.user: #{null}}") final String user,
+                                                               @Value("${application.partners.demo.password: #{null}}") final String password) {
+        return PartnerConfigurationDTO.builder()
+                                      .baseUrl(baseUrl)
+                                      .user(user)
+                                      .password(password)
+                                      .build();
+    }
+
+    @Bean
+    public FeignBuilder inugamiFeignBuilder(final Client client,
+                                            final Encoder encoder,
+                                            final Decoder decoder,
+                                            final PartnerConfigurationDTO inugamiPartnerConfiguration,
+                                            final List<RequestInterceptor> interceptors,
+                                            final Contract contract) {
+        return FeignBuilder.builder()
+                           .client(client)
+                           .encoder(encoder)
+                           .decoder(decoder)
+                           .partnerConfiguration(inugamiPartnerConfiguration)
+                           .interceptors(interceptors)
+                           .contract(contract)
+                           .build()
+                           .init();
+    }
+
+    //==================================================================================================================
+    // CLIENTS
+    //==================================================================================================================
+    @Bean
+    public UserRestClient userRestClient(final FeignBuilder inugamiFeignBuilder) {
+        return inugamiFeignBuilder.buildClient(UserRestClient.class);
+    }
+}
+]]>
+</src>
 </xml>
