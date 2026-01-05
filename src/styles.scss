@@ -192,6 +192,7 @@ nav.navbar{
     }
     .bd-content {
          width: calc(100vw);
+         overflow: scroll;
     }
 }
 @media (min-width: 768px) {
