@@ -1,12 +1,14 @@
 /**/
 .inu-copy-button{
     display: flex;
-    padding: 0.15rem;
-    align-content: center;
+    align-items: center; /* Aligne l'icône verticalement */
     justify-content: center;
+    padding: 0.15rem 0.4rem; /* Un peu plus de padding latéral pour l'équilibre */
     background-color: var(--neutral-light-extra);
     border: 1px solid var(--neutral);
     border-radius: 0.1rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
 
     &:hover{
         background-color: var(--neutral-light);

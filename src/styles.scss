@@ -500,9 +500,12 @@ cite {
 }
 
 .icon{
-    display: block;
-    height: 32px;
-    width: 32px;
+    display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
 }
 
 .ico-maven{
