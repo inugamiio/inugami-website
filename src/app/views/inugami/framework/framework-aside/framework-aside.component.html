@@ -84,6 +84,13 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Exception management
             </a>
+            @if (exceptionManagement()) {
+                <ul>
+                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="error-code">Error Code</a></li>
+                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="exception-type">Exception type</a></li>
+                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="asserts">Asserts</a></li>
+                </ul>
+            }
         </li>
 
         <li>

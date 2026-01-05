@@ -8,6 +8,218 @@
                 <header>
                      <h1>Inugami Framework : Exception management</h1>
                 </header>
+
+
+                <main>
+                    <p>
+                        Exception management is often a thorny issue in application development. 
+                        Many projects create custom exceptions to implement their error-handling logic.
+                        While this approach is common, it is only relevant when a workaround or recovery
+                        action is actually possible. Unfortunately, in the majority of cases, no such workaround exists.
+                        It is therefore preferable to have an exception-handling mechanism that reflects
+                        the reality of modern applications.
+                    </p>
+                        
+                    <p>
+                        Another drawback of creating specific exceptions is the difficulty—or even 
+                        impossibility—of achieving high granularity. It is impractical to define a unique 
+                        exception for every potential error case. This approach mechanically forces 
+                        developers to reduce the number of exceptions, thereby drowning out the precision
+                        of error detection.
+                    </p>
+
+                    <p>Inugami's error management is distributed across three key modules, each serving a specific purpose in the lifecycle of an exception:</p>
+                    <dl>
+                        <dt>
+                            <div class="flex-row">
+                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiApiInterfacesMaven()"></inu-copy> 
+                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiApiInterfacesJava()"></inu-copy> 
+                                <div>
+                                    inugami_api_interfaces
+                                </div>
+                            </div>
+                        </dt>
+                        <dd>The heart of the system. Defines error concepts and houses the <code>Asserts</code> engine.</dd>
+
+                        <dt>
+                            <div class="flex-row">
+                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiMonitoringSpringbootMaven()"></inu-copy> 
+                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiMonitoringSpringbootJava()"></inu-copy> 
+                                <div>
+                                    inugami_monitoring_springboot
+                                </div>
+                            </div>
+                        </dt>
+                        <dd>The bridge to SpringBoot, ensuring standardized API responses.</dd>
+
+                        <dt>
+                            <div class="flex-row">
+                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiMonitoringMaven()"></inu-copy> 
+                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiMonitoringJava()"></inu-copy> 
+                                <div>
+                                    inugami_monitoring_core
+                                </div>
+                            </div>
+                        </dt>
+                        <dd>The tracking layer, recording every error code within <code>IOLOG</code> for total traceability.</dd>
+                    </dl>
+
+
+
+                    <!--************************************************************************************************
+                    ** ERROR CODE
+                    *************************************************************************************************-->
+                    <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']" fragment="error-code"><h2 id="error-code">Error Code</h2></a>
+                            </header>
+                            <div class="content">
+                                <p>
+                                    Generic error strings often lead to integration bugs and poor maintainability. 
+                                    <strong>To address this issue, Inugami has opted to use enumerations 
+                                    to list all error codes.</strong>
+                                </p>
+                                <p>
+                                    By using Enums, each functional domain defines its own closed set of 
+                                    errors. This approach provides <strong>auto-completion</strong> for 
+                                    developers, prevents duplication, and ensures that every error 
+                                    code is unique and properly categorized.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userErrors"></inu-code>
+
+                                
+                                <p>
+                                    Error codes are more than just identifiers; they are information carriers. 
+                                    The concept of error codes is highly granular, as they can carry 
+                                    a wealth of information. The <code>ErrorCode</code> interface is 
+                                    designed to embody this concept.
+                                </p>
+
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="errorCode"></inu-code>
+
+                                <cite class="danger">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Error codes are required to be unique. To ensure compliance, unit tests must
+                                            be implemented for all error enums within each domain.
+                                        </div>
+                                    </header>
+                                    <p>
+                                        To perform these tests, Inugami includes methods within the UnitTestHelper
+                                        class to simplify their implementation:
+                                    </p>
+                                </cite>
+
+                                <dl>
+                                    <dt>assertErrorCodeUnique</dt>
+                                    <dd>To verify that no duplicates are present within the enumerations.</dd>
+
+                                    <dt>assertErrorCode</dt>
+                                    <dd>To guarantee the proper definition of the various error codes.</dd>
+                                </dl>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
+                            </div>
+                    </article>
+
+                    <!--************************************************************************************************
+                    ** CheckedException / UncheckedException
+                    *************************************************************************************************-->
+                    <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']" fragment="exception-type"><h2 id="exception-type">Exception types</h2></a>
+                            </header>
+                            <div class="content">
+                                <p>
+                                    Inugami offers two specialized exception types to match different architectural needs:
+                                </p>
+                                <dl>
+                                    <dt>CheckedException</dt>
+                                    <dd>
+                                        Inherits from <code>Exception</code>. 
+                                        It forces the developer to handle the error in the method signature. 
+                                        Use this when a <strong>compensating action</strong> or <strong>fallback 
+                                        strategy</strong> is required at the call site.
+                                    </dd>
+
+                                    <dt>UncheckedException</dt>
+                                    <dd>
+                                        <strong>UncheckedException</strong>: Inherits from <code>RuntimeException</code> 
+                                        and is the standard for most Inugami projects. It allows the error to 
+                                        bubble up to the <strong>Global Error Handler</strong>, keeping 
+                                        your business logic clean and focused on the "happy path".
+                                    </dd>
+                                </dl>
+
+                                <p>
+                                    Standard exceptions usually stop the execution flow at the first error. However, for 
+                                    complex operations like form validation, you often need to report all issues 
+                                    simultaneously.
+                                </p>
+                                <p>
+                                    <strong>The <code>UncheckedException</code> class has a child variant called 
+                                    <code>MultiUncheckedException</code>. This type of exception is dedicated to 
+                                    collecting multiple <code>UncheckedException</code> instances. In practice, 
+                                    this class is used for form validation to check a complete data set and 
+                                    return all field errors to the frontend at once.</strong>
+                                </p>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Optimized UX</strong>: By using <code>MultiUncheckedException</code>, 
+                                            the frontend receives a structured list of all invalid fields in a single 
+                                            response. This allows you to highlight every error on the form 
+                                            immediately, significantly improving the user experience compared 
+                                            to "one-at-a-time" error reporting.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>
+                                    Efficiency in development is one of Inugami's core promises. 
+                                    <strong>The <code>Asserts.assertModel</code> method is a prime example of the 
+                                    <code>MultiUncheckedException</code> class in action. When a service needs 
+                                    to validate a complete dataset in a single pass, it is essential to provide 
+                                    the frontend with a report of all erroneous fields.</strong>
+                                </p>
+                                <p>
+                                    By abstracting the error collection logic, <strong>Inugami’s approach to 
+                                    this type of validation makes the code remarkably concise.</strong> Instead 
+                                    of writing repetitive loops, developers can use a functional DSL to 
+                                    define constraints that automatically populate the response.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create"></inu-code>
+                            </div>
+                    </article>
+                    
+
+                    <!--************************************************************************************************
+                    ** CheckedException / UncheckedException
+                    *************************************************************************************************-->
+                    <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']" fragment="asserts"><h2 id="asserts">Asserts</h2></a>
+                            </header>
+
+                            <p>
+                                In many frameworks, validation is an afterthought. In Inugami, it is a 
+                                first-class citizen. <strong>The <code>Asserts</code> class is the 
+                                cornerstone of Inugami, providing the full power behind its logic.</strong>
+                            </p>
+                            <p>
+                                By centralizing all validation logic into a single, fluent API, Inugami 
+                                ensures that business rules are not only enforced but also consistently 
+                                documented and reported to the frontend.
+                            </p>
+                    </article>
+                </main>
+                
+
+
             </section>
         </div>
     </div>
