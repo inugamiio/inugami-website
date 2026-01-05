@@ -182,10 +182,28 @@ nav.navbar {
     }
 }
 
+nav.navbar{
+    width: calc(100vw);
+}
+.page-section{
+    .page-section-content{
+        display: flex;
+        flex-direction: column;
+    }
+    .bd-content {
+         width: calc(100vw);
+    }
+}
 @media (min-width: 768px) {
     .page-section {
         padding-left: 2rem;
         padding-right: 2rem;
+
+        .page-section-content{
+            display: flex;
+            flex-direction: row;
+        }
+        
         .bd-sidebar {
             position: fixed;
             border-right: 0.15rem solid #9e9e9e;
@@ -195,7 +213,7 @@ nav.navbar {
             padding: 0.5rem;
         }
         .bd-content {
-            width: calc(100% - 22rem);
+            width: calc(100vw - 22rem);
             margin-left: 20rem;
             padding: 2rem;
         }

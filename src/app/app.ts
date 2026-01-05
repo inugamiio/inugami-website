@@ -1,7 +1,10 @@
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet, UrlSegment } from '@angular/router';
 import { SiteLink } from './models/website-model';
 import { ViewportScroller } from '@angular/common';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +17,8 @@ import { ViewportScroller } from '@angular/common';
   styleUrl: './app.scss'
 })
 export class App implements OnInit{
+  private readonly gaService = inject(GoogleAnalyticsService);
+  private router = inject(Router);
   private scroller = inject(ViewportScroller);
   protected readonly title = signal('inugami-website');
   protected links: WritableSignal<SiteLink[]> = signal<SiteLink[]>([
@@ -66,7 +71,24 @@ export class App implements OnInit{
     }
   ]);
 
+  constructor() {
+    this.router.events.pipe(
+          takeUntilDestroyed(),
+          filter(event => event instanceof NavigationEnd)).subscribe({
+                next: (event:NavigationEnd) => {
+                    this.pageTracker(event);
+                }
+            });
+  }
   ngOnInit(): void {
    this.scroller.setOffset([0, 80]);
+
+   
   }
+  pageTracker(event: NavigationEnd) {
+    if(event.url){
+      this.gaService.pageView(event.url);
+    }
+  }
+
 }

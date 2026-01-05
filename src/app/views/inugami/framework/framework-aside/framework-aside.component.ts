@@ -17,7 +17,7 @@ export class FrameworkAsideComponent implements OnInit {
     protected exceptionManagement: WritableSignal<boolean> = signal<boolean>(false);
 
     ngOnInit(): void {
-        const currentUrl = this.router.url
+        this.router.url
             .subscribe({
                 next: path => {
                     this.initFilters(path[0].path);
@@ -25,8 +25,8 @@ export class FrameworkAsideComponent implements OnInit {
             });
 
     }
-    initFilters(path: string) {
-        console.log('path', path)
+    initFilters(path: string) :void {
+        
         switch (path) {
             case 'getting-started':
                 this.gettingStarted.set(true);
