@@ -268,4 +268,162 @@ response:
     </src>
 
     
+
+
+    <src name="warning" type="java" title="Warning">
+        <![CDATA[
+public interface Warning {
+    
+Warning getCurrentWaring();
+
+    default String getWarningCode() { }
+
+    default String getMessage() { }
+
+    default String getMessageDetail() { }
+
+    default String getWarningType() { }
+
+    default Warning addDetail(final String detail, final Object... values) { }
+
+    default String getCategory() { }
+
+    default String getDomain() { }
+
+    default String getSubDomain() {}
+
+    default Map<String, Serializable> toMap() { }
+
+    default DefaultWarning.DefaultWarningBuilder toBuilder() { }
+}
+
+]]>
+    </src>
+
+        <src name="warningEnum" type="java" title="Warning enum">
+        <![CDATA[
+public enum UserWarning implements Warning {
+    READ_PARTIAL_INFO(DefaultWarning.builder()
+                                    .warningCode("WARN-USER-2_0")
+                                    .category("providers")
+                                    .message("some providers can't retrieve user's information")
+                                    .domain(UserWarning.Constants.USER)
+    );
+
+    public static final Collection<UserWarning> VALUES = Collections.unmodifiableCollection(Arrays.asList(values()));
+    private final Warning warning;
+
+    private UserWarning(final DefaultWarning.DefaultWarningBuilder builder) {
+        warning = builder.build();
+    }
+
+
+    @Override
+    public Warning getCurrentWaring() {
+        return warning;
+    }
+
+    private static class Constants {
+        public static final String USER = "USER";
+    }
+}
+]]>
+    </src>
+
+
+        <src name="warningEnumTest" type="java" title="Warning enum unit test">
+        <![CDATA[
+class UserWarningTest {
+
+    @Test
+    void assertUserWarning() {
+        UnitTestHelper.assertWaringCodeUnique(UserWarning.values());
+        UnitTestHelper.assertWarningCode("api/domain/user/exception/assertUserWarning.json",
+                                         UserWarning.values());
+    }
+}
+]]>
+    </src>
+
+    <src name="warningUsage" type="java" title="Warning usage">
+        <![CDATA[
+
+@RequiredArgsConstructor
+@Service
+public class UserService implements IUserService {
+    private final IUserDao userDao;
+
+    @Override
+    public UserDTO getById(final String id, final Boolean full) {
+        assertRegexMatch(READ_USER_UID_REQUIRED, UID_REGEX, id);
+
+        final var result = userDao.getById(id, full);
+
+        WarningContext.getInstance().addWarnings(UserWarning.READ_PARTIAL_INFO);
+
+        assertNotNull(READ_USER_NOT_FOUND, result);
+        return result;
+    }
+}
+]]>
+    </src>
+
+
+<src name="iolog_with_warn" type="text" title="IOLOG with warn">
+        <![CDATA[
+    06/01 21:33:46]|IOLOG|INFO |http-nio-8080-exec-5|  | [GET] /ws/user/183ef379-cb0c-4bba-9120-ff54c2077dc7
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	cookie: JSESSIONID=119D604918A7DE3D6A61E5EED81C640B
+	host: localhost:8080
+	postman-token: 375dfd67-e8e0-49f1-ab1c-90a874a9a7ce
+	user-agent: PostmanRuntime/7.29.2
+payload :
+
+response:
+	status:200
+	datetime:1767731626524
+	duration:116
+	contentType:application/json
+	headers:
+		Access-Control-Allow-Credentials: true
+		Access-Control-Allow-Headers: 
+		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+		Access-Control-Allow-Origin: *
+		Access-Control-Expose-Headers: 
+		Content-Type: application/json
+		WARN-USER-2_0: some providers can't retrieve user's information
+		accept: */*
+		accept-encoding: gzip, deflate, br
+		cache-control: no-cache
+		connection: keep-alive
+		cookie: JSESSIONID=119D604918A7DE3D6A61E5EED81C640B
+		host: localhost:8080
+		postman-token: 375dfd67-e8e0-49f1-ab1c-90a874a9a7ce
+		user-agent: PostmanRuntime/7.29.2
+		x-b3-traceid: e5c06711-2901-4325-bfaa-5378fbf283c8
+		x-correlation-id: 3d69a6dc-9cc5-49fd-9812-03beb8dc34c3
+		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
+		x-warnings: WARN-USER-2_0
+	payload:{"audit":{"createdBy":"system","createdDate":"2026-01-06T20:33:30.813397","version":1},"email":"john.smith.mock@inugami.io","firstName":"John","lastName":"Smith","uid":"183ef379-cb0c-4bba-9120-ff54c2077dc7"}
+]]>
+    </src>
+
+
+        <src name="WarningCors" type="java" title="Add warning code to cors">
+        <![CDATA[
+@Component
+public class WarningCors implements CorsHeadersSpi {
+    @Override
+    public List<String> buildCorsHeaders(final RequestData request, final ConfigHandler<String, String> configuration) {
+        return UserWarning.VALUES.stream()
+                                 .map(Warning::getWarningCode)
+                                 .toList();
+    }
+}
+]]>
+    </src>
 </xml>

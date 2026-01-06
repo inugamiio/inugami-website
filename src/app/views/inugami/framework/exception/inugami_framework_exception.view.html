@@ -339,7 +339,7 @@
                                         </div>
                                     </header>
                                 </cite>
-                                
+                            
                             </inu-doc-item>
 
 
@@ -441,8 +441,179 @@
                                 <inu-code url="data/inugami/framework/source_code_exception.xml" tag="ErrorCodeResolverExample"></inu-code>
 
                             </inu-doc-item>
+
+
+                            <inu-doc-item title="MDC" [level]="3" href="inugami/framework/getting-started#mdc" id="mdc">
+                                <p>
+                                    Inugami leverages the <strong>MDC</strong> to inject contextual metadata into 
+                                    every trace. When combined with JSON serialization, your logs shift from simple 
+                                    text files to indexed documents.
+                                </p>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Turn Logs into Data</strong>: Use Kibana to filter by user, 
+                                            version, or correlation ID. Stop searching through logs; start 
+                                            querying your application's behavior in real-time.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                 <dl>
+                                    <dt>errorDomain</dt>
+                                    <dd>Identifies the broad business area affected (e.g., PAYMENT, USER, INVENTORY).</dd>
+
+                                    <dt>errorSubDomain</dt>
+                                    <dd>Provides a narrower focus within the domain (e.g., CREDIT_CARD, PROFILE_PICTURE).</dd>
+
+                                    <dt>errorCategory</dt>
+                                    <dd>Classifies the source of the error (e.g., database, network, external-api).</dd>
+
+                                    <dt>errorCode</dt>
+                                    <dd>The unique functional identifier for the error (e.g., ERR-USER-001).</dd>
+
+                                    <dt>errorType</dt>
+                                    <dd>Distinguishes between functional (business rule) and technical (system failure) issues.</dd>
+
+                                    <dt>errorStatus</dt>
+                                    <dd>The HTTP response status code associated with the error (e.g., 400, 500).</dd>
+
+                                    <dt>errorMessage</dt>
+                                    <dd>A high-level, human-readable summary of what went wrong.</dd>
+
+                                    <dt>errorMessageDetail</dt>
+                                    <dd>Detailed technical context or dynamic data related to the specific incident.</dd>
+
+                                    <dt>errorField</dt>
+                                    <dd>If applicable, the specific form field or object property that failed validation.</dd>
+
+                                    <dt>errorUrl</dt>
+                                    <dd>A direct link to the documentation page explaining how to resolve this specific error.</dd>
+
+                                    <dt>exceptionName</dt>
+                                    <dd>The fully qualified name of the Java exception class (e.g., NullPointerException).</dd>
+
+                                    <dt>errorRetryable</dt>
+                                    <dd>A boolean flag (true/false) indicating if the operation can be safely retried.</dd>
+
+                                    <dt>errorRollback</dt>
+                                    <dd>Indicates if a transaction rollback was triggered as a result of this error.</dd>
+
+                                    <dt>errorExploitationError</dt>
+                                    <dd>A flag for Ops teams to filter critical infrastructure issues that require immediate intervention.</dd>
+
+                                    <dt>warning</dt>
+                                    <dd>Contains warning code when a request succeeds but with business nuances.</dd>
+                                </dl>
+
+                            </inu-doc-item>
                     </article>
 
+
+                    <!--************************************************************************************************
+                    ** Warning
+                    *************************************************************************************************-->
+                    <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']" fragment="warning"><h2 id="warning">Warning</h2></a>
+                            </header>
+
+                            <p>
+                                Application lifecycles are full of nuances. Responses aren't always strictly a success
+                                or an error. In many cases, it is necessary to qualify a successful response with
+                                warning codes.
+                            </p>
+                            <p>
+                                These scenarios are common in several use cases:
+                            </p>
+                             <dl>
+                                <dt>Business Status</dt>
+                                <dd>Searching for a product that is currently out of stock.</dd>
+
+                                <dt>Partial Results</dt>
+                                <dd>When querying multiple data sources, informing the user that some sources failed to return information.</dd>
+
+
+                                <dt>Lifecycle Management</dt>
+                                <dd>For mobile applications, prompting users to migrate to a newer version.</dd>
+                            </dl>
+
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        This logic can be tailored to meet any specific business requirement of the application.
+                                    </div>
+                                </header>
+                                <p>
+                                    While managing these nuances adds a layer of business logic, it provides 
+                                    <strong>absolute transparency</strong> in user communication, effectively 
+                                    eliminating the frustration caused by unexplained behaviors or silent failures.
+                                </p>
+                            </cite>
+
+                            
+                            <p>
+                                To address this challenge, Inugami introduces the concept of Warning Codes.
+                                They function exactly the same way as Error Codes.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="warning"></inu-code>
+
+
+                            <p>
+                                To ensure consistency and ease of use, <em>Inugami</em> encourages the use of <em>Enums</em>
+                                to define <strong>Warning codes</strong>. This approach allows you to centralize all business nuances 
+                                within a typed repository, making your code more maintainable and self-documenting.
+                            </p>
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="warningEnum"></inu-code>
+
+                            <p>
+                                Just like Error Codes, Warning Codes must be unit-tested. This ensures that the
+                                contract between the back-end and external consumers (Front-end, Monitoring tools)
+                                remains unbreakable over time.
+                            </p>
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="warningEnumTest"></inu-code>
+
+
+                            <p>
+                                The use of Warning codes is deeply tied to business logic, making their implementation more
+                                straightforward than Error codes. Inugami provides a <code>WarningContext</code> class
+                                that allows you to inject warnings into the current execution context at any point.
+                                When the server sends the final response, these codes are automatically transmitted
+                                through the HTTP headers.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="warningUsage"></inu-code>
+
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="iolog_with_warn"></inu-code>
+
+
+                            <p>
+                                While Inugami handles core observability headers automatically, business-specific nuances 
+                                (like Warning codes) require explicit authorization to be readable by browsers.
+                            </p>
+                            <p >
+                                    <strong>The CorsHeadersSpi Interface</strong>: 
+                                    Implement this SPI to whitelist your custom headers. Inugami will then include them 
+                                    in the <code>Access-Control-Expose-Headers</code> response, making them accessible 
+                                    to your JavaScript clients.
+                            </p>
+                            <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Spring & Java Friendly</strong>: 
+                                            Whether you prefer standard Java SPI or Spring's <code>@Component</code> 
+                                            scanning, Inugami seamlessly integrates your custom CORS configurations 
+                                            into the filter chain.
+                                        </div>
+                                    </header>
+                            </cite>
+                            
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="WarningCors"></inu-code>
+                    </article>
 
                 </main>
             </section>
