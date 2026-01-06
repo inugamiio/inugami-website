@@ -19,45 +19,36 @@ import { InuCopyComponent } from '../../../../components/copy/copy.component';
 export class InugamiFrameworkExceptionView{
     
 
-     protected inugamiApiInterfacesMaven: WritableSignal<string> = signal<string>(
+     protected mavenDependencies: WritableSignal<string> = signal<string>(
         `
-        <dependency>
-            <groupId>io.inugami.framework</groupId>
-            <artifactId>inugami_api_interfaces</artifactId>
-        </dependency>
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_core</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_test</artifactId>
+    <scope>test</scope>
+</dependency>
         `
     );
-    protected inugamiApiInterfacesJava: WritableSignal<string> = signal<string>(
+    protected javaDependencies: WritableSignal<string> = signal<string>(
         `
-         requires io.inugami.framework.interfaces;
+requires io.inugami.framework.interfaces;
+requires io.inugami.monitoring.core;
+requires io.inugami.monitoring.springboot;
         `
     );
 
-    protected inugamiMonitoringSpringbootMaven: WritableSignal<string> = signal<string>(
-        `
-        <dependency>
-            <groupId>io.inugami.monitoring</groupId>
-            <artifactId>inugami_monitoring_springboot</artifactId>
-        </dependency>
-        `
-    );
-    protected inugamiMonitoringSpringbootJava: WritableSignal<string> = signal<string>(
-        `
-         requires io.inugami.monitoring.springboot;
-        `
-    );
-
-    protected inugamiMonitoringMaven: WritableSignal<string> = signal<string>(
-        `
-        <dependency>
-            <groupId>io.inugami.monitoring</groupId>
-            <artifactId>inugami_monitoring_core</artifactId>
-        </dependency>
-        `
-    );
-    protected inugamiMonitoringJava: WritableSignal<string> = signal<string>(
-        `
-         requires io.inugami.monitoring.core;
-        `
-    );
 }

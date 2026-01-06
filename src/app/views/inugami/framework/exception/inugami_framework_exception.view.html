@@ -30,41 +30,25 @@
 
                     <p>Inugami's error management is distributed across three key modules, each serving a specific purpose in the lifecycle of an exception:</p>
                     <dl>
-                        <dt>
-                            <div class="flex-row">
-                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiApiInterfacesMaven()"></inu-copy> 
-                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiApiInterfacesJava()"></inu-copy> 
-                                <div>
-                                    inugami_api_interfaces
-                                </div>
-                            </div>
-                        </dt>
+                        <dt>inugami_api_interfaces</dt>
                         <dd>The heart of the system. Defines error concepts and houses the <code>Asserts</code> engine.</dd>
 
-                        <dt>
-                            <div class="flex-row">
-                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiMonitoringSpringbootMaven()"></inu-copy> 
-                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiMonitoringSpringbootJava()"></inu-copy> 
-                                <div>
-                                    inugami_monitoring_springboot
-                                </div>
-                            </div>
-                        </dt>
+                        <dt>inugami_monitoring_springboot</dt>
                         <dd>The bridge to SpringBoot, ensuring standardized API responses.</dd>
 
-                        <dt>
-                            <div class="flex-row">
-                                <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="inugamiMonitoringMaven()"></inu-copy> 
-                                <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="inugamiMonitoringJava()"></inu-copy> 
-                                <div>
-                                    inugami_monitoring_core
-                                </div>
-                            </div>
-                        </dt>
+                        <dt>inugami_monitoring_core</dt>
                         <dd>The tracking layer, recording every error code within <code>IOLOG</code> for total traceability.</dd>
+
+                        <dt>inugami_commons_test</dt>
+                        <dd>To assist us with unit testing</dd>
                     </dl>
 
+                    
+                     <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="mavenDependencies()"></inu-copy>
+                     <inu-code url="data/inugami/framework/source_code_exception.xml" tag="dependencies_maven"></inu-code>
 
+                     <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="javaDependencies()"></inu-copy> 
+                     <inu-code url="data/inugami/framework/source_code_exception.xml" tag="dependencies_java"></inu-code>
 
                     <!--************************************************************************************************
                     ** ERROR CODE
