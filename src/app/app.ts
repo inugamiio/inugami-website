@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet, UrlSegment } from '@angular/router';
 import { SiteLink } from './models/website-model';
 import { ViewportScroller } from '@angular/common';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { GaActionEnum, GoogleAnalyticsService } from 'ngx-google-analytics';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -87,6 +87,7 @@ export class App implements OnInit{
   }
   pageTracker(event: NavigationEnd) {
     if(event.url){
+      this.gaService.event(GaActionEnum.VIEW_ITEM, event.url);
       this.gaService.pageView(event.url);
     }
   }

@@ -25,7 +25,7 @@
 ]]>
     </src>
 
-        <src name="dependencies_java" type="xml" title="Maven dependencies">
+        <src name="dependencies_java" type="xml" title="Java dependencies">
         <![CDATA[
 requires io.inugami.framework.interfaces;
 requires io.inugami.monitoring.core;
