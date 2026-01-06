@@ -412,7 +412,6 @@ response:
 ]]>
     </src>
 
-
         <src name="WarningCors" type="java" title="Add warning code to cors">
         <![CDATA[
 @Component
