@@ -25,7 +25,7 @@
 ]]>
     </src>
 
-        <src name="dependencies_java" type="xml" title="Java dependencies">
+        <src name="dependencies_java" type="java" title="Java dependencies">
         <![CDATA[
 requires io.inugami.framework.interfaces;
 requires io.inugami.monitoring.core;
@@ -34,4 +34,119 @@ requires io.inugami.monitoring.springboot;
     </src>
 
 
+        <src name="asserts_usage" type="java" title="Asserts method usage">
+        <![CDATA[
+Asserts.assertEquals("1", "2");
+Asserts.assertEquals("sorry for this error", "1", "2");
+Asserts.assertEquals( () -> "some error", "1", "2");
+Asserts.assertEquals( CREATE_TYPE_INVALID, "1", "2");
+]]>
+    </src>
+
+            <src name="server_response" type="json" title="Server response">
+        <![CDATA[
+{
+    "cause": {
+        "errors": [],
+        "message": "user not found",
+        "parameters": []
+    },
+    "detail": "",
+    "details": {
+        "errorCode": "USER-2_1",
+        "fields": [],
+        "errorType": "functional",
+        "rollback": false,
+        "retryable": false,
+        "errorDomain": "USER"
+    },
+    "errors": [],
+    "message": "user not found",
+    "parameters": [],
+    "reasonPhrase": "Not Found",
+    "status": 404
+}
+]]>
+    </src>
+
+    <src name="server_response_reduce_config" type="yaml" title="application.yaml">
+        <![CDATA[
+application:
+    # name for your project wiki page
+    name: "demo"
+    # wiki error page pattern
+    wiki: "https://inugami.io/mock/error/{0}/{1}"
+inugami:
+    monitoring:
+        exception:
+            show:
+                detail:
+                    enabled: false
+]]>
+    </src>
+
+    <src name="server_response_reduce" type="json" title="Server response reduced">
+        <![CDATA[
+{
+    "details": {
+        "errorCode": "USER-2_0",
+        "fields": []
+    },
+    "errors": [],
+    "parameters": [],
+    "reasonPhrase": "Bad Request",
+    "status": 400
+}
+]]>
+    </src>
+
+    <src name="xllog_error_code" type="text" title="Error code who produce XLLOG">
+        <![CDATA[
+public enum UserErrors implements ErrorCode {
+    //==================================================================================================================
+    // 0 - GENERIC
+    //==================================================================================================================
+    // ...
+
+    DATABASE_DOWN(newBuilder().errorCode("USER-0_1")
+                              .message("database is down")
+                              .domain(Constants.USER)
+                              .exploitationError(true)
+                              .statusCode(500)
+                              .errorTypeTechnical()),
+
+    //...
+}
+]]>
+    </src>
+
+    <src name="xllog_logback" type="text" title="Logback configuration to show errorUrl value">
+        <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{dd/MM HH:mm:ss}]|%logger|%-5level|%thread| %X{errorUrl} | %msg\n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC_STDOUT"/>
+    </root>
+
+</configuration>
+]]>
+    </src>
+
+        <src name="xllog" type="text" title="XLLOG">
+        <![CDATA[
+[06/01 14:04:41]|XLLOG|ERROR|http-nio-8080-exec-2| https://inugami.io/mock/error/demo/USER-0_1 | database is down
+]]>
+    </src>
 </xml>

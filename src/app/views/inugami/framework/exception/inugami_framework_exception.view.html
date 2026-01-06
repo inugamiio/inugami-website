@@ -199,11 +199,137 @@
                                 ensures that business rules are not only enforced but also consistently 
                                 documented and reported to the frontend.
                             </p>
+
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create"></inu-code>
+                                <p>
+                                    The <strong>Asserts</strong> utility class contains many different methods to perform validation, the main ones being:
+                                </p>
+
+                                <dl>
+                                    <dt>assertNotNull</dt>
+                                    <dd>Verifies that an object is not null (related methods: assertNull).</dd>
+
+                                    <dt>assertNotEmpty</dt>
+                                    <dd>Highly useful for collections or strings, verifying that they are not empty.</dd>
+
+                                    <dt>assertTrue</dt>
+                                    <dd>Verifies that a given condition is true (related methods: assertFalse).</dd>
+
+                                    <dt>assertEquals</dt>
+                                    <dd>Verifies the equality of two objects (related methods: assertNotEquals).</dd>
+
+                                    <dt>assertRegexMatch</dt>
+                                    <dd>Allows using Regular Expressions for data validation.(related methods: assertRegexNotMatch, assertRegexFind, assertRegexNotFind).</dd>
+
+                                    <dt>assertHigher</dt>
+                                    <dd>Verifies that a number is greater than a given value (includes related methods: assertLower, assertLowerOrEquals, assertHigherOrEquals).</dd>
+
+                                    <dt>assertAfter</dt>
+                                    <dd>For date validation (the related method assertBefore checks if a date is prior to a reference date).</dd>
+
+                                    <dt>assertFileExists</dt>
+                                    <dd>For file management (related methods: assertFileReadable, assertFileWritable, assertFileExecutable, assertFolderExists).</dd>
+                                </dl>
+
+                                <p>
+                                    When validating a collection, you can use the <em>assertModel</em> method. This method iterates
+                                    through the various elements of the collection to perform validation. Unlike other 
+                                    assertion methods, it collects all encountered errors and groups them together 
+                                    to return a complete list. This approach is essential 
+                                    for scenarios such as form validation.
+                                </p>
+                                <p>
+                                    To identify exactly which element is causing an issue during validation,
+                                    the error code must include the element's index and the offending field. Consequently,
+                                    the fromErrorCode method is used to return a builder, allowing for the creation of 
+                                    a specific new error code with this information. All that remains is to specify 
+                                    the field attribute using a pattern.
+                                </p>
+
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="userService_create_error_test"></inu-code>
+                                <p>
+                                    To ensure that the correct error codes are being triggered, you can use the <em>assertThrows</em> method provided by the <strong>UnitTestHelper</strong> utility.
+                                </p>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The full implementation is available via the following link:
+                                            <a href="https://github.com/inugamiio/inugami-demo/blob/main/demo-core/src/test/java/com/my/project/core/domain/user/UserServiceTest.java"
+                                            target="_blank">UserService.java</a>
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>Each validation method in the <code>Asserts</code> class can be used in different ways:</p>
+                                <ul>
+                                    <li><strong>Generic</strong>: Without a specific error code, defaults to <code>"err-undefine"</code>.</li>
+                                    <li><strong>With Message</strong>: Provides a custom message while keeping the generic code.</li>
+                                    <li><strong>With Supplier</strong>: Uses a <code>Supplier&lt;String&gt;</code> for dynamic message generation.</li>
+                                    <li><em>Best Practice</em>: Always define a specific <strong>ErrorCode</strong> to ensure full traceability.</li>
+                                </ul>
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="asserts_usage"></inu-code>
                     </article>
+
+
+                    <!--************************************************************************************************
+                    ** CheckedException / UncheckedException
+                    *************************************************************************************************-->
+                    <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']" fragment="repsonse"><h2 id="repsonse">Server response</h2></a>
+                            </header>
+
+                            <p>
+                                <strong>When an error occurs, the server must provide a clear response containing 
+                                details about the encountered issue.</strong> This is where the 
+                                <code>inugami_monitoring_springboot</code> module comes in, ensuring every 
+                                exception is transformed into a standardized, readable format.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response"></inu-code>
+
+                            <p> By default, Inugami operates in a <strong>detailed mode</strong> for error message generation.
+                                This provides developers with maximum context during the debugging phase in local or development environments.
+                            </p>
+
+                            
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response_reduce_config"></inu-code>
+
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response_reduce"></inu-code>
+
+                            <inu-doc-item title="Exploitation error" [level]="3" href="inugami/framework/getting-started#exploitation-error" id="exploitation-error">
+                                <p>
+                                    As defined in the <strong>Error Codes</strong> section, specific exceptions 
+                                    can be flagged as operational errors using the <code>exploitationError</code> field.
+                                    
+                                </p>
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="xllog_error_code"></inu-code>
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="xllog_logback"></inu-code>
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="xllog"></inu-code>
+
+                                
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Inugami also populates the <em>errorUrl</em> MDC field to provide operators
+                                            with a direct link to the relevant documentation page when an issue occurs.
+                                        </div>
+                                    </header>
+                                </cite>
+                                
+                            </inu-doc-item>
+                    </article>
+
+
                 </main>
-                
-
-
             </section>
         </div>
     </div>
