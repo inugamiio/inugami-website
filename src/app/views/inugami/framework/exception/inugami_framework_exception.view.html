@@ -276,7 +276,7 @@
 
 
                     <!--************************************************************************************************
-                    ** CheckedException / UncheckedException
+                    ** Server response
                     *************************************************************************************************-->
                     <article>
                             <header>
@@ -290,13 +290,28 @@
                                 exception is transformed into a standardized, readable format.
                             </p>
 
+                            <p>
+                                This responsibility is handled by the <code>inugami_monitoring_springboot</code> module. 
+                                Specifically, <strong>error handling is managed by the <code>DefaultExceptionHandlerService</code> class</strong>, 
+                                which centralizes all exception translation logic.
+                            </p>
+
                             <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response"></inu-code>
 
+                            
+                            <p>
+                                Inugami also generates logs known as IOLOGs to trace all incoming and outgoing server traffic.
+                                When an error occurs, these logs capture all relevant diagnostic information. Furthermore,
+                                they allow for <em>Service Quality</em> (QoS) measurement by comparing successful <em>IOLOG</em>
+                                entries against those in error.
+                            </p>                            
+                            <inu-code url="data/inugami/framework/source_code_exception.xml" tag="iologError"></inu-code>
+                            
+                            
                             <p> By default, Inugami operates in a <strong>detailed mode</strong> for error message generation.
                                 This provides developers with maximum context during the debugging phase in local or development environments.
                             </p>
 
-                            
                             <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response_reduce_config"></inu-code>
 
                             <inu-code url="data/inugami/framework/source_code_exception.xml" tag="server_response_reduce"></inu-code>
@@ -325,6 +340,106 @@
                                     </header>
                                 </cite>
                                 
+                            </inu-doc-item>
+
+
+                            <inu-doc-item title="Dynamic Metadata Enrichment" [level]="3" href="inugami/framework/getting-started#dynamic-meta" id="dynamic-meta">
+
+                                <p>
+                                    In certain scenarios, you may need to inject additional context into an error response dynamically.
+                                    Inugami facilitates this through the ProblemAdditionalFieldBuilder SPI interface.
+                                    Following the standard Inugami extensibility pattern, these builders can be declared in two ways:
+                                </p>
+                                
+                                <dl>
+                                    <dt>Standard Java SPI</dt>
+                                    <dd>By registering the implementation in <code>module-info.java</code>.</dd>
+
+                                    <dt>Spring Bean</dt>
+                                    <dd>By simply defining the class as a <code>@Component</code> within the Spring context.</dd>
+                                </dl>
+
+                                <p>
+                                    <strong>How it works:</strong> 
+                                </p>
+                                <p>
+                                    The <code>DefaultExceptionHandlerService</code> automatically detects all available
+                                    implementations and executes them during the exception processing phase.
+                                    This allows you to append custom fields to the final <code>ProblemDTO</code> without modifying
+                                    the core handling logic.
+                                </p>
+
+
+                                <inu-doc-item title="Defined as Java SPI" [level]="4" href="inugami/framework/getting-started#dynamic-meta-spi" id="dynamic-meta-spi">
+                                    <inu-code url="data/inugami/framework/source_code_exception.xml" tag="MyProblemAdditionalFieldSPIModule"></inu-code>
+                                    <inu-code url="data/inugami/framework/source_code_exception.xml" tag="MyProblemAdditionalFieldSPI"></inu-code>
+                                </inu-doc-item>
+                                
+
+                                <inu-doc-item title="Defined as Spring bean" [level]="4" href="inugami/framework/getting-started#dynamic-meta-spring" id="dynamic-meta-spring">
+                                    <inu-code url="data/inugami/framework/source_code_exception.xml" tag="MyProblemAdditionalField"></inu-code>
+                                </inu-doc-item>
+                                
+                                <p>
+                                    Providing this implementation flexibility ensures there are <strong>no limits</strong> 
+                                    to the logic applied during error detection.
+                                </p>
+                                
+                                <p>
+                                    Since you have full access to the execution context (via SPI or Spring beans), 
+                                    you can trigger advanced side effects. For example:
+                                </p>
+                                
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Proactive Remediation</strong>: 
+                                        </div>
+                                    </header>
+                                    <div>
+                                        In the event of a critical infrastructure 
+                                        failure, you can implement a builder that <strong>automatically creates a Jira ticket</strong> 
+                                        or sends an urgent Slack alert, ensuring the resolution procedure starts the 
+                                        moment the error is detected.
+                                    </div>
+                                </cite>
+
+
+                            </inu-doc-item>
+
+                            <inu-doc-item title="Dynamic Error code resolver" [level]="3" href="inugami/framework/getting-started#dynamic-resolver" id="dynamic-resolver">
+                                <p>
+                                    Frameworks like JPA, Hibernate, or Spring Security have their own exception hierarchies
+                                    and do not natively support Inugami error codes.
+                                </p>
+                                <p>
+                                    To maintain a consistent error contract across your entire application, Inugami provides
+                                    the <code>ErrorCodeResolver</code> SPI. This allows you to "catch and translate" external exceptions
+                                    into fully documented Inugami error codes.
+                                </p>
+
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="ErrorCodeResolver"></inu-code>
+
+                                <dl>
+                                    <dt>Consistency</dt>
+                                    <dd>Your API always returns a ProblemDTO with a structured errorCode, regardless of the error's origin.</dd>
+
+                                    <dt>Flexibility</dt>
+                                    <dd>Define your resolvers as standard Java SPI (via module-info.java) for core modules,
+                                        or as Spring beans (@Component) for application-level logic.
+                                    </dd>
+
+                                    <dt>Fallthrough Logic</dt>
+                                    <dd>By returning null when an exception is not recognized,
+                                        you allow the next resolver in the chain to process it,
+                                        ensuring a clean Chain of Responsibility.
+                                    </dd>
+                                </dl>
+
+                                <inu-code url="data/inugami/framework/source_code_exception.xml" tag="ErrorCodeResolverExample"></inu-code>
+
                             </inu-doc-item>
                     </article>
 

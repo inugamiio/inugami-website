@@ -148,5 +148,124 @@ public enum UserErrors implements ErrorCode {
         <![CDATA[
 [06/01 14:04:41]|XLLOG|ERROR|http-nio-8080-exec-2| https://inugami.io/mock/error/demo/USER-0_1 | database is down
 ]]>
+
+<src name="MyProblemAdditionalFieldSPIModule" type="java" title="module-info.java">
+        <![CDATA[
+open module com.my.project.webapp {
+    requires io.inugami.framework.interfaces;
+
+    provides io.inugami.framework.interfaces.exceptions.ProblemAdditionalFieldBuilder with com.my.project.webapp.error.MyProblemAdditionalFieldSPI;
+}
+]]>
     </src>
+    <src name="MyProblemAdditionalFieldSPI" type="java" title="Custom ProblemAdditionalFieldBuilder defined as SPI">
+        <![CDATA[
+@Slf4j
+public class MyProblemAdditionalFieldSPI implements ProblemAdditionalFieldBuilder {
+    @Override
+    public void addInformation(final ProblemDTO.ProblemDTOBuilder problemBuilder,
+                               final Throwable exception,
+                               final ErrorCode errorCode) {
+        log.info("error code : {}", errorCode);
+    }
+}
+]]>
+    </src>
+
+    <src name="MyProblemAdditionalField" type="java" title="Custom ProblemAdditionalFieldBuilder defined as Spring bean">
+        <![CDATA[
+@Slf4j
+@Component
+public class MyProblemAdditionalField implements ProblemAdditionalFieldBuilder {
+    @Override
+    public void addInformation(final ProblemDTO.ProblemDTOBuilder problemBuilder,
+                               final Throwable exception,
+                               final ErrorCode errorCode) {
+        
+        // RequestContext allows to retrieve all incoming HTTP request information
+        final  RequestData currentRequest = RequestContext.getInstance();
+        log.info("uri : {}", currentRequest.getUri());
+    }
+}
+]]>
+    </src>
+
+
+    <src name="ErrorCodeResolver" type="java" title="ErrorCodeResolver">
+        <![CDATA[
+@FunctionalInterface
+public interface ErrorCodeResolver {
+
+    ErrorCode resolve(final Throwable exception);
+}
+]]>
+    </src>
+
+    <src name="ErrorCodeResolverExample" type="java" title="Custom ErrorCodeResolver example">
+        <![CDATA[
+@Component
+public class JpaErrorCodeResolver implements ErrorCodeResolver {
+
+    @Override
+    public ErrorCode resolve(Throwable throwable) {
+        if (throwable instanceof DataIntegrityViolationException) {
+            return DefaultErrorCode.builder()
+                                   .errorCode("DB-UNIQUE-01")
+                                   .message("This record already exists in the database")
+                                   .errorTypeFunctional()
+                                   .statusCode(409) // Conflict
+                                   .build();
+        }
+        return null;
+    }
+}
+]]>
+    </src>
+
+    <src name="iologError" type="text" title="IOLOG error">
+        <![CDATA[
+[06/01 17:59:44]|IOLOG|ERROR|http-nio-8080-exec-1| USER-2_0 | [GET] /ws/user/bad_uid
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	cookie: JSESSIONID=D582A6AE93A0E391A55ED7B906A63D63
+	host: localhost:8080
+	postman-token: fe68ffa5-c0ca-4c71-ac3d-8fb3adf5da07
+	user-agent: PostmanRuntime/7.29.2
+payload :
+
+response:
+	status:400
+	datetime:1767718784654
+	duration:187
+	contentType:application/json
+	headers:
+		Access-Control-Allow-Credentials: true
+		Access-Control-Allow-Headers: 
+		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+		Access-Control-Allow-Origin: *
+		Access-Control-Expose-Headers: 
+		Connection: close
+		Content-Type: application/json
+		Date: Tue, 06 Jan 2026 16:59:44 GMT
+		Set-Cookie: JSESSIONID=589B9777ABF4B3DAC4D2A0DD16B05C4B; Path=/; HttpOnly
+		Transfer-Encoding: chunked
+		accept: */*
+		accept-encoding: gzip, deflate, br
+		cache-control: no-cache
+		connection: close
+		cookie: JSESSIONID=D582A6AE93A0E391A55ED7B906A63D63
+		host: localhost:8080
+		postman-token: fe68ffa5-c0ca-4c71-ac3d-8fb3adf5da07
+		user-agent: PostmanRuntime/7.29.2
+		x-b3-traceid: e3b7739e-d1f3-41cc-ba75-922c5db921dc
+		x-correlation-id: 3d69a6dc-9cc5-49fd-9812-03beb8dc34c3
+		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
+	payload:{"cause":{"errors":[],"message":"uid required to find user","parameters":[]},"detail":"","details":{"errorCode":"USER-2_0","fields":[],"application":"demo","version":"@project.version@","errorType":"functional","rollback":false,"retryable":false,"errorDomain":"USER","service":"UserRestController_getById"},"errors":[],"message":"uid required to find user","parameters":[],"reasonPhrase":"Bad Request","status":400}
+]]>
+    </src>
+
+    
 </xml>
