@@ -1,0 +1,27 @@
+<xml>
+    <src name="dependencies_maven" type="xml" title="Maven dependencies">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_core</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_test</artifactId>
+    <scope>test</scope>
+</dependency>
+]]>
+    </src>
+
+</xml>

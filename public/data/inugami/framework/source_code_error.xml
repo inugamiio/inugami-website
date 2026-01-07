@@ -1,30 +1,5 @@
 <xml>
- 
-    <src name="dependencies_maven" type="xml" title="Maven dependencies">
-        <![CDATA[
-<dependency>
-    <groupId>io.inugami.framework</groupId>
-    <artifactId>inugami_api_interfaces</artifactId>
-</dependency>
 
-
-<dependency>
-    <groupId>io.inugami.monitoring</groupId>
-    <artifactId>inugami_monitoring_springboot</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>io.inugami.monitoring</groupId>
-    <artifactId>inugami_monitoring_core</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>io.inugami.framework.commons</groupId>
-    <artifactId>inugami_commons_test</artifactId>
-    <scope>test</scope>
-</dependency>
-]]>
-    </src>
 
         <src name="dependencies_java" type="java" title="Java dependencies">
         <![CDATA[
@@ -182,7 +157,7 @@ public class MyProblemAdditionalField implements ProblemAdditionalFieldBuilder {
     public void addInformation(final ProblemDTO.ProblemDTOBuilder problemBuilder,
                                final Throwable exception,
                                final ErrorCode errorCode) {
-        
+
         // RequestContext allows to retrieve all incoming HTTP request information
         final  RequestData currentRequest = RequestContext.getInstance();
         log.info("uri : {}", currentRequest.getUri());
@@ -244,10 +219,10 @@ response:
 	contentType:application/json
 	headers:
 		Access-Control-Allow-Credentials: true
-		Access-Control-Allow-Headers: 
+		Access-Control-Allow-Headers:
 		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
 		Access-Control-Allow-Origin: *
-		Access-Control-Expose-Headers: 
+		Access-Control-Expose-Headers:
 		Connection: close
 		Content-Type: application/json
 		Date: Tue, 06 Jan 2026 16:59:44 GMT
@@ -268,13 +243,13 @@ response:
 ]]>
     </src>
 
-    
+
 
 
     <src name="warning" type="java" title="Warning">
         <![CDATA[
 public interface Warning {
-    
+
 Warning getCurrentWaring();
 
     default String getWarningCode() { }
@@ -391,10 +366,10 @@ response:
 	contentType:application/json
 	headers:
 		Access-Control-Allow-Credentials: true
-		Access-Control-Allow-Headers: 
+		Access-Control-Allow-Headers:
 		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
 		Access-Control-Allow-Origin: *
-		Access-Control-Expose-Headers: 
+		Access-Control-Expose-Headers:
 		Content-Type: application/json
 		WARN-USER-2_0: some providers can't retrieve user's information
 		accept: */*
