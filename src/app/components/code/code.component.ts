@@ -3,6 +3,7 @@ import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { SourceCode } from "./code.model";
 import { HighlightJsDirective } from 'ngx-highlight-js';
+import { CacheServices } from "../../services/cache.service";
 
 @Component({
     selector: 'inu-code',
@@ -23,6 +24,8 @@ export class InuCodeComponent implements OnInit {
     title = input<string | undefined | null>(undefined);
 
     private readonly http = inject(HttpClient);
+    private readonly cache = inject(CacheServices);
+    
     sourceCode = signal<string>('');
     _title = signal<string>('');
     _type = signal<string>('');
@@ -107,20 +110,17 @@ export class InuCodeComponent implements OnInit {
     //==================================================================================================================
     loadFormCache(url: string): SourceCode[] | undefined {
         const cacheKey = `inu-code_${url}`;
-        const json = sessionStorage.getItem(cacheKey);
-        const result = json ? JSON.parse(json) : undefined;
-        return result ? result as SourceCode[] : undefined;
+        const result : SourceCode[] | undefined  = this.cache.get(cacheKey);
+        return result;
     }
 
     setToCache(url: string, value: any): void {
         const cacheKey = `inu-code_${url}`;
-        sessionStorage.setItem(cacheKey, JSON.stringify(value));
+        if(value){
+            this.cache.set(cacheKey,value);
+        }
     }
 
-    private handleError(url: string, error: any): Observable<never> {
-        console.error(`fail to fetch source: ${url}`, error);
-        return throwError(() => error);
-    }
 
     private cleanContent(value: string): string {
         let result: string[] = [];

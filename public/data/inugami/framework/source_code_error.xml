@@ -7,6 +7,7 @@
     <artifactId>inugami_api_interfaces</artifactId>
 </dependency>
 
+
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_monitoring_springboot</artifactId>
