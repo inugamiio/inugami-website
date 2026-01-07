@@ -24,4 +24,12 @@
 ]]>
     </src>
 
+        <src name="dependencies_java" type="java" title="Java dependencies">
+        <![CDATA[
+requires io.inugami.framework.interfaces;
+requires io.inugami.monitoring.core;
+requires io.inugami.monitoring.springboot;
+]]>
+    </src>
+
 </xml>

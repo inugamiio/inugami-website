@@ -1,16 +1,7 @@
 <xml>
 
 
-        <src name="dependencies_java" type="java" title="Java dependencies">
-        <![CDATA[
-requires io.inugami.framework.interfaces;
-requires io.inugami.monitoring.core;
-requires io.inugami.monitoring.springboot;
-]]>
-    </src>
-
-
-        <src name="asserts_usage" type="java" title="Asserts method usage">
+    <src name="asserts_usage" type="java" title="Asserts method usage">
         <![CDATA[
 Asserts.assertEquals("1", "2");
 Asserts.assertEquals("sorry for this error", "1", "2");
@@ -19,7 +10,7 @@ Asserts.assertEquals( CREATE_TYPE_INVALID, "1", "2");
 ]]>
     </src>
 
-            <src name="server_response" type="json" title="Server response">
+    <src name="server_response" type="json" title="Server response">
         <![CDATA[
 {
     "cause": {
@@ -120,12 +111,13 @@ public enum UserErrors implements ErrorCode {
 ]]>
     </src>
 
-        <src name="xllog" type="text" title="XLLOG">
+    <src name="xllog" type="text" title="XLLOG">
         <![CDATA[
 [06/01 14:04:41]|XLLOG|ERROR|http-nio-8080-exec-2| https://inugami.io/mock/error/demo/USER-0_1 | database is down
 ]]>
+    </src>
 
-<src name="MyProblemAdditionalFieldSPIModule" type="java" title="module-info.java">
+    <src name="MyProblemAdditionalFieldSPIModule" type="java" title="module-info.java">
         <![CDATA[
 open module com.my.project.webapp {
     requires io.inugami.framework.interfaces;
@@ -134,7 +126,8 @@ open module com.my.project.webapp {
 }
 ]]>
     </src>
-    <src name="MyProblemAdditionalFieldSPI" type="java" title="Custom ProblemAdditionalFieldBuilder defined as SPI">
+    <src name="MyProblemAdditionalFieldSPI" type="java"
+        title="Custom ProblemAdditionalFieldBuilder defined as SPI">
         <![CDATA[
 @Slf4j
 public class MyProblemAdditionalFieldSPI implements ProblemAdditionalFieldBuilder {
@@ -148,7 +141,8 @@ public class MyProblemAdditionalFieldSPI implements ProblemAdditionalFieldBuilde
 ]]>
     </src>
 
-    <src name="MyProblemAdditionalField" type="java" title="Custom ProblemAdditionalFieldBuilder defined as Spring bean">
+    <src name="MyProblemAdditionalField" type="java"
+        title="Custom ProblemAdditionalFieldBuilder defined as Spring bean">
         <![CDATA[
 @Slf4j
 @Component
@@ -244,8 +238,6 @@ response:
     </src>
 
 
-
-
     <src name="warning" type="java" title="Warning">
         <![CDATA[
 public interface Warning {
@@ -276,7 +268,7 @@ Warning getCurrentWaring();
 ]]>
     </src>
 
-        <src name="warningEnum" type="java" title="Warning enum">
+    <src name="warningEnum" type="java" title="Warning enum">
         <![CDATA[
 public enum UserWarning implements Warning {
     READ_PARTIAL_INFO(DefaultWarning.builder()
@@ -307,7 +299,7 @@ public enum UserWarning implements Warning {
     </src>
 
 
-        <src name="warningEnumTest" type="java" title="Warning enum unit test">
+    <src name="warningEnumTest" type="java" title="Warning enum unit test">
         <![CDATA[
 class UserWarningTest {
 
@@ -345,7 +337,7 @@ public class UserService implements IUserService {
     </src>
 
 
-<src name="iolog_with_warn" type="text" title="IOLOG with warn">
+    <src name="iolog_with_warn" type="text" title="IOLOG with warn">
         <![CDATA[
     06/01 21:33:46]|IOLOG|INFO |http-nio-8080-exec-5|  | [GET] /ws/user/183ef379-cb0c-4bba-9120-ff54c2077dc7
 headers :
@@ -388,7 +380,7 @@ response:
 ]]>
     </src>
 
-        <src name="WarningCors" type="java" title="Add warning code to cors">
+    <src name="WarningCors" type="java" title="Add warning code to cors">
         <![CDATA[
 @Component
 public class WarningCors implements CorsHeadersSpi {
