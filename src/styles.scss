@@ -274,7 +274,12 @@ table {
 }
 figure {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    caption{
+        display: flex;
+        justify-content: center;
+    }
 }
 
 @media print {

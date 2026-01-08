@@ -15,6 +15,7 @@ export class FrameworkAsideComponent implements OnInit {
 
     protected gettingStarted: WritableSignal<boolean> = signal<boolean>(false);
     protected exceptionManagement: WritableSignal<boolean> = signal<boolean>(false);
+    protected monitoring: WritableSignal<boolean> = signal<boolean>(false);
 
     ngOnInit(): void {
         this.router.url
@@ -25,14 +26,17 @@ export class FrameworkAsideComponent implements OnInit {
             });
 
     }
-    initFilters(path: string) :void {
-        
+    initFilters(path: string): void {
+
         switch (path) {
             case 'getting-started':
                 this.gettingStarted.set(true);
                 break;
             case 'exception':
                 this.exceptionManagement.set(true);
+                break;
+            case 'monitoring':
+                this.monitoring.set(true);
                 break;
         }
     }

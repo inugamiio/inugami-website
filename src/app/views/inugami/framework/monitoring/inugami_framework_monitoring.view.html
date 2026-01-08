@@ -13,10 +13,103 @@
                 # MAIN
                 #################################################################################################-->
                 <main>
-                        <figure>
-                            <img src="images/framework/kibana_low.png" alt="Kinaba dashboard" width="90%" />
-                        </figure>
-                        <a href="images/framework/kibana.png" target="_blank">Show full size</a>
+                        <p>
+                           Monitoring is a vital aspect of an application that should be considered from the design phase.
+                           Retrofitting it into an existing system is a significant challenge.
+                        </p>
+                        <p>
+                            Achieving granular application monitoring is even more complex. 
+                            Without experience in environments with extreme operational supervision requirements, 
+                            <em>it is illusory to believe</em> a solution can be implemented <em>without a dedicated framework</em> to facilitate it.
+                        </p>
+                        <p>
+                            Inugami was born from the need to supervise a massive mobile application, utilizing multiple
+                            datacenters for its backend, all while maintaining an operational quality that allowed no
+                            more than 5 minutes of annual downtime. The insights gained from these extreme constraints
+                            led to the comprehensive suite of monitoring tools now integrated into Inugami.
+                        </p>
+
+                        <p>
+                            A properly monitored application must provide real-time, precise insight into exactly what 
+                            it is doing and whether its behavior is normal. Logs are the richest source of information 
+                            an application can produce. They should not be viewed as an infrastructure cost, but as a
+                            goldmine of information—not only for technical health but, more importantly,
+                            for business intelligence.
+                        </p>
+                        <cite class="success">
+                            <header>
+                                <i></i>
+                                <div>
+                                   The real question we must ask ourselves is:
+                                    how much will an application failure <strong>cost</strong> us—both in terms of <strong>reputation and financial impact</strong>?
+                                </div>
+                            </header>
+                        </cite>
+
+
+                         <!--****************************************************************************************
+                        ** ARCHETYPE
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/exception']"><h2 id="getting-started">Getting started</h2></a>
+                            </header>
+
+                            <p>
+                               Inugami’s <a routerLink="/inugami/framework/exception">exception management documentation</a> highlights the framework’s extensive use of
+                               the MDC (<strong>Mapped Diagnostic Context</strong>) to track errors. This management goes far beyond simple
+                               logging. it is the very heart of Inugami’s monitoring strategy.
+                            </p>
+
+                            <p>
+                                To unlock the full potential of logs, a tool capable of consuming a high-speed JSON
+                                stream is essential. While several options exist, such as ElasticSearch/Kibana, Datadog or Splunk.
+                            </p>
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        the solution that is by far the most straightforward, performant, and advanced
+                                        is Elasticsearch coupled with Kibana.
+                                    </div>
+                                </header>
+                                <p>
+                                    For more information on Elasticsearch and Kibana, you can visit 
+                                    <a href="https://www.elastic.co/" target="_blank">the official website</a>, 
+                                    which offers extensive documentation on the vast capabilities of these tools.
+                                </p>
+                            </cite>
+
+                            <cite class="info">
+                                <header>
+                                    <i></i>
+                                    <div></div>
+                                </header>
+                                <p>
+                                    To demonstrate Inugami’s monitoring capabilities, the choice was made to integrate
+                                    it with Elasticsearch and Kibana for this demo. The concepts discussed are generic
+                                    and can be transposed to other tools. Only the creation and usage of information
+                                    within the observation tool will differ.
+                                </p>
+                            </cite>
+
+
+                            <p>
+                                The objective of this demo is to demonstrate how to set up a relatively comprehensive
+                                dashboard, all in a very simple manner. The dashboard in question is as follows:
+                            </p>
+                            <figure>
+                                <img src="images/framework/kibana_low.png" alt="Kinaba dashboard" width="90%" />
+                                <caption>
+                                    <a href="images/framework/kibana.png" target="_blank">Show full size</a>
+                                </caption>
+                            </figure>
+                            
+
+                        </article>
+
+
+                        
                 </main>
             </section>
         </div>
