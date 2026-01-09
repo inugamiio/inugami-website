@@ -1,17 +1,26 @@
 <xml>
 
     <annoncements>
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.4" date="2026-01-09">
+        <fix>
+          <item title="[#429] FIX : fix send metrics to elastic search"
+                link="https://github.com/inugamiio/inugami/pull/431">
+          </item>
+        </fix>
+      </annoncement>
+
       <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
       <annoncement application="inugami" version="4.2.3" date="2025-12-30">
         <features>
-          <item title="[##421] FEAT : add Spring Boot 3 JDK 21 maven archetype"
+          <item title="[#421] FEAT : add Spring Boot 3 JDK 21 maven archetype"
                 link="https://github.com/inugamiio/inugami/issues/421">
           </item>
 
 
         </features>
         <fix>
-          <item title="[##417] FIX : clean up"
+          <item title="[#417] FIX : clean up"
                 link="https://github.com/inugamiio/inugami/issues/417">
           </item>
         </fix>
