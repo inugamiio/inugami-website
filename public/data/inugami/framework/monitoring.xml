@@ -469,4 +469,136 @@ response:
 	payload:[{"audit":{"createdBy":"system","createdDate":"2026-01-08T09:07:29.407874129","version":1},"email":"john.smith.mock@inugami.io","firstName":"John","lastName":"Smith","uid":"9c40c536-9c71-4b8d-a443-89a79e8068dd"}]
 ]]>
     </src>
+
+
+    <src name="ioLogContentDisplayResolverSPI" type="java" title="Implementation of IoLogContentDisplayResolverSPI">
+        <![CDATA[
+@Component
+public class MyIoLogContentDisplayResolver interface IoLogContentDisplayResolverSPI {
+    public boolean display(final RequestData request){
+        // implementation
+    }
+}
+]]>
+    </src>
+
+        <src name="RequestData" type="java" title="RequestData">
+        <![CDATA[
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@ToString
+@Getter
+@Setter
+public class RequestData implements Serializable {
+
+    // =========================================================================
+    // ATTRIBUTES
+    // =========================================================================
+    private static final long                  serialVersionUID = -7805638130853062376L;
+    private              String                uri;
+    private              String                contextPath;
+    private              String                contentType;
+    private              String                method;
+    private              String                characterEncoding;
+    private              String                content;
+    private              Map<String, String[]> options;
+    private              HttpServletRequest    request;
+    private              HttpServletResponse   response;
+    // server
+    private              String                env;
+
+    private String asset;
+
+    private String hostname;
+
+    private String instanceName;
+
+    private String instanceNumber;
+
+    // tracking
+    private String correlationId;
+
+    private String requestId;
+    private String traceId;
+
+    private String conversationId;
+
+    private String sessionId;
+
+    private String token;
+
+    // application
+    private String applicationVersion;
+
+    private String service;
+
+    // devices
+    private String deviceIdentifier;
+
+    private String deviceType;
+
+    private String deviceClass;
+
+    private String version;
+
+    private String majorVersion;
+
+    private String osVersion;
+
+    private String deviceNetworkType;
+
+    private Double deviceNetworkSpeedDown;
+
+    private Double deviceNetworkSpeedUp;
+
+    private Double deviceNetworkSpeedLatency;
+
+    // IPs
+    private String remoteAddress;
+
+    private String deviceIp;
+
+    private String userAgent;
+
+    // language
+    private String              language;
+    private String              country;
+    private Map<String, String> headers;
+    private String              callFrom;
+}
+]]>
+    </src>
+
+    <src name="PARTNERLOG" type="java" title="PARTNERLOG">
+        <![CDATA[
+INFO [PARTNERLOG:42] - [POST] http://inugami.io/mock/user
+request:
+	headers:
+		auth : xxxxx
+		Content-Length : 480"
+		x-b3-traceid : 3d623248-5d0e-4be0-830f-d95593e6dcc7
+		x-correlation-id : ba26cf88-a6ee-40e2-83cf-89ebf11eeb35
+		x-device-identifier : 47991fbc-529a-42e3-9ac6-9d7992713250
+	payload:
+{
+  "birthday" : "1988-04-12",
+  "canton" : "VD",
+  "city" : "Cheseaux-sur-Lausanne",
+  "deviceIdentifier" : "401f0498-c43f-43ad-a3f4-2888838332ad",
+  "email" : "emilie.lalonde@mock.org",
+  "firstName" : "Émilie",
+  "id" : 1,
+  "lastName" : "Lalonde",
+  "nationality" : "CH",
+  "old" : 35,
+  "phoneNumber" : "0615031522",
+  "sex" : "FEMALE",",
+  "socialId" : "7564971247732",
+  "streetName" : "du Château",
+  "streetNumber" : "10",
+  "streetType" : "Chem.",
+  "zipCode" : "1033"
+}
+]]>
+    </src>
 </xml>

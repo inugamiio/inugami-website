@@ -398,17 +398,271 @@
                                     field in the MDC, which uses the values <code>in</code> and <code>out</code>.
                                 </p>
 
+                                <p>
+                                    By default, IOLOGs track request and response content only for the following mimetypes:
+                                </p>
+                                <ul>
+                                    <li>text</li>
+                                    <li>application/json</li>
+                                    <li>application/xml</li>
+                                </ul>
+
+                                <p>
+                                    However, you can enable content tracking for additional types by providing a custom
+                                    implementation of the DefaultIoLogContentDisplayResolverSPI interface.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="ioLogContentDisplayResolverSPI"></inu-code>
+
+                                <p>
+                                    The RequestData object contains all the information regarding the incoming request.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="RequestData"></inu-code>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The structured data from IOLOGs enables real-time visualization through
+                                            dedicated Kibana dashboards. Key metrics such as hit rates, response times (SLA),
+                                            HTTP status distributions, and detailed error categorizations
+                                        </div>
+                                    </header>
+                                </cite>
+                                <figure>
+                                    <img src="images/framework/kibana_iolog_low.png" alt="Kinaba dashboard" width="90%" />
+                                    <caption>
+                                        <a href="images/framework/kibana_iolog.png" target="_blank">Show full size</a>
+                                    </caption>
+                                </figure>
+
+                                <p>
+                                   Inugami's structured IOLOGs turn Kibana into a powerful self-service 
+                                    analytics tool. By applying a simple filter on <code>loggerName</code> 
+                                    and <code>lifecycle</code>, anyone can transform raw logs into 
+                                    high-level business and technical.
+                                </p>
+                                <figure>
+                                    <img src="images/framework/kibana_iolog_edit.png" alt="Create display from IOLOG" width="90%" />
+                                </figure>
+                                <p>
+                                    IOLOG include specific <em>MDC context</em> values to qualify these:
+                                </p>
+
+
+                                <strong>Application & Infrastructure Context:</strong>
+                                <dl> 
+                                    <dt>asset / artifactId</dt> <dd>The technical name and Maven artifactId of the application.</dd>
+
+                                    <dt>applicationVersion / version / majorVersion</dt>
+                                    <dd>The current, full, and major version numbers of the application.</dd>
+
+                                    <dt>commitId / commitDate</dt>
+                                    <dd>The Git commit hash and timestamp of the current build.</dd>
+
+                                    <dt>env / hostname</dt>
+                                    <dd>The deployment environment (dev, int, prod) and the server's name.</dd>
+
+                                    <dt>instanceName / instanceNumber</dt>
+                                    <dd>The name and index of the specific application instance or pod.</dd>
+
+                                    <dt>groupId</dt>
+                                    <dd>The Maven groupId of the current application.</dd>
+                                </dl>
+
+                                <strong>Request Mapping & Logic:</strong>
+                                <dl> 
+                                    <dt>appClass / appClassShortName / appMethod</dt> 
+                                    <dd>The Java class (full and simple names) and method handling the REST call.</dd>
+
+                                    <dt>appService / appSubService</dt>
+                                    <dd>The functional name and sub-name of the REST endpoint.</dd>
+
+                                    <dt>service / domain / subDomain</dt>
+                                    <dd>The functional name, domain, and sub-domain of the invoked service.</dd>
+
+                                    <dt>uri / url / urlPattern</dt>
+                                    <dd>The URI, full URL, and the normalized URL pattern used for grouping requests (stripping path variables).</dd>
+
+                                    <dt>verb / urlPatternVerb</dt>
+                                    <dd>The HTTP verb and the combination of the URL pattern with the verb.</dd>
+                                </dl>
+
+
+                                <strong>Distributed Tracing & Security:</strong>
+                                <dl> 
+                                    <dt>traceId</dt>
+                                    <dd>The global unique identifier propagated across all services to track the complete call chain.</dd>
+
+                                    <dt>correlation_id</dt>
+                                    <dd>Identifier for the user's session.</dd>
+
+                                    <dt>conversation_id</dt>
+                                    <dd>Identifier for a specific business process or workflow.</dd>
+
+                                    <dt>request_id</dt>
+                                    <dd>Internal identifier for the current specific request.</dd>
+
+                                    <dt>authProtocol / principal</dt>
+                                    <dd>The authentication type used and the current user's login/identity.</dd>
+                                </dl>
+
+
+
+                                <strong>Front-End & User Telemetry:</strong>
+                                <dl> 
+                                    <dt>deviceIdentifier</dt>
+                                    <dd>A unique user ID stored on the front-end and sent with every request.</dd>
+
+                                    <dt>deviceType / osVersion / userAgent</dt>
+                                    <dd>The hardware type (mobile, tablet, desktop), OS version, and browser User-Agent.</dd>
+
+                                    <dt>deviceIp / remoteAddress</dt>
+                                    <dd>The user's IP address and the IP of the parent network equipment (e.g., proxy/load balancer).</dd>
+
+                                    <dt>language / country</dt>
+                                    <dd>The user's preferred language and country.</dd>
+
+                                    <dt>deviceNetworkType / deviceNetworkSpeedLatency</dt>
+                                    <dd>The type of network used and the real network latency measured by the front-end.</dd>
+
+                                    <dt>deviceNetworkSpeedDown / deviceNetworkSpeedUp</dt>
+                                    <dd>The front-end's download and upload speeds.</dd>
+                                </dl>
+
+
+                                <strong>Execution Status & Performance:</strong>
+                                <dl> 
+                                    <dt>duration</dt>
+                                    <dd>Server-side processing time in milliseconds.</dd>
+
+                                    <dt>httpStatus / status / globalStatus</dt>
+                                    <dd>The HTTP status code, the execution status, and the overall outcome (success/error).</dd>
+
+                                    <dt>methodInCause</dt>
+                                    <dd>The specific method responsible for a failure/error.</dd>
+
+                                    <dt>lifecycle</dt>
+                                    <dd>The phase of the call (in/out).</dd>
+
+                                    <dt>callType / callFrom</dt>
+                                    <dd>The protocol type (REST, JMS, etc.) and the source of the call.</dd>
+                                </dl>
+
+
+
                             </inu-doc-item>
+
+                            <inu-doc-item title="PARTNERLOG" [level]="3" href="inugami/framework/monitoring#logs-types-partnerlog" id="logs-types-partnerlog">
+
+                                <p>
+                                    PARTNERLOG follow the exact same logic and formatting as IOLOGs. Their purpose is
+                                    to trace calls between the current application and external web services.
+                                </p>
+
+                                <p>
+                                    Since every application logs its own IOLOGs, one might theoretically assume that
+                                    logging inter-service communication is redundant. However, infrastructure is often complex,
+                                    involving network components (proxies, load balancers, caches, etc.) that may modify requests along the way.
+                                </p>
+
+
+                                <p>
+                                    When different teams work on interconnected web services, PARTNERLOGs are the perfect
+                                    tool to determine whether an issue originates from:
+                                </p>
+
+                                <ul>
+                                    <li>The calling application</li>
+                                    <li>The responding application</li>
+                                    <li>An intermediary network component</li>
+                                </ul>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="PARTNERLOG"></inu-code>
+
+                                <p>
+                                    Partnerlogs include specific <em>MDC context</em> values to qualify external exchanges
+                                </p>
+                                
+                                <strong>Error Metadata:</strong>
+                                <dl>
+                                    <dt>errorCategory</dt>
+                                    <dd>Category of the error.</dd>
+
+                                    <dt>errorCode</dt>
+                                    <dd>The partner's specific error code.</dd>
+
+
+                                    <dt>errorDomain / errorSubDomain</dt>
+                                    <dd>Functional domain and subdomain of the error.</dd>
+
+                                    <dt>errorType</dt>
+                                    <dd>The nature of the error (e.g., Functional, Technical).</dd>
+
+                                    <dt>errorMessage / errorMessageDetail</dt>
+                                    <dd>Summary and technical details of the error message.</dd>
+
+                                    <dt>errorUrl</dt>
+                                    <dd>Link to the partner's error documentation.</dd>
+                                </dl>
+
+                                <strong>Operational Insight:</strong>
+                                <dl>
+                                    <dt>errorExploitationError</dt>
+                                    <dd>Boolean indicating if it is an infrastructure-level error.</dd>
+
+                                    <dt>errorField</dt>
+                                    <dd>The specific field in the data model causing the error.</dd>
+
+                                    <dt>errorRetryable</dt>
+                                    <dd>Indicates if a retry attempt is safe/possible.</dd>
+
+                                    <dt>errorRollback</dt>
+                                    <dd>Indicates if the error triggered a transaction rollback.</dd>
+
+                                    <dt>errorStatus</dt>
+                                    <dd>The HTTP status code associated with the error.</dd>
+                                </dl>
+
+                                <strong>Partner & Transaction Context</strong>
+                                <dl>
+                                    <dt>partner</dt>
+                                    <dd>Name of the partner system.</dd>
+
+                                    <dt>partnerType</dt>
+                                    <dd>Protocol type (REST, JMS, SOAP, etc.).</dd>
+
+                                    <dt>partnerUrl / partnerVerb</dt>
+                                    <dd>The endpoint URL and HTTP verb used.</dd>
+
+                                    <dt>partnerService / partnerSubService</dt>
+                                    <dd>The specific service and sub-service invoked.</dd>
+
+                                    <dt>lifecycle</dt>
+                                    <dd>The transaction phase (in or out).</dd>
+                                </dl>
+
+                                <strong>Performance & Encoding:</strong>
+                                <dl>
+                                    <dt>partnerResponseDuration</dt>
+                                    <dd>Execution time of the partner call (in milliseconds).</dd>
+
+                                    <dt>partnerResponseStatus / partnerResponseMessage</dt>
+                                    <dd>The HTTP status and response message from the partner.</dd>
+
+                                    <dt>partnerRequestCharset / partnerResponseCharset</dt>
+                                    <dd>Character encoding for the request and response.</dd>
+                                </dl>
+
+                            </inu-doc-item>
+
                         </article>
                 </main>
             </section>
 
 
-             
-
+        
         </div>
-
-
 
     </div>
 
