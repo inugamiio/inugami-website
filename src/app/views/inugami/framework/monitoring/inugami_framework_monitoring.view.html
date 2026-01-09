@@ -64,7 +64,7 @@
                         ****************************************************************************************-->
                         <article>
                             <header>
-                                <a [routerLink]="['/inugami/framework/exception']"><h2 id="getting-started">Getting started</h2></a>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="getting-started">Getting started</h2></a>
                             </header>
 
                             <p>
@@ -197,6 +197,48 @@
                                 </cite>
 
                                 <p>
+                                    To implement an effective log retention policy, it is imperative to split logs across different appenders.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="logback_full"></inu-code>
+                                
+                                <p>
+                                    By default, the log level is set to <code>DEBUG</code>. This is not an error, but a deliberate
+                                    choice to encourage configuring logs during the development phase to ensure they
+                                    are properly categorized. Consequently, you can switch to INFO in production without
+                                    worrying about log volume, while retaining the ability to safely switch back to
+                                    DEBUG if necessary.
+                                </p>
+
+                                <p>
+                                    By default, the Logback configuration outputs logs through two main appenders: the Standard Output
+                                    (rendered asynchronously via AsyncAppender) and Elasticsearch (via the JsonAppender, which is natively asynchronous).
+                                </p>
+                                <p>
+                                    The following specialized JsonAppenders are available:
+                                </p>
+                                
+                                <dl>
+                                    <dt>ELASTIC-DEFAULT</dt>
+                                    <dd>The default appender that routes all standard logs to Elasticsearch.</dd>
+                                    
+                                    <dt>ELASTIC-IOLOG</dt>
+                                    <dd>Dedicated to Input/Output logs (IOLOG), capturing request and response payloads.</dd>
+                                    
+                                    <dt>ELASTIC-PARTNERLOG</dt>
+                                    <dd>Dedicated to communication logs with external web services (PARTNERLOG).</dd>
+                                    
+                                    <dt>ELASTIC-XLLOG</dt>
+                                    <dd>Reserved for critical infrastructure logs.</dd>
+                                    
+                                    <dt>ELASTIC-METRICS</dt>
+                                    <dd>Dedicated to KPI and performance indicators.</dd>
+                                </dl>
+
+                                <p>
+                                    Each appender targets a different index, allowing for granular control over retention policies based on the nature of the logs.
+                                </p>
+
+                                <p>
                                     Logs may contain sensitive information. To prevent data leakage, Inugami mandates
                                     the use of the <em>ObfuscatorEncoder</em>. This Logback encoder enables the obfuscation
                                     of sensitive data <strong>through strategies</strong> defined via <em>SPI</em> (Service Provider Interface).
@@ -309,10 +351,61 @@
                             </inu-doc-item>
                         </article>
 
+                        <!--****************************************************************************************
+                        ** Logs type
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="logs-types">Logs types</h2></a>
+                            </header>
 
-                        
+
+                            <inu-doc-item title="IOLOG" [level]="3" href="inugami/framework/monitoring#logs-types-iolog" id="logs-types-iolog">
+                                <p>
+                                    IOLOGs are the cornerstone of application observability. By providing an exhaustive audit trail 
+                                    of every incoming and outgoing exchange, they allow developers to accurately reconstruct 
+                                    and replay scenarios, drastically reducing the Mean Time to Resolution (MTTR).
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="iolog_example"></inu-code>
+                                <p>
+                                    IOLOGs contain:
+                                    - L'url d'appel avec le verb HTTP 
+                                    - les différents Headers http de la requête entrante
+                                    - Le payload de la requête
+                                    - Le status de la réponse
+                                    - la durée d'exécution de la requête
+                                    - les différents headers de la réponse
+                                    - et le payload de sortie
+                                </p>
+                                <ul>
+                                    <li>The request URL and HTTP verb</li>
+                                    <li>Incoming HTTP request headers</li>
+                                    <li>The request payload</li>
+                                    <li>The response status code</li>
+                                    <li>Request execution duration (latency)</li>
+                                    <li>Outgoing HTTP response headers</li>
+                                    <li>The response payload</li>
+                                </ul>
+
+                                <p>
+                                    All of this information is structured in a way that is easily understandable for human beings.
+                                </p>
+
+                                <p>
+                                    Every transaction generates two distinct IOLOG entries: one for the incoming request
+                                    and one for the outgoing response. This distinction is materialized by the <strong>lifecycle</strong>
+                                    field in the MDC, which uses the values <code>in</code> and <code>out</code>.
+                                </p>
+
+                            </inu-doc-item>
+                        </article>
                 </main>
             </section>
+
+
+             
+
         </div>
 
 

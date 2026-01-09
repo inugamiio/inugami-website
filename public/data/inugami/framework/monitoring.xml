@@ -142,6 +142,187 @@ open module com.my.project.webapp {
 ]]>
     </src>
 
+    <src name="logback_full" type="xml" title="Full logback.xml configuration">
+        <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--================================================================================================================
+    = APPENDER
+    =================================================================================================================-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{dd/MM HH:mm:ss}]|%logger|%-5level|%thread|%msg\n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <appender name="ELASTIC-DEFAULT" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+        <configuration>
+            <mode>elasticSearch</mode>
+            <host>http://localhost:9200/_bulk</host>
+            <index>dev-demo-logs</index>
+            <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+        </configuration>
+        <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+            <configuration>
+                <forceNewLine>true</forceNewLine>
+                <encodeAsJson>true</encodeAsJson>
+                <additionalFields>
+                    {
+                    "groupId":"com.my.project",
+                    "artifactId":"demo-webapp"
+                    }
+                </additionalFields>
+            </configuration>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ELASTIC-IOLOG" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+        <configuration>
+            <mode>elasticSearch</mode>
+            <host>http://localhost:9200/_bulk</host>
+            <index>dev-demo-iologs</index>
+            <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+        </configuration>
+        <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+            <configuration>
+                <forceNewLine>true</forceNewLine>
+                <encodeAsJson>true</encodeAsJson>
+                <additionalFields>
+                    {
+                    "groupId":"com.my.project",
+                    "artifactId":"demo-webapp"
+                    }
+                </additionalFields>
+            </configuration>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ELASTIC-PARTNERLOG" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+        <configuration>
+            <mode>elasticSearch</mode>
+            <host>http://localhost:9200/_bulk</host>
+            <index>dev-demo-partnerlog</index>
+            <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+        </configuration>
+        <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+            <configuration>
+                <forceNewLine>true</forceNewLine>
+                <encodeAsJson>true</encodeAsJson>
+                <additionalFields>
+                    {
+                    "groupId":"com.my.project",
+                    "artifactId":"demo-webapp"
+                    }
+                </additionalFields>
+            </configuration>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ELASTIC-XLLOG" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+        <configuration>
+            <mode>elasticSearch</mode>
+            <host>http://localhost:9200/_bulk</host>
+            <index>dev-demo-xllog</index>
+            <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+        </configuration>
+        <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+            <configuration>
+                <forceNewLine>true</forceNewLine>
+                <encodeAsJson>true</encodeAsJson>
+                <additionalFields>
+                    {
+                    "groupId":"com.my.project",
+                    "artifactId":"demo-webapp"
+                    }
+                </additionalFields>
+            </configuration>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ELASTIC-METRICS" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+        <configuration>
+            <mode>elasticSearch</mode>
+            <host>http://localhost:9200/_bulk</host>
+            <index>dev-demo-metrics</index>
+            <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+        </configuration>
+        <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+            <configuration>
+                <forceNewLine>true</forceNewLine>
+                <encodeAsJson>false</encodeAsJson>
+                <additionalFields>
+                    {
+                    "groupId":"com.my.project",
+                    "artifactId":"demo-webapp"
+                    }
+                </additionalFields>
+            </configuration>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+    <!--================================================================================================================
+    = LOGGERS
+    =================================================================================================================-->
+    <logger name="org.springframework">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="INFO"/>
+    </logger>
+    <logger name="logging.level.org.hibernate.SQL">
+        <level value="DEBUG"/>
+    </logger>
+
+    <logger name="io.inugami">
+        <level value="INFO"/>
+    </logger>
+    <logger name="com.zaxxer">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="IOLOG" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="ELASTIC-IOLOG" />
+        <appender-ref ref="ASYNC_STDOUT" />
+
+    </logger>
+
+    <logger name="PARTNERLOG" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="ELASTIC-PARTNERLOG" />
+        <appender-ref ref="ASYNC_STDOUT" />
+    </logger>
+
+
+    <logger name="XLLOG" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="ELASTIC-XLLOG" />
+        <appender-ref ref="ASYNC_STDOUT" />
+    </logger>
+
+    <logger name="METRICS_LOG_SENDER" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="ELASTIC-METRICS" />
+    </logger>
+
+    <!--================================================================================================================
+    = ROOT
+    =================================================================================================================-->
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC_STDOUT"/>
+        <appender-ref ref="ELASTIC-DEFAULT"/>
+    </root>
+
+</configuration>
+]]>
+    </src>
+
                    <src name="application.yaml" type="yaml" title="application.yaml">
         <![CDATA[
 env: DEV
@@ -236,6 +417,56 @@ networks:
         <![CDATA[
 cd local-integration-test/
 docker-compose up
+]]>
+    </src>
+
+            
+    <src name="iolog_example" type="text" title="IOLOG example">
+        <![CDATA[
+[POST] /ws/user
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	content-length: 116
+	content-type: application/json
+	cookie: xxxxx
+	host: localhost:8080
+	postman-token: 6e9db44e-1e3c-4484-93f9-4008409e2146
+	user-agent: PostmanRuntime/7.29.2
+payload :
+[
+    {
+        "firstName":"John",
+        "lastName":"Smith",
+        "email":"john.smith.mock@inugami.io"
+    }
+]
+response:
+	status:200
+	datetime:1767863249411
+	duration:11
+	contentType:application/json
+	headers:
+		Access-Control-Allow-Credentials: true
+		Access-Control-Allow-Headers: xxxxx
+		Access-Control-Allow-Origin: *
+		Access-Control-Expose-Headers: xxxxx
+		accept: */*
+		accept-encoding: gzip, deflate, br
+		cache-control: no-cache
+		connection: keep-alive
+		content-length: 116
+		content-type: application/json
+		cookie: xxxxx
+		host: localhost:8080
+		postman-token: 6e9db44e-1e3c-4484-93f9-4008409e2146
+		user-agent: PostmanRuntime/7.29.2
+		x-b3-traceid: 50aa5a3f-b764-4ba7-8b2f-7fe23d09c69a
+		x-correlation-id: 1b3682bc-c9c1-4506-aff4-b50cac1fd31b
+		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
+	payload:[{"audit":{"createdBy":"system","createdDate":"2026-01-08T09:07:29.407874129","version":1},"email":"john.smith.mock@inugami.io","firstName":"John","lastName":"Smith","uid":"9c40c536-9c71-4b8d-a443-89a79e8068dd"}]
 ]]>
     </src>
 </xml>
