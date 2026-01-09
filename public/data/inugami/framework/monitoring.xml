@@ -601,4 +601,13 @@ request:
 }
 ]]>
     </src>
+
+
+    <src name="XLLOG_usage" type="java" title="Usage">
+        <![CDATA[
+Loggers.XLLOG.error("unable to call partner : {}", partnerName);
+]]>
+    </src>
+
+      
 </xml>

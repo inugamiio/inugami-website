@@ -656,6 +656,57 @@
 
                             </inu-doc-item>
 
+                            <inu-doc-item title="OTHERS" [level]="3" href="inugami/framework/monitoring#logs-types-iolog" id="logs-types-others">
+                                <p>
+                                    Beyond IOLOGs and PARTNERLOGs, Inugami enforces a rigorous log categorization
+                                    framework. While these categories may not share the same complex logic as transaction
+                                    logs, they provide a standardized structure for organizing application behavior
+                                    and infrastructure events.
+                                </p>
+                                
+                                <dl>
+                                    <dt>ALERTING</dt>
+                                    <dd>Logs triggered by threshold breaches or specific KPI alerts.</dd>
+
+                                    <dt>BOOTSTRAP</dt>
+                                    <dd>Records related to the application's startup sequence.</dd>
+
+                                    <dt>CACHE</dt>
+                                    <dd>Tracking the lifecycle and efficiency of caching mechanisms.</dd>
+
+                                    <dt>CONFIG</dt>
+                                    <dd>Detailed information regarding the active configurations at runtime.</dd>
+
+                                    <dt>PLUGINS</dt>
+                                    <dd>Insight into the lifecycle and status of application-specific plugins.</dd>
+
+                                    <dt>XLLOG</dt>
+                                    <dd>Critical infrastructure-level logs requiring immediate attention.</dd>
+
+                                    <dt>EVENTS</dt>
+                                    <dd>Tracing the lifecycle of events in event-driven architectures.</dd>
+
+                                    <dt>SYSTEM</dt>
+                                    <dd>Logs specific to the application's internal system operations.</dd>
+
+                                    <dt>SECURITY</dt>
+                                    <dd>Alerts regarding potential security threats or breaches.</dd>
+
+                                    <dt>HEALTH</dt>
+                                    <dd>Regular updates on the application's health status (heartbeats).</dd>
+
+                                    <dt>TASK</dt>
+                                    <dd>Dedicated to the lifecycle and execution of background jobs or scheduled processes.</dd>
+
+                                    <dt>LOG_INITIALIZER</dt>
+                                    <dd>A specialized log emitted at the end of the Inugami initialization. It captures all MDC fields to lock the index schema in dynamic indexing tools like Elasticsearch.</dd>
+                                </dl>
+
+                                <p>
+                                    Each category is implemented as a dedicated <em>SLF4J</em> logger defined within the <code>Loggers</code> class, making them extremely easy to use.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="XLLOG_usage"></inu-code>
+                            </inu-doc-item>
                         </article>
                 </main>
             </section>
