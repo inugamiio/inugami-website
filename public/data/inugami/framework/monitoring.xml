@@ -1,0 +1,241 @@
+<xml>
+    <src name="dependencies_maven" type="xml" title="Maven dependencies">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_spring</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_core</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_logs_obfuscator</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring.sensors</groupId>
+    <artifactId>inugami_monitoring_sensors_default</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring.providers</groupId>
+    <artifactId>inugami_monitoring_providers_log</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_test</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<!-- If you use activeMQ -->
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot_activemq</artifactId>
+</dependency>
+]]>
+    </src>
+
+        <src name="dependencies_java" type="java" title="Java dependencies">
+        <![CDATA[
+requires io.inugami.framework.commons.spring;
+requires io.inugami.framework.interfaces;
+requires io.inugami.logs.obfuscator ;
+requires io.inugami.monitoring.core;
+requires io.inugami.monitoring.providers.logs;
+requires io.inugami.monitoring.sensors.defaults;
+requires io.inugami.monitoring.springboot;
+// If you use activeMQ 
+requires io.inugami.monitoring.springboot.activemq;
+]]>
+    </src>
+
+            <src name="module_java_webapp" type="java" title="Webapp module-info.java">
+        <![CDATA[
+open module com.my.project.webapp {
+    // Project
+    requires com.my.project.api;
+    requires com.my.project.core;
+    requires com.my.project.infrastructure;
+    requires com.my.project.interfaces.api;
+    requires com.my.project.interfaces.core;
+
+    // Inugami Core & Interfaces
+    requires io.inugami.framework.api;
+    requires io.inugami.framework.commons.spring.data;
+    requires io.inugami.framework.commons.spring;
+    requires io.inugami.framework.commons;
+    requires io.inugami.framework.interfaces;
+
+    // Monitoring & Logging
+    requires io.inugami.logs.obfuscator;
+    requires io.inugami.monitoring.providers.logs;
+    requires io.inugami.monitoring.sensors.defaults;
+    requires io.inugami.monitoring.springboot;
+
+    // Spring
+    requires org.springdoc.openapi.ui;
+    requires org.springdoc.openapi.webmvc.core;
+    requires spring.boot.autoconfigure;
+    requires spring.boot.starter.actuator;
+    requires spring.boot.starter.tomcat;
+    requires spring.boot;
+    requires spring.context;
+    requires spring.tx;
+
+    // Tools
+    requires lombok;
+    requires org.jspecify;
+    requires org.mapstruct;
+    requires org.slf4j;
+}
+]]>
+    </src>
+
+               <src name="elastic_appender" type="xml" title="Logback Inugami appender">
+        <![CDATA[
+<appender name="ELASTIC-DEFAULT" class="io.inugami.logs.obfuscator.appender.JsonAppender">
+    <configuration>
+        <mode>elasticSearch</mode>
+        <host>http://localhost:9200/_bulk</host>
+        <headersMap>
+               {
+                 "someHeader" : "myValue"
+               }
+        </headersMap>
+        <index>dev-demo-logs</index>
+        <indexDatePattern>yyyy-MM-dd</indexDatePattern>
+    </configuration>
+    <encoder class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+        <configuration>
+            <forceNewLine>true</forceNewLine>
+            <encodeAsJson>true</encodeAsJson>
+            <additionalFields>
+                {
+                "groupId":"com.my.project",
+                "artifactId":"demo-webapp"
+                }
+            </additionalFields>
+        </configuration>
+        <pattern>%m%n</pattern>
+    </encoder>
+</appender>
+]]>
+    </src>
+
+                   <src name="application.yaml" type="yaml" title="application.yaml">
+        <![CDATA[
+env: DEV
+application:
+  groupId: "@project.groupId@"
+  artifactId: "@project.artifactId@"
+  version: "@project.version@"
+  commitId: "@commitId@"
+  commitDate: "@commitDate@"
+  name: "demo"
+  wiki: "https://inugami.io/mock/error/{0}/{1}"
+  instanceName: "inu"
+  instanceNumber: "001"
+
+inugami:
+  monitoring:
+    interceptors:
+      kpi:
+        enabled: true
+    internal:
+      interval: 10000
+    iolog:
+      enabled: false
+    interceptor:
+      url:
+        skip: .*api-docs.*;.*swagger-ui.*
+    exception:
+      show:
+        detail:
+          enabled: true  
+]]>
+    </src>
+
+                       <src name="springboot_application" type="java" title="SpringBoot application">
+        <![CDATA[
+@ComponentScan(basePackages={
+        ConfigConfiguration.INUGAMI,
+        "com.my.project"
+})
+@EnableAutoConfiguration
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+]]>
+    </src>
+    
+    <src name="docker_compose" type="yaml" title="local-integration-test/docker-compose.yaml">
+        <![CDATA[
+version: "3"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.3
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          memory: 1gb
+    networks:
+      - elk-net
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.2.3
+    container_name: kibana
+    environment:
+      - xpack.security.enabled=false
+    networks:
+      - elk-net
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk-net:
+    driver: bridge
+]]>
+    </src>
+
+        
+    <src name="docker_compose_up" type="bash" title="run elastic search stack">
+        <![CDATA[
+cd local-integration-test/
+docker-compose up
+]]>
+    </src>
+</xml>

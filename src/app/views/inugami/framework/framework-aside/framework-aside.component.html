@@ -123,7 +123,12 @@
             </a>
             @if (monitoring()) {
                 <ul>
-                    <li><a  [routerLink]="['/inugami/framework/monitoring']" fragment="getting-started">Getting started</a>
+                    <li>
+                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="getting-started">Getting started</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="dependencies">Dependencies</a></li>
+                        </ul>
+                    </li>
                 </ul>
             }
         </li>

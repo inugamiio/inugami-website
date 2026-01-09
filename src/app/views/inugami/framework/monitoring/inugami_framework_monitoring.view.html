@@ -46,6 +46,18 @@
                             </header>
                         </cite>
 
+                                     
+                        <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="mavenDependencies()"></inu-copy>
+                        <div>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="dependencies_maven"></inu-code>
+                        </div>
+                        
+
+                        <inu-copy iconClass="icon ico-java" label="copy java dependency" [content]="javaDependencies()"></inu-copy> 
+                        <div>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="dependencies_java"></inu-code>
+                        </div>
+                        
 
                          <!--****************************************************************************************
                         ** ARCHETYPE
@@ -106,6 +118,179 @@
                             </figure>
                             
 
+                            <inu-doc-item title="Dependencies and configurations" [level]="3" href="inugami/framework/monitoring#dependencies" id="dependencies">
+                                <cite class="info">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The example is based on the Inugami Maven archetype. 
+                                        </div>
+                                    </header>
+                                    <p>
+                                        For more information, please refer to the documentation:  <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Archetype</a>.
+                                    </p>
+                                </cite>
+                                <p>
+                                    To enable monitoring in your application, you must add the following modules:
+                                </p>
+
+
+                                <dl>
+                                    <dt>io.inugami.framework.interfaces (inugami_api_interfaces)</dt>
+                                    <dd>The core of Inugami's interfaces and DTOs./dd>
+
+                                    <dt>io.inugami.framework.commons.spring (inugami_commons_spring)</dt>
+                                    <dd>Inugami is agnostic of dependency injection engines (such as Spring or CDI).
+                                        this module is required to expose its features through a specific injection engine.</dd>
+
+                                    <dt>io.inugami.monitoring.springboot (inugami_monitoring_springboot)</dt>
+                                    <dd>To enable monitoring for Spring Boot applications.</dd>
+
+                                    <dt>io.inugami.logs.obfuscator (inugami_logs_obfuscator)</dt>
+                                    <dd>Enables log obfuscation and includes appenders to transform logs into JSON format.</dd>
+
+                                    <dt>io.inugami.monitoring.sensors.defaults (inugami_monitoring_sensors_default)</dt>
+                                    <dd>To include Inugami's default technical sensors.</dd>
+
+                                    <dt>io.inugami.monitoring.providers.logs (inugami_monitoring_providers_log)</dt>
+                                    <dd>Enables the transmission of indicators via logs.</dd>
+                                </dl>
+
+                                <p>
+                                    Your webapp module's <code>module-info.java</code> should look like this:
+                                    <inu-code url="data/inugami/framework/monitoring.xml" tag="module_java_webapp"></inu-code>
+                                </p>
+
+                                <p>
+                                    Logs must be transmitted to Elasticsearch in JSON format. To do this,
+                                    the <code>io.inugami.logs.obfuscator.appender.JsonAppender</code> must be added to your <strong>logback.xml</strong> configuration.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="elastic_appender"></inu-code>
+                                <p>
+                                    The <em>JsonAppender</em> requires several configuration parameters:
+                                </p>
+
+                                 <dl>
+                                    <dt>mode</dt>
+                                    <dd>Defines the provider for writing logs. Available modes are: file (default), elasticSearch, or logstash.</dd>
+                                    
+                                    <dt>host</dt>
+                                    <dd>Specifies the service URL when using elasticSearch or logstash mode. </dd>
+                                    
+                                    <dt>headersMap</dt>
+                                    <dd>Allows you to specify authentication or custom headers if your Elasticsearch instance requires them.</dd>
+                                    
+                                    <dt>index</dt>
+                                    <dd>The Elasticsearch index name. This name is crucial for managing different environments and index retention policies.</dd>
+                                    
+                                    <dt>indexDatePattern</dt>
+                                    <dd>Applies a time-based pattern to the index name to manage log retention. Log eviction is handled by deleting old indexes.</dd>
+                                </dl>
+                                    
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            By default, the <em>JsonAppender</em> sends logs to Elasticsearch using <em>Bulk</em> mode to ensure faster transmission speeds.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <p>
+                                    Logs may contain sensitive information. To prevent data leakage, Inugami mandates
+                                    the use of the <em>ObfuscatorEncoder</em>. This Logback encoder enables the obfuscation
+                                    of sensitive data <strong>through strategies</strong> defined via <em>SPI</em> (Service Provider Interface).
+                                </p>
+
+                                <p>The ObfuscatorEncoder also requires several parameters:</p>
+                                <dl>
+                                    <dt>forceNewLine</dt>
+                                    <dd>Primarily used for file mode, this parameter forces a line break at the end of each log entry.</dd>
+
+                                    <dt>encodeAsJson</dt>
+                                    <dd>Enables the conversion of logs into JSON format.</dd>
+
+                                    <dt>additionalFields</dt>
+                                    <dd>You may need to include "static" information in your logs (such as cluster name, pod ID, etc.).
+                                        These infrastructure-specific details can be defined within this parameter.</dd>
+
+                                    <dt>pattern</dt>
+                                    <dd>When serializing to JSON, a complex log pattern is no longer necessary.
+                                         only the message is required. All other metadata will be transmitted 
+                                         via the MDC context.</dd>
+                                </dl>
+
+
+                                <p>
+                                    To ensure Inugami can monitor your application correctly, you must provide the following configuration to your project:
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="application.yaml"></inu-code>
+
+                                <dl>
+                                    <dt>env</dt>
+                                    <dd>Defines your application's execution environment. This indicator will be included in all logs and metrics.</dd>
+
+                                    <dt>application</dt>
+                                    <dd>Configures the core information of the application (such as its groupId, artifactId, version, etc.).</dd>
+
+                                    <dt>inugami.monitoring</dt>
+                                    <dd>General configuration for Inugami monitoring.</dd>
+
+                                    <dt>inugami.monitoring.interceptors.kpi</dt>
+                                    <dd>Enables the KPI extractor for all incoming and outgoing requests of your application.</dd>
+
+                                    <dt>inugami.monitoring.internal.interval</dt>
+                                    <dd>Sets the default time interval between each metric transmission. The default is 
+                                        <em>1 minute</em>, but for the purpose of this demo, it is reduced to 10 seconds (defined in milliseconds).</dd>
+
+                                    <dt>inugami.monitoring.interceptor.url.skip</dt>
+                                    <dd>Used to exclude specific URLs from Inugami monitoring (such as OpenAPI/Swagger views).</dd>
+
+                                    <dt>inugami.monitoring.exception.show.detail.enabled</dt>
+                                    <dd>Determines whether error details should be displayed. This parameter should be set to false in production environments.</dd>
+                                </dl>
+
+
+                                <p>
+                                    To finalize your application's configuration, you simply need to enable Inugami by
+                                    adding the Inugami base package to your <code>@ComponentScan</code> annotation.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="springboot_application"></inu-code>
+
+                                <p>
+                                     <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">The archetype</a> includes a Docker 
+                                     configuration file to spin up an Elasticsearch and Kibana instance, allowing you to test log transmission directly.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="docker_compose"></inu-code>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="docker_compose_up"></inu-code>
+
+                                <p>
+                                    Once Elasticsearch and Kibana are up and running, you can import the Kibana configuration file included in the archetype.
+                                </p>
+
+                                <figure>
+                                    <img src="images/framework/kibana_import.png" alt="Kinaba import" width="90%" />
+                                </figure>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>The environment is ready</div>
+                                    </header>
+                                    <p>
+                                        all that’s left is to start the application to see the logs appear in Kibana.
+                                        You can use the Postman collection provided in the archetype to call the various URLs of the demo application.
+                                    </p>
+                                </cite>
+                                
+                                <figure>
+                                    <img src="images/framework/kibana_low.png" alt="Kinaba dashboard" width="90%" />
+                                    <caption>
+                                        <a href="images/framework/kibana.png" target="_blank">Show full size</a>
+                                    </caption>
+                                </figure>
+                            </inu-doc-item>
                         </article>
 
 
