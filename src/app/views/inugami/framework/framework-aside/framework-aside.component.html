@@ -141,6 +141,17 @@
                             <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-others">OTHERS</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="log-masking">Log Data Sensitive Masking</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="metrics">Metrics</a>
+                         <ul>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="services-sensor">ServicesSensor</a></li>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="sensor-spi">Sensor SPI</a></li>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="kpi_extractor_spi">KpiExtractorSPI</a></li>
+                         </ul>
+                    </li>
                 </ul>
             }
         </li>

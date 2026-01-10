@@ -609,5 +609,366 @@ Loggers.XLLOG.error("unable to call partner : {}", partnerName);
 ]]>
     </src>
 
+
+    <src name="inugami_logs_obfuscator" type="xml" title="inugami_logs_obfuscator maven dependency">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_logs_obfuscator</artifactId>
+</dependency>
+]]>
+    </src>
+
+        <src name="logback_obfuscator" type="xml" title="Logback configuration with dynamic masking">
+        <![CDATA[
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder  class="io.inugami.logs.obfuscator.encoder.ObfuscatorEncoder">
+        <pattern>[%d{dd/MM HH:mm:ss}]|%logger|%-5level|%thread|%msg\n</pattern>
+    </encoder>
+</appender>
+]]>
+    </src>
+    
+
+        <src name="my_module_obfuscator" type="java" title="Configure SPI implementations">
+        <![CDATA[
+open module com.demo.module {
+    provides io.inugami.framework.interfaces.monitoring.logger.ObfuscatorSpi with com.demo.module.UserEmail;
+}
+]]>
+    </src>
+            <src name="emailObfuscator" type="java" title="Email masking">
+        <![CDATA[
+public class EmailObfuscator implements ObfuscatorSpi {
+
+    // =========================================================================
+    // ATTRIBUTES
+    // =========================================================================
+    public static final  String  EMAIL = "email";
+    private static final Pattern REGEX = buildJsonRegex(EMAIL);
+
+    private final boolean enabled = enabled();
+
+    // =========================================================================
+    // CONSTRUCTORS
+    // =========================================================================
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    // =========================================================================
+    // API
+    // =========================================================================
+    @Override
+    public boolean accept(final LogEventDto event) {
+        return contains(event.getMessage(), EMAIL, EMAIL.toLowerCase(), EMAIL.toUpperCase());
+    }
+
+    @Override
+    public String obfuscate(final LogEventDto event) {
+        return replaceAll(event.getMessage(), REGEX, value ->  "xxx"+QUOT);
+    }
+}
+]]>
+    </src>
+
+                <src name="emailObfuscatorTest" type="java" title="Test your email masking">
+        <![CDATA[
+class EmailObfuscatorTest {
+
+    @Test
+    void accept_withPassword_shouldAccept() {
+        ObfuscatorSpi obfuscator = new EmailObfuscator();
+        assertThat(obfuscator.accept(buildEvent(" \"Authorization\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp\""))).isFalse();
+        assertThat(obfuscator.accept(buildEvent(" \"email\":\"john.smith@mock.inugami.io\""))).isTrue();
+    }
+
+    @Test
+    void obfuscate_withPassword_shouldObfuscate() {
+        ObfuscatorSpi obfuscator = new EmailObfuscator();
+        assertThat(obfuscator.obfuscate(buildEvent(" \"email\":\"john.smith@mock.inugami.io\"")))
+                .isEqualTo(" \"email\":\"xxx\"");
+    }
+
+    @Test
+    void isEnabled_nominal() {
+        ObfuscatorSpi obfuscator = new EmailObfuscator();
+        assertThat(obfuscator.enabled()).isTrue();
+    }
+
+    private LogEventDto buildEvent(final String message) {
+        return LogEventDto.builder()
+                          .message(message)
+                          .build();
+    }
+}
+]]>
+    </src>
       
+
+    <src name="servicesSensor_addData" type="java" title="Add metrics to Service sensor">
+<![CDATA[
+@RequiredArgsConstructor
+@Service
+public class UserService implements IUserService {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    // ...
+
+    //==================================================================================================================
+    // CREATE
+    //==================================================================================================================
+    @Transactional
+    @Override
+    public Collection<UserDTO> create(final Collection<UserDTO> values) {
+        //... validation
+        addKpi(values);
+        return userDao.create(values);
+    }
+
+    protected void addKpi(final Collection<UserDTO> values) {
+        Map<String, Long> buffer = new LinkedHashMap<>();
+        for (var user : values) {
+            final String domain = user.getEmail().split("@")[1];
+            if (buffer.containsKey(domain)) {
+                buffer.put(domain, buffer.get(domain) + 1);
+            } else {
+                buffer.put(domain, 1L);
+            }
+        }
+
+        for (var entry : buffer.entrySet()) {
+            ServicesSensor.addData(List.of(GenericMonitoringModelDTO.builder()
+                                                                    .addCallType(GenericModelCallType.REST)
+                                                                    .addCounterType(GenericModelCounterType.HITS)
+                                                                    .service("user")
+                                                                    .subService("email_domain")
+                                                                    .valueType(entry.getKey())
+                                                                    .value(entry.getValue())
+                                                                    .build()));
+        }
+
+    }
+}
+]]>
+    </src>
+
+    <src name="GenericMonitoringModelDTO" type="java" title="GenericMonitoringModelDTO">
+<![CDATA[
+@Slf4j
+@ToString(onlyExplicitlyIncluded = true)
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Setter
+@Getter
+public class GenericMonitoringModelDTO implements GenericMonitoringModel, Identifiable<String> {
+
+    private static final long          serialVersionUID = 4735410638475899702L;
+    public static final  String        EMPTY            = "";
+    public static final  String        SEPARATOR        = ":";
+    public static final  String        ANY              = "ANY";
+    public static final  String        NONE             = "NONE";
+    public static final  String        CALL_TYPE_REST   = "REST";
+    public static final  String        CALL_TYPE_JMS    = "JMS";
+    private              String        uid;
+    @EqualsAndHashCode.Include
+    private              String        asset;
+    @EqualsAndHashCode.Include
+    private              String        environment;
+    @EqualsAndHashCode.Include
+    private              String        instanceName;
+    @EqualsAndHashCode.Include
+    private              String        instanceNumber;
+    @EqualsAndHashCode.Include
+    private              String        counterType;
+    @EqualsAndHashCode.Include
+    private              String        device;
+    @EqualsAndHashCode.Include
+    private              String        callType;
+    @EqualsAndHashCode.Include
+    private              String        service;
+    @EqualsAndHashCode.Include
+    private              String        subService;
+    @EqualsAndHashCode.Include
+    private              String        valueType;
+    @EqualsAndHashCode.Include
+    private              String        timeUnit;
+    private              LocalDateTime date;
+    private              long          time;
+    private              String        errorCode;
+    private              String        errorType;
+    private              Object        value;
+    @ToString.Include
+    private              String        path;
+    private              String        data;
+    private              long          timestamp;
+    private              String        groupId;
+    private              String        artifactId;
+    private              String        version;
+    private              String        commitId;
+    private              String        commitDate;
+
+
+    // =========================================================================
+    // GETTERS & SETTERS
+    // =========================================================================
+    @Override
+    public boolean isUidSet() { }
+
+    public String getNonTemporalHash() {  }
+
+
+
+    public static class GenericMonitoringModelDTOBuilder {
+        public GenericMonitoringModelDTOBuilder from(final GenericMonitoringModel other) { }
+
+        public GenericMonitoringModelDTOBuilder addCallType(final GenericModelCallType value) { }
+
+        public GenericMonitoringModelDTOBuilder addCounterType(final GenericModelCounterType value) { }
+    }
+}
+]]>
+    </src>
+
+
+     <src name="MonitoringSensor" type="java" title="MonitoringSensor">
+<![CDATA[
+public interface MonitoringSensor extends NamedSpi {
+
+    MonitoringSensor buildInstance(final long interval,
+                                   final String query,
+                                   final ConfigHandler<String, String> configuration,
+                                   final MonitoringContextDTO context);
+
+
+    long getInterval();
+
+    List<GenericMonitoringModel> process();
+
+    default void shutdown() {
+    }
+}
+]]>
+    </src>
+
+
+
+     <src name="MonitoringSensorExample" type="java" title="Implement MonitoringSensor">
+<![CDATA[
+@Component
+public class MySensor implements MonitoringSensor {
+
+    public MonitoringSensor buildInstance(final long interval,
+                                   final String query,
+                                   final ConfigHandler<String, String> configuration,
+                                   final MonitoringContextDTO context){
+                return this;
+     }
+
+
+    public long getInterval(){
+        return 60000L;
+    }
+
+
+    public List<GenericMonitoringModel> process(){
+        return List.of(GenericMonitoringModelDTO.builder()
+                                                .addCallType(GenericModelCallType.REST)
+                                                .addCounterType(GenericModelCounterType.HITS)
+                                                .service("user")
+                                                .subService("email_domain")
+                                                .valueType("inugami.io")
+                                                .value(1)
+                                                .build());
+    }
+}
+]]>
+    </src>
+
+
+    <src name="KpiExtractorSPI" type="java" title="KpiExtractorSPI">
+<![CDATA[
+public interface KpiExtractorSPI {
+
+
+    default boolean accept(final RequestData request){
+        return true;
+    }
+
+    default List<GenericMonitoringModelDTO> extractFromRequest(final KpiExtractorContext context){
+        return List.of();
+    }
+    default List<GenericMonitoringModelDTO> extractFromResponse(final KpiExtractorContext context){
+        return List.of();
+    }
+}
+
+]]>
+    </src>
+
+        <src name="KpiExtractorContext" type="java" title="KpiExtractorContext">
+<![CDATA[
+@ToString(onlyExplicitlyIncluded = true)
+@Setter
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+public class KpiExtractorContext {
+    private RequestData   request;
+    private ResponseData  response;
+    private LocalDateTime now;
+    private JsonNode      requestContent;
+    private JsonNode      responseContent;
+}
+]]>
+    </src>
+
+
+
+        <src name="UserKpiExtractor" type="java" title="Custom KPI extractor">
+<![CDATA[
+@Slf4j
+@Component
+public class UserKpiExtractor implements KpiExtractorSPI {
+    // =================================================================================================================
+    // ACCEPT
+    // =================================================================================================================
+    @Override
+    public boolean accept(final RequestData request) {
+        return request.getUri().contains("/user") && HttpVerbs.POST.equals(request.getMethod());
+    }
+
+    // =================================================================================================================
+    // ON BEGIN
+    // =================================================================================================================
+
+    @Override
+    public List<GenericMonitoringModelDTO> extractFromRequest(final KpiExtractorContext context) {
+        return List.of(GenericMonitoringModelDTO.builder()
+                                                .service("demo")
+                                                .subService("user_request")
+                                                .value(1L)
+                                                .build());
+    }
+
+    // =================================================================================================================
+    // ON BEGIN
+    // =================================================================================================================
+    @Override
+    public List<GenericMonitoringModelDTO> extractFromResponse(final KpiExtractorContext context) {
+        return List.of(GenericMonitoringModelDTO.builder()
+                                                .service("demo")
+                                                .subService("user_response")
+                                                .value(1L)
+                                                .build());
+    }
+}
+
+]]>
+    </src>
 </xml>

@@ -771,6 +771,280 @@
                                 <inu-code url="data/inugami/framework/monitoring.xml" tag="XLLOG_usage"></inu-code>
                             </inu-doc-item>
                         </article>
+
+                        <!--****************************************************************************************
+                        ** Obfucation
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="log-masking">Log Data Sensitive Masking</h2></a>
+                            </header>
+
+                            <p>
+                                While logs are invaluable tools, it is imperative to remain vigilant and ensure that
+                                sensitive information is never leaked within them. Regulations such as <em>GDPR</em> have forced
+                                companies to be much more rigorous regarding the data stored in their logging systems.
+                            </p>
+                            
+
+                            <p>
+                                To assist in this critical task, Inugami provides a specialized SLF4J Encoder.
+                                This encoder allows for automated log masking through SPI (Service Provider Interface)
+                                implementations, ensuring that sensitive data is protected before it ever reaches your
+                                storage or indexing engine.
+                            </p>
+
+                            <p>
+                                The <em>inugami_logs_obfuscator</em> module is specifically designed to handle log masking.
+                                This dedicated module separates the obfuscation logic from the core framework,
+                                providing a clean and pluggable security layer for any Inugami-based application.
+                            </p>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="inugami_logs_obfuscator"></inu-code>
+
+                            <p>
+                                This encoder is a standard Logback encoder. To activate it, simply configure it within your logback.xml file.
+                            </p>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="logback_obfuscator"></inu-code>
+
+                            <p>
+                                Out of the box, this module includes several specialized obfuscators:
+                            </p>
+                            <dl>
+                                <dt>Password Obfuscation</dt>
+                                <dd>Securely masks passwords across different formats using BasicPasswordObfuscator, XMLPasswordObfuscator, and JsonPasswordObfuscator.</dd>
+
+                                <dt>Authorization Headers</dt>
+                                <dd>The Authorization header is automatically masked via JsonAuthorizationObfuscator and BasicAuthorizationObfuscator.</dd>
+
+                                <dt>CORS & Metadata Cleaning</dt>
+                                <dd>
+                                    To reduce log noise and prevent metadata leakage, the Access-Control-Allow-Headers 
+                                    and Access-Control-Expose-Headers are obfuscated via their respective dedicated obfuscators.
+                                </dd>
+
+                                <dt>Cookie Protection</dt>
+                                <dd>All session and tracking cookies are masked using the CookieObfuscator to prevent session hijacking via log exposure.</dd>
+                            </dl>
+
+
+                            <p>
+                                Just like every other feature in the Inugami ecosystem, the obfuscation engine is 
+                                fully extensible. You can enrich the framework with your own custom masking strategies
+                                by implementing the <em>ObfuscatorSpi</em> interface. This SPI-based architecture ensures that
+                                your specific business security requirements can be integrated seamlessly without
+                                modifying the core framework.
+                            </p>
+
+                            <cite class="warning">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        When implementing custom obfuscators, Java SPI (Service Provider Interface) should always be prioritized.
+                                    </div>
+                                </header>
+                                <p>
+                                    Spring Boot initializes in two distinct phases; during the very first phase, 
+                                    the Spring context is not yet loaded. However, logs containing sensitive information
+                                    can still be produced during this early startup.
+                                </p>
+
+                                <p>
+                                    Unlike Spring-managed beans, Java SPI interfaces are loaded as soon as the Logback
+                                    encoder is instantiated. This ensures there is zero risk of data leakage during the
+                                    application's bootstrap process, as the security layer is active before the first
+                                    line of the Spring context even runs.
+                                </p>
+                            </cite>
+
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="my_module_obfuscator"></inu-code>
+
+                            <p>
+                                The majority of information requiring masking will be found within <strong>IOLOG</strong>
+                                or <strong>PARTNERLOG</strong> entries. In most use cases, these logs consist of JSON payloads.
+                                Inugami is specifically designed to streamline the implementation of custom SPIs tailored
+                                for this type of structured data.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="emailObfuscator"></inu-code>
+
+                            <p>
+                                Reliability is key when handling sensitive data. Inugami encourages a "test-first"
+                                approach to validate your custom strategies. You can simulate log events and ensure 
+                                your masking logic behaves as expected before deploying to production.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="emailObfuscatorTest"></inu-code>
+
+                            <p>
+                                l'obfuscation peut également permettre de réduire la taille de vos logs sur des données qui ont assez peu d'intéret dans vos logs
+                            </p>
+
+                            <cite class="success">
+                                <header>
+                                    <i>
+                                    </i>
+                                    <div>
+                                        Log obfuscation can also be used to reduce log size by masking or truncating data
+                                        that holds little to no value for your monitoring needs.
+                                    </div>
+                                </header>
+                            </cite>
+                        </article>
+
+                        <!--****************************************************************************************
+                        ** Metrics
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="metrics">Metrics</h2></a>
+                            </header>
+
+                            <p>
+                                Logs are perfect tools for granular, real-time analysis. However, when it comes to
+                                long-term indicator retention, the sheer volume of log data becomes a significant hurdle.
+                            </p>
+
+                            <p>
+                                Metric indicators are much more lightweight, as they aggregate data over longer periods
+                                (typically 1 minute).
+                            </p>
+
+                            <p>
+                                The inugami_monitoring_sensors_default module provides out-of-the-box technical sensors
+                                that export key performance indicators, including:
+                            </p>
+
+                           <dl>
+                                <dt>CPU Consumption</dt>
+                                <dd>Real-time monitoring of processor usage.</dd>
+
+                                <dt>Memory Usage</dt>
+                                <dd>Tracking of heap and non-heap memory allocation.</dd>
+
+                                <dt>Thread Consumption</dt>
+                                <dd>Monitoring of active, peak, and daemon thread counts to detect potential deadlocks or resource exhaustion.</dd>
+                            </dl>
+
+                            <p>
+                                In our example, all these indicators are aggregated and stored within the <code>dev-demo-metrics-yyyy-MM-dd</code> index.
+                            </p>
+
+                            <p>
+                                You can implement your own indicators using two different approaches:
+                            </p>
+                            <ul>
+                                <li>
+                                    Using the ServicesSensor class: This is the simplest and fastest method for standard use cases.
+                                </li>
+
+                                <li>
+                                   Implementing the MonitoringSensor SPI: This approach offers deeper control for more complex requirements. 
+                                </li>
+                            </ul>
+                            
+
+                            <p>
+                                While ServicesSensor is easier to use, the SPI implementation provides maximum flexibility 
+                                or managing the sensor's lifecycle and data collection logic.
+                            </p>
+
+
+                            <inu-doc-item title="ServicesSensor" [level]="3" href="inugami/framework/monitoring#services-sensor" id="services-sensor">
+                                
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="servicesSensor_addData"></inu-code>
+
+                                <p>
+                                  The <code>ServicesSensor</code> class provides the addData method, which allows you to add a list
+                                  of <code>GenericMonitoringModelDTO</code> objects to its monitoring context.  
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="GenericMonitoringModelDTO"></inu-code>
+
+                                <cite class="danger">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            The value defined within the <code>GenericMonitoringModelDTO</code> object must be a <strong>numeric value</strong>.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <figure>
+                                    <img src="images/framework/kpi_service_sensor.png" alt="KPI in Kibana" width="90%" />
+                                </figure>
+                            </inu-doc-item>
+
+
+                            <inu-doc-item title="Sensor SPI" [level]="3" href="inugami/framework/monitoring#sensor-spi" id="sensor-spi">
+                                <p>
+                                    For implementing more complex sensors, you must implement the MonitoringSensor interface.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="MonitoringSensor"></inu-code>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="MonitoringSensorExample"></inu-code>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            For complex sensors, it is highly recommended to implement the 
+                                            MonitoringSensor through the Spring Context. This allows your sensor to
+                                            leverage the full suite of Spring features, such as dependency injection 
+                                            (Inversion of Control), automated database access, and seamless integration
+                                            with other managed beans.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <cite class="warning">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Sensor management is entirely asynchronous and executed in parallel.
+                                            You must remain vigilant regarding the data passed to your sensors and
+                                            how they retrieve information.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                            </inu-doc-item>
+
+                            <inu-doc-item title="KpiExtractorSPI" [level]="3" href="inugami/framework/monitoring#kpi_extractor_spi" id="kpi_extractor_spi">
+                                <p>
+                                    <strong>Many business indicators</strong> can be derived from incoming requests or
+                                    server responses. In these cases, it is mandatory to use SPI implementations of the
+                                    <code>KpiExtractorSPI</code> interface.
+                                </p>
+
+                                <p>
+                                    Analyzing and retrieving data from these elements can be resource-intensive; therefore,
+                                    we must ensure that this process never degrades the user experience. To achieve this,
+                                    the service utilizing KpiExtractorSPI implementations performs these tasks asynchronously,
+                                    decoupling business data extraction from the main execution flow.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="KpiExtractorSPI"></inu-code>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="KpiExtractorContext"></inu-code>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Request and response payloads are transformed into <em>Jackson JsonNode</em> objects
+                                            <strong>only once</strong>. This architecture allows you to chain multiple KPI extractors
+                                            without any performance degradation.
+                                        </div>
+                                    </header>
+                                </cite>
+                                
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="UserKpiExtractor"></inu-code>
+
+                                 <figure>
+                                    <img src="images/framework/kpi_service_sensor.png" alt="KPI from UserKpiExtractor in Kibana" width="90%" />
+                                </figure>
+                            </inu-doc-item>
+                        </article>
                 </main>
             </section>
 
