@@ -60,7 +60,7 @@
                         
 
                          <!--****************************************************************************************
-                        ** ARCHETYPE
+                        ** GETTING STARTED
                         ****************************************************************************************-->
                         <article>
                             <header>
@@ -111,7 +111,7 @@
                                 dashboard, all in a very simple manner. The dashboard in question is as follows:
                             </p>
                             <figure>
-                                <img src="images/framework/kibana_low.png" alt="Kinaba dashboard" width="90%" />
+                                <img src="images/framework/kibana_low.png" alt="Kibana dashboard" width="90%" />
                                 <caption>
                                     <a href="images/framework/kibana.png" target="_blank">Show full size</a>
                                 </caption>
@@ -312,7 +312,7 @@
                                 </p>
 
                                 <figure>
-                                    <img src="images/framework/kibana_import.png" alt="Kinaba import" width="90%" />
+                                    <img src="images/framework/kibana_import.png" alt="Kibana import" width="90%" />
                                 </figure>
 
                                 <cite class="success">
@@ -327,7 +327,7 @@
                                 </cite>
                                 
                                 <figure>
-                                    <img src="images/framework/kibana_low.png" alt="Kinaba dashboard" width="90%" />
+                                    <img src="images/framework/kibana_low.png" alt="Kibana dashboard" width="90%" />
                                     <caption>
                                         <a href="images/framework/kibana.png" target="_blank">Show full size</a>
                                     </caption>
@@ -349,6 +349,69 @@
                                     </header>
                                 </cite>
                             </inu-doc-item>
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** Lifecycle
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="lifecycle">Application Lifecycle & User Journey Tracking</h2></a>
+                            </header>
+
+                             <figure>
+                                <img src="images/framework/lifecycle.svg" alt="Lifecycle" width="90%" />
+                                <figcaption>
+                                    The Inugami traceability stack: 
+                                    From persistent device identification to granular request logging (IOLOG/PARTNERLOG).
+                                </figcaption>
+                            </figure>
+
+                            <p>
+                                When using an application, a specific lifecycle occurs. Upon login, the user makes an initial
+                                call from the frontend. The backend is then invoked to process the request, potentially
+                                calling external web services to complete parts of the processing, before finally responding to the frontend.
+                            </p>
+
+                            <p>
+                                This process repeats multiple times throughout the user's session. Later, the user may
+                                return and perform new operations. The question is: how can we trace this entire journey?
+                            </p>
+
+
+                            <strong>
+                                Inugami provides several trackers to reconstruct user actions:
+                            </strong>
+
+                            <dl> 
+                                <dt>x-device-identifier</dt>
+                                <dd>A unique ID per user, generated when the application is first installed or during
+                                    the first web page load. This identifier is stored on the frontend and transmitted
+                                    with every request.
+                                </dd>
+
+                                <dt>x-correlation-id</dt>
+                                <dd>
+                                    The identifier for the user's specific session.
+                                </dd>
+
+                                <dt>x-b3-traceid</dt>
+                                <dd>
+                                    The ID for the current request. This identifier is propagated during calls to internal web services.
+                                </dd>
+
+                                <dt>x-conversation-id</dt>
+                                <dd>
+                                    To track a specific business process, it may be necessary to generate a dedicated identifier.
+                                    This ID is managed by the frontend and propagated through all sub-services.
+                                </dd>
+                            </dl>
+                            <p>
+                                Log Generation: Upon receiving a request, each web service generates two <strong>IOLOG</strong>
+                                (in and out) to track received and emitted information. During calls to external web services,
+                                the calling application generates two PARTNERLOGs (in and out) to trace inter-service communications.
+                            </p>
                         </article>
 
                         <!--****************************************************************************************
@@ -430,7 +493,7 @@
                                     </header>
                                 </cite>
                                 <figure>
-                                    <img src="images/framework/kibana_iolog_low.png" alt="Kinaba dashboard" width="90%" />
+                                    <img src="images/framework/kibana_iolog_low.png" alt="Kibana dashboard" width="90%" />
                                     <caption>
                                         <a href="images/framework/kibana_iolog.png" target="_blank">Show full size</a>
                                     </caption>
