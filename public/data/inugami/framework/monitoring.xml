@@ -1419,11 +1419,17 @@ inugami:
 ]]>
     </src>
 
-        <src name="interceptable" type="java" title="Exclud interception by SPI">
+        <src name="MyTechnicalFilter" type="java" title="Exclud interception by SPI">
 <![CDATA[
-@FunctionalInterface
-public interface Interceptable {
-    boolean isInterceptable(final RequestData request);
+@Component
+public class MyTechnicalFilter implements Interceptable {
+
+    @Override
+    public boolean isInterceptable(final RequestData request) {
+        // Example: Do not intercept if a specific header is present
+        String bypassHeader = request.getHeaders().get("X-Inugami-Skip");
+        return !"true".equalsIgnoreCase(bypassHeader);
+    }
 }
 ]]>
     </src>
