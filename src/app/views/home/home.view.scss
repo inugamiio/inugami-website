@@ -1,10 +1,11 @@
 /**/
+figure{
+    display: flex;
+    align-items: center;
+}
+
 .inugami-intro{
     header{
-        figure{
-            display: flex;
-            align-items: center;
-        }
         p{
             padding-right: 2rem;
             padding-left: 2rem;
