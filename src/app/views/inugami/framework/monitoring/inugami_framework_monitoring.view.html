@@ -1295,7 +1295,7 @@
                                 <li>Via SPI Service: By implementing the <code>Interceptable</code> SPI interface for fine-grained, programmatic control.</li>
                             </ul>
 
-                            <inu-doc-item title="Exclud by properties" [level]="3" href="inugami/framework/monitoring#dependencies" id="exclud_by_properties">
+                            <inu-doc-item title="Exclude by properties" [level]="3" href="inugami/framework/monitoring#exclude_by_properties" id="exclude_by_properties">
                                 <inu-code url="data/inugami/framework/monitoring.xml" tag="exclud_url_interception"></inu-code>
 
 
@@ -1315,7 +1315,7 @@
 
                             </inu-doc-item>
 
-                            <inu-doc-item title="Exclud by SPI" [level]="3" href="inugami/framework/monitoring#dependencies" id="MyTechnicalFilter">
+                            <inu-doc-item title="Exclude by SPI" [level]="3" href="inugami/framework/monitoring#exclude_by_spi" id="exclude_by_spi">
                                 <inu-code url="data/inugami/framework/monitoring.xml" tag="interceptable"></inu-code>
 
                                 <dl>
@@ -1330,6 +1330,83 @@
                                 </dl>
                             </inu-doc-item>
 
+                        </article>
+
+                        <!--****************************************************************************************
+                        ** Tools
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="tools">Tools</h2></a>
+                            </header>
+
+                            <inu-doc-item title="LogInfoDTO" [level]="3" href="inugami/framework/monitoring#log_info_dto" id="log_info_dto">
+                                <p>
+                                    Sometimes, multiple pieces of information need to be traced simultaneously. 
+                                    In log-indexing environments such as ElasticSearch or Datadog, managing the volume 
+                                    of generated logs is critical for both performance and cost control.
+                                    To facilitate data aggregation and reduce log verbosity, Inugami provides the 
+                                    <code>LogInfoDTO</code> class.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="LogInfoDTO_usage"></inu-code>
+                            </inu-doc-item>
+
+                            <inu-doc-item title="ConsoleColors" [level]="3" href="inugami/framework/monitoring#console_colors" id="console_colors">
+                                <p>
+                                    In the world of CLI (Command Line Interface) and terminal-based monitoring, speed
+                                    of interpretation is key. The ConsoleColors utility provides a full set of ANSI escape
+                                    codes and high-level rendering methods to make your terminal outputs readable and actionable.
+                                </p>
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="ConsoleColors"></inu-code>
+
+                                <p>
+                                    <strong>Visual State Rendering :</strong>
+                                    Beyond just providing colors, Inugami introduces a Semantic Rendering API. 
+                                    Instead of manually concatenating color codes, you can render functional states directly.
+                                </p>
+                                <ul>
+                                    <li>State.ERROR: Automatically renders a bold red "X" with your message.</li>
+                                    <li>State.SUCCESS: Renders a green "✔" (checkmark).</li>
+                                    <li>State.WARN: Renders a bold yellow "~" (tilde) for non-blocking alerts.</li>
+                                </ul>
+                                <p>
+                                    This ensures that your local logs, startup banners, or custom monitoring tools speak a consistent visual language.
+                                </p>
+
+
+                                <p>
+                                    <strong>Comprehensive ANSI Support :</strong>
+                                    The class provides a exhaustive library of styles:
+                                </p>
+                                <ul>
+                                    <li>Regular & Bold: For standard hierarchy.</li>
+                                    <li>High Intensity & Backgrounds: To make critical errors impossible to miss.</li>
+                                    <li>Underline & Reset: For clean formatting of tables or headers.</li>
+                                </ul>
+
+
+                                <p>
+                                    <strong>Layout Utilities</strong>
+                                </p>
+                                <ul>
+                                    <li>createLine(deco, size): Quickly generate visual separators (like <code>----------</code> or <code>==========</code>)
+                                        to structure your console reports.</li>
+
+                                    <li>CLEAR_ALL</li>
+                                    <li>A quick escape code to reset the terminal state.</li>
+                                </ul>
+
+                                <p>
+                                    Monitoring shouldn't be a wall of grey text. With ConsoleColors, Inugami allows you
+                                    to build meaningful terminal dashboards. Use renderState to provide immediate visual
+                                    feedback during application startup or within your custom shell scripts. 
+                                    High readability leads to faster debugging and a better developer experience.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="ConsoleColors_usage"></inu-code>
+
+
+                            </inu-doc-item>
                         </article>
                 </main>
             </section>

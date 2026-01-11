@@ -1,0 +1,491 @@
+<xml>
+    <src name="dependencies_maven" type="xml" title="Maven dependencies">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_test</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_logs_obfuscator</artifactId>
+</dependency>
+]]>
+    </src>
+
+
+            <src name="model_json" type="json" title="model.json">
+        <![CDATA[
+{
+  "email" : "john.smith@mock.org",
+  "firstName" : "John",
+  "lastName" : "Smith",
+  "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+}
+]]>
+    </src>
+
+
+        <src name="getter_json" type="json" title="getter.json">
+        <![CDATA[
+{
+  "getEmail" : "john.smith@mock.org",
+  "getFirstName" : "John",
+  "getLastName" : "Smith",
+  "getUid" : "bb895294-efe7-484b-b670-14d004eaf461"
+}
+]]>
+    </src>
+
+
+        <src name="tostring" type="text" title="toString.txt">
+        <![CDATA[
+UserDTO(uid=bb895294-efe7-484b-b670-14d004eaf461, firstName=John, lastName=Smith, email=john.smith@mock.org)
+]]>
+    </src>
+
+    <src name="logback_configuration_test" type="xml" title="logback.xml">
+        <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="logTest" class="io.inugami.commons.test.logs.LogTestAppender">
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{dd/MM HH:mm:ss}]|%logger|%-5level|%thread|%msg\n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="logTest"/>
+    </root>
+
+</configuration>
+]]>
+    </src>
+
+        <src name="log_test_service" type="java" title="UserService.java">
+        <![CDATA[
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class UserService implements IUserService {
+
+    private final IUserDao userDao;
+
+    @Override
+    public UserDTO getById(final String id, final Boolean full) {
+        assertRegexMatch(READ_USER_UID_REQUIRED, UID_REGEX, id);
+        log.info("search user : \n{}", LogInfoDTO.builder()
+                                                 .with("uid", id)
+                                                 .with("full", full)
+                                                 .build());
+        final var result = userDao.getById(id, full);
+        log.debug("found user : {}", result);
+
+        WarningContext.getInstance().addWarnings(UserWarning.READ_PARTIAL_INFO);
+
+        assertNotNull(READ_USER_NOT_FOUND, result);
+        return result;
+    }
+}
+]]>
+    </src>
+
+            <src name="log_test_service_test" type="java" title="UserServiceTest.java">
+        <![CDATA[
+@ExtendWith(MockitoExtension.class)
+class UserServiceTest {
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    @Mock
+    private IUserDao    userDao;
+    @InjectMocks
+    private UserService userService;
+
+    //==================================================================================================================
+    // READ
+    //==================================================================================================================
+    @Test
+    void getByIds_nominal() {
+        when(userDao.getByIds(List.of(UnitTestData.UID))).thenReturn(List.of(buildUserDTO()));
+        assertText(userService.getByIds(List.of(UnitTestData.UID)),
+                   """
+                           [ {
+                             "audit" : {
+                               "createdBy" : "system",
+                               "createdDate" : "2023-05-27T12:00:00",
+                               "lastModifiedBy" : "user-1",
+                               "lastModifiedDate" : "2023-06-01T12:00:00",
+                               "version" : 1
+                             },
+                             "email" : "john.smith@mock.org",
+                             "firstName" : "John",
+                             "lastName" : "Smith",
+                             "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+                           } ]
+                           """);
+    }
+    //==================================================================================================================
+    // TOOLS
+    //==================================================================================================================
+    private UserDTO buildUserDTO() {
+        return UserDTO.builder()
+                      .uid(UnitTestData.UID)
+                      .firstName(UnitTestData.FIRSTNAME)
+                      .lastName(UnitTestData.LASTNAME)
+                      .email(UnitTestData.EMAIL)
+                      .audit(AuditDTO.builder()
+                                     .createdBy("system")
+                                     .createdDate(UnitTestData.DATE_TIME.minusDays(5))
+                                     .lastModifiedBy("user-1")
+                                     .lastModifiedDate(UnitTestData.DATE_TIME)
+                                     .version(1L)
+                                     .build())
+                      .build();
+    }
+
+}
+]]>
+    </src>
+
+
+
+                <src name="UnitTestHelper" type="java" title="UnitTestHelper">
+        <![CDATA[
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class UnitTestHelper {
+
+    // =========================================================================
+    // LOAD / READ FILE
+    // =========================================================================
+    public static String readFileIntegration(final String integrationPath) { }
+    public static String readFileRelative(final String relativePath) { }
+    public static String readFile(final File file) { }
+    public static String readFile(final String file) { }
+    public static void fileCacheClean() { }
+
+    // =========================================================================
+    // BUILD PATH
+    // =========================================================================
+    public static File buildTestFilePath(final String... filePathParts) { }
+    public static File buildIntegrationTestFilePath(final String... filePathParts) 
+    public static File buildPath(final String... parts) { }
+
+    // =========================================================================
+    // STUB
+    // =========================================================================
+    public static <T, ID> T loadIntegrationTestStub(final InvocationOnMock answer,
+                                                    final String folder,
+                                                    final Function<T, ID> getId,
+                                                    final Class<? extends T> userDtoClass) { }
+
+    public static <T, ID> T loadIntegrationTestStub(final InvocationOnMock answer,
+                                                    final String folder,
+                                                    final Function<T, ID> getId,
+                                                    final Function<Object[], ID> idResolver,
+                                                    final Class<? extends T> userDtoClass) { }
+
+    public static <T, ID> T loadIntegrationTestStub(final InvocationOnMock answer,
+                                                    final String folder,
+                                                    final Function<T, ID> getId,
+                                                    final Class<? extends T> userDtoClass,
+                                                    final List<T> cache) { }
+
+    public static <T, ID> T loadIntegrationTestStub(final InvocationOnMock answer,
+                                                    final String folder,
+                                                    final Function<T, ID> getId,
+                                                    final Function<Object[], ID> idResolver,
+                                                    final Class<? extends T> userDtoClass,
+                                                    final List<T> cache) { }
+
+    public static <T, ID> T loadRelativeStub(final InvocationOnMock answer,
+                                             final String folder,
+                                             final Function<T, ID> getId,
+                                             final Class<? extends T> userDtoClass) { }
+
+    public static <T, ID> T loadRelativeStub(final InvocationOnMock answer,
+                                             final String folder,
+                                             final Function<T, ID> getId,
+                                             final Function<Object[], ID> idResolver,
+                                             final Class<? extends T> userDtoClass) { }
+
+    public static <T, ID> T loadRelativeStub(final InvocationOnMock answer,
+                                             final String folder,
+                                             final Function<T, ID> getId,
+                                             final Class<? extends T> userDtoClass,
+                                             final List<T> cache) { }
+
+    public static <T, ID> T loadRelativeStub(final InvocationOnMock answer,
+                                             final String folder,
+                                             final Function<T, ID> getId,
+                                             final Function<Object[], ID> idResolver,
+                                             final Class<? extends T> userDtoClass,
+                                             final List<T> cache) { }
+
+    // =========================================================================
+    // JSON
+    // =========================================================================
+    public static <T> T convertFromJson(final byte[] data, final TypeReference<T> refObjectType) { }
+    public static <T> T convertFromJson(final byte[] data, final Class<? extends T> objectType) { }
+    public static <T> T loadIntegrationJson(final String path, final TypeReference<T> refObjectType) { }
+    public static <T> T loadIntegrationJson(final String path, final Class<? extends T> objectType) { }
+    public static <T> T loadJson(final String relativePath, final TypeReference<T> refObjectType) { }
+    public static <T> T loadJson(final String relativePath, final Class<? extends T> objectType) { }
+    public static String convertToJson(final Object value) { }
+    public static String convertToJsonWithoutIndent(final Object value) { }
+    public static <T> T convertFromJson(final String json, final TypeReference<T> refObjectType) { }
+    public static <T> T convertFromJson(final String json, final Class<? extends T> objectType) { }
+
+    // =========================================================================
+    // YAML
+    // =========================================================================
+    public static <T> T loadRelativeYaml(final String path, final Class<? extends T> objectType) { }
+    public static JsonNode loadRelativeYaml(final String path) { }
+    public static <T> T loadIntegrationYaml(final String path, final Class<? extends T> objectType) { }
+    public static JsonNode loadIntegrationYaml(final String path) { }
+    public static <T> T loadYaml(final String path, final Class<? extends T> objectType) { }
+    public static <T> T convertFromYaml(final String content, final TypeReference<T> userDtoClass) { }
+    public static JsonNode loadYaml(final String path) { }
+    public static <T> T convertFromYaml(final String content, final Class<? extends T> userDtoClass) { }
+    public static JsonNode convertFromYaml(final String content) { }
+
+    // =========================================================================
+    // TEXT
+    // =========================================================================
+    public static void assertTextIntegration(final String value, final String path, final LineMatcher... lineMatchers) { }
+    public static void assertTextIntegration(final Object value, final String path, final LineMatcher... lineMatchers){ }
+    public static void assertTextRelative(final String value, final String path, final LineMatcher... lineMatchers) { }
+    public static void assertTextRelative(final Object value, final String path, final LineMatcher... lineMatchers){ }
+    public static void assertText(final Object value, final String jsonRef, final LineMatcher... lineMatchers) { }
+    public static void assertText(final String value, final String jsonRef, final LineMatcher... lineMatchers){ }
+    public static LineMatcher[] buildSkipLines(final int... skipLines) { }
+    public static void assertDto(final AssertDtoContext context) { }
+    public static <T> T waitForDone(final long timeout, final CompletableFuture<T> onDone)throws TimeoutException { }
+
+    public static  <T> T waitForDone(final WaitContext<T> context) throws TimeoutException { }
+
+    // =========================================================================
+    // assertLogs
+    // =========================================================================
+    public static void assertLogs(final VoidFunctionWithException process,
+                                  final Class<?> objClass,
+                                  final String logs,
+                                  final LineMatcher... matchers) { }
+
+    public static void assertLogsIntegration(final VoidFunctionWithException process,
+                                             final Class<?> objClass,
+                                             final String logs,
+                                             final LineMatcher... matchers){ }
+
+    
+    public static void assertLogs(final VoidFunctionWithException process,
+                                  final String pattern,
+                                  final String logs,
+                                  final LineMatcher... matchers) { }
+    public static void assertLogsIntegration(final VoidFunctionWithException process,
+                                             final String pattern,
+                                             final String logs,
+                                             final LineMatcher... matchers) { }
+
+
+    public static void assertLogs(final AssertLogContext context) { }
+
+
+    // =========================================================================
+    // ASSERT ENUM
+    // =========================================================================
+    public static void assertEnum(final Class<? extends Enum<?>> enumClass,
+                                  final String reference,
+                                  final LineMatcher... matchers) { }
+
+    public static void assertEnumRelative(final Class<? extends Enum<?>> enumClass,
+                                          final String path,
+                                          final LineMatcher... matchers) { }
+
+
+    // =========================================================================
+    // EXCEPTIONS
+    // =========================================================================
+    public static void assertThrows(final ExecutableFunction handler) { }
+
+    public static void assertThrows(final String errorMessage,
+                                    final ExecutableFunction handler) { }
+
+    public static void assertThrows(final Class<? extends Exception> errorClass,
+                                    final ExecutableFunction handler) { }
+
+    public static void assertThrows(final Class<? extends Exception> errorClass,
+                                    final String errorMessage,
+                                    final ExecutableFunction handler) { }
+    public static void assertThrows(final ErrorCode errorCode, final ExecutableFunction handler) { }
+    public static void assertThrows(final ErrorCode errorCode, final ExecutableFunction handler, final String path) { }
+
+    public static void throwException(final Exception error) { }
+
+
+    // =========================================================================
+    // ERROR CODE
+    // =========================================================================
+    public static void assertErrorCode(final String path, final ErrorCode... errorCodes) { }
+    public static void assertErrorCodeUnique(final ErrorCode... errorCodes) { }
+    public static void assertWarningCode(final String path, final Warning... warnings) { }
+    public static void assertWaringCodeUnique(final Warning... warnings) { }
+
+
+    // =========================================================================
+    // Utility class
+    // =========================================================================
+    public static void assertUtilityClass(final Class<?> utilityClass) { }
+    public static void assertUtilityClassLombok(final Class<?> utilityClass) { }
+
+    // =========================================================================
+    // DATA
+    // =========================================================================
+    public static String getRandomUid() { }
+    public static String getRandomWord() { }
+    public static String getRandomCategory() { }
+    public static String getRandomLabel() { }
+    public static String getRandomPhrase() { }
+    public static String getRandomPhrase(final int nbWordMin, final int nbWordMax, final boolean isLabel) { }
+    public static String getRandomSection() { }
+    public static String getRandomSection(final int nbLine, final int nbWordMin, final int nbWordMax) { }
+    public static double getRandomDouble(final double min, final double max) { }
+    public static int    getRandomBetween(final int start, final int end) { }
+}
+]]>
+    </src>
+
+
+    <src name="UnitTestData" type="java" title="UnitTestData">
+        <![CDATA[
+@UtilityClass
+public class UnitTestData {
+
+    // =========================================================================
+    // DATA
+    // =========================================================================
+    public static final long          ID                = 1L;
+    public static final long          ID_OTHER          = 2L;
+    public static final String        OTHER             = "XXX";
+    public static final String[]      LOREM             = DataGeneratorUtils.LOREM;
+    public static final String[]      CATEGORY          = DataGeneratorUtils.CATEGORY;
+    public static final LocalDate     TODAY             = LocalDate.now();
+    public static final LocalDateTime NOW_UTC           = LocalDateTime.now(ZoneOffset.UTC);
+    public static final LocalDateTime DATE_TIME         = LocalDateTime.of(2023, 6, 1, 12, 0, 0);
+    public static final String        UID               = "bb895294-efe7-484b-b670-14d004eaf461";
+    public static final String        UID_CONTRACTED    = "bb895294efe7484bb67014d004eaf461";
+    public static final String        DEVICE_IDENTIFIER = "4547abf0-4bd2-4ff7-ac6c-4eb27cd83c10";
+    public static final String        CORRELATION_ID    = "57f5a259-87e0-41c9-b56e-0332dcd81887";
+    public static final String        CONVERSATION_ID   = "90b79730-7276-402b-9fe2-be1543f484e4";
+    public static final String        TRACE_ID          = "edff7c9651a5";
+    public static final String        EMAIL             = "john.smith@mock.org";
+    public static final String        FIRSTNAME         = "John";
+    public static final String        LASTNAME          = "Smith";
+    public static final String        LASTNAME2         = "Lalonde";
+    public static final String        LOREM_IPSUM       = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+    public static final String        LOREM_IPSUM_2     = "Suspendisse in quam in felis mollis ullamcorper ac in lectus";
+    public static final String        LOREM_IPSUM_3     = "Nulla non leo vitae nunc aliquam mollis";
+    public static final String        LOREM_IPSUM_4     = "Duis fringilla facilisis dui sed luctus.";
+    public static final String        NAVS13_1          = "7564971247732";
+    public static final String        NAVS13_2          = "7560769504407";
+    public static final String        NAVS13_3          = "7566987985080";
+    public static final String        PHONE_NUMBER_1    = "0615031522";
+    public static final String        PHONE_NUMBER_2    = "0225993475";
+    public static final String        PHONE_NUMBER_3    = "0624455065";
+
+    public static final String      STREET_NAME   = "du Château";
+    public static final String      STREET_TYPE   = "Chem.";
+    public static final String      CITY          = "Cheseaux-sur-Lausanne";
+    public static final String      ZIP_CODE      = "1033";
+    public static final String      STREET_NUMBER = "10";
+    public static final String      CANTON        = "VD";
+    public static final String      NATIONALITY   = "CH";
+    // =========================================================================
+    // USERS
+    // =========================================================================
+    public static final UserDataDTO USER_1        = UserDataDTO.builder()
+                                                               .id(1L)
+                                                               .sex(UserDataDTO.Sex.FEMALE)
+                                                               .firstName("Émilie")
+                                                               .lastName(LASTNAME2)
+                                                               .email("emilie.lalonde@mock.org")
+                                                               .phoneNumber(PHONE_NUMBER_1)
+                                                               .old(35)
+                                                               .birthday(LocalDate.of(1988, 4, 12))
+                                                               .socialId(NAVS13_1)
+                                                               .nationality(NATIONALITY)
+                                                               .canton(CANTON)
+                                                               .streetName(STREET_NAME)
+                                                               .streetNumber(STREET_NUMBER)
+                                                               .streetType(STREET_TYPE)
+                                                               .zipCode(ZIP_CODE)
+                                                               .city(CITY)
+                                                               .deviceIdentifier("401f0498-c43f-43ad-a3f4-2888838332ad")
+                                                               .build();
+
+
+    public static final UserDataDTO USER_2 = UserDataDTO.builder()
+                                                        .id(2L)
+                                                        .sex(UserDataDTO.Sex.FEMALE)
+                                                        .firstName("Jessamine")
+                                                        .lastName(LASTNAME2)
+                                                        .email("jessamine.lalonde@mock.org")
+                                                        .phoneNumber(PHONE_NUMBER_2)
+                                                        .old(10)
+                                                        .birthday(LocalDate.of(2013, 6, 21))
+                                                        .socialId(NAVS13_2)
+                                                        .nationality(NATIONALITY)
+                                                        .canton(CANTON)
+                                                        .streetName(STREET_NAME)
+                                                        .streetNumber(STREET_NUMBER)
+                                                        .streetType(STREET_TYPE)
+                                                        .zipCode(ZIP_CODE)
+                                                        .city(CITY)
+                                                        .deviceIdentifier("46bfaa1a-0adf-4660-994a-e56f4b059c8f")
+                                                        .build();
+
+
+    public static final UserDataDTO USER_3 = UserDataDTO.builder()
+                                                        .id(3L)
+                                                        .sex(UserDataDTO.Sex.MALE)
+                                                        .firstName("Théodore")
+                                                        .lastName(LASTNAME2)
+                                                        .email("theodore.lalonde@mock.org")
+                                                        .phoneNumber(PHONE_NUMBER_3)
+                                                        .old(38)
+                                                        .birthday(LocalDate.of(1985, 7, 10))
+                                                        .socialId(NAVS13_3)
+                                                        .nationality(NATIONALITY)
+                                                        .canton(CANTON)
+                                                        .streetName(STREET_NAME)
+                                                        .streetNumber(STREET_NUMBER)
+                                                        .streetType(STREET_TYPE)
+                                                        .zipCode(ZIP_CODE)
+                                                        .city(CITY)
+                                                        .deviceIdentifier("45fa3dd1-714e-4887-b27d-9792b327ad56")
+                                                        .build();
+
+    // =========================================================================
+    // RANDOM
+    // =========================================================================
+    static String getRandomUid()  { }
+    static String getRandomWord()  { }
+    static String getRandomCategory()  { }
+    static String getRandomLabel()  { }
+    static String getRandomPhrase()  { }
+    static String getRandomPhrase(final int nbWordMin, final int nbWordMax, final boolean isLabel)  { }
+    static String getRandomSection()  { }
+    static String getRandomSection(final int nbLine, final int nbWordMin, final int nbWordMax)  { }
+    static double getRandomDouble(final double min, final double max)  { }
+    static int getRandomBetween(final int start, final int end) { }
+}
+
+]]>
+    </src>
+</xml>

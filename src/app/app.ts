@@ -41,6 +41,10 @@ export class App implements OnInit{
              {
               title: 'Monitoring',
               path: 'inugami/framework/monitoring'
+            },
+             {
+              title: 'Testability',
+              path: 'inugami/framework/testability'
             }
           ]
         }

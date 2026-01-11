@@ -9,6 +9,899 @@
                      <header>
                        <h1>Inugami Framework : Testability</h1>
                     </header>
+
+                    <!--################################################################################################
+                    # MAIN
+                    #################################################################################################-->
+                    <main>
+
+                        <p>
+                            Creating unit and integration tests is often a tedious task, yet it remains of the utmost 
+                            importance. Tests are the best source of documentation for an application; they should allow
+                            anyone to understand how the system works at a single glance.
+                        </p>
+
+                        <p>
+                            With tools like Lombok and MapStruct, a significant amount of code is generated automatically,
+                            which can inadvertently break service contracts between the backend and the frontend.
+                        </p>
+
+                        <p>
+                            Furthermore, with the rise of AI-assisted coding, unit tests have become even more critical
+                            to verify and control what has actually been produced.
+                        </p>
+
+
+                        <p>
+                            A REST application is, and must remain, a living product that evolves over time. Modifications
+                            to unit tests must be simplified as much as possible to ensure they do not become an overhead 
+                        </p>
+
+
+                        <inu-copy iconClass="icon ico-maven" label="copy maven dependency" [content]="mavenDependencies()"></inu-copy>
+                         <div>
+                            <inu-code url="data/inugami/framework/testability.xml" tag="dependencies_maven"></inu-code>
+                        </div>
+
+                         <!--****************************************************************************************
+                        ** DTO
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="dto">Test your DTO</h2></a>
+                            </header>
+
+                             <p>
+                                To guarantee that these essential DTO methods function correctly, unit testing is necessary.
+                                Many projects neglect testing their DTOs; while this may seem excessive, they are at
+                                the very heart of the business logic. Tools like <em>Lombok</em> and <em>MapStruct</em> perform invisible
+                                transformations in the source code. If a DTO or an entity is modified, server responses can change.
+                                Such changes can cause side effects on the frontend or, even worse, within the business logic itself.
+                            </p>
+
+ 
+                            <p>
+                                Testing DTOs can be long and tedious, as you must ensure the integrity of the DTO's structure. 
+                                To assist with this, <em>Inugami</em> includes a utility class named UnitTestHelper. 
+                                This class provides numerous utilities to simplify unit testing, 
+                                including the <strong>assertDto</strong> method.
+                            </p>
+
+                             <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto"></inu-code>
+
+                             <inu-code url="data/inugami/framework/source_code.xml" tag="demo-api-userDto-test"></inu-code>
+
+
+                            <inu-code url="data/inugami/framework/testability.xml" tag="model_json"></inu-code>
+                            <inu-code url="data/inugami/framework/testability.xml" tag="getter_json"></inu-code>
+                            <inu-code url="data/inugami/framework/testability.xml" tag="tostring"></inu-code>
+
+
+                            <p>
+                                We configure the assertDto context to validate the DTO’s integrity. This example covers:
+                            </p>
+                            <ul>
+                                <li><strong>toBuilder</strong> functionality.</li>
+                                <li><strong>No-argument and all-argument</strong> constructors.</li>
+                                <li><strong>Jackson serialization</strong> through a reference file (specified by fullArgConstructorRefPath).</li>
+                                <li><strong>Getter-based projection</strong> validation against reference data.</li>
+                                <li><strong>Standard Object methods</strong>: toString, equals, and hashCode.</li>
+                                <li><strong>Setter</strong> logic verification.</li>
+                            </ul>
+                            
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        Inugami mandates the construction of a fully populated DTO for testing purposes. 
+                                        Implementing a generator method for this DTO is highly beneficial for:
+                                    </div>
+                                </header>
+                                <ul>
+                                    <li><strong>Core-level</strong> business logic testing.</li>
+                                    <li>Validating <strong>DTO/Entity</strong> mapping.</li>
+                                    <li>Ensuring consistency between <strong>internal DTOs</strong> and the <strong>models</strong> used by REST interfaces.</li>
+                                </ul>
+                            </cite>
+                        </article>
+
+                        <!--****************************************************************************************
+                        ** ERRORS CODES
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="error">Test your ErrorCodes</h2></a>
+                            </header>
+
+                            <p>
+                                Exception management is often a thorny issue in application development. 
+                                Many projects create custom exceptions to implement their error-handling logic.
+                                While this approach is common, it is only relevant when a workaround or recovery
+                                action is actually possible. Unfortunately, in the majority of cases, no such workaround exists.
+                                It is therefore preferable to have an exception-handling mechanism that reflects
+                                the reality of modern applications.
+                            </p>
+                                
+                            <p>
+                                Another drawback of creating specific exceptions is the difficulty—or even 
+                                impossibility—of achieving high granularity. It is impractical to define a unique 
+                                exception for every potential error case. This approach mechanically forces 
+                                developers to reduce the number of exceptions, thereby drowning out the precision
+                                of error detection.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="userErrors"></inu-code>
+
+                             <cite class="danger">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        Error codes are required to be unique. To ensure compliance, unit tests must
+                                        be implemented for all error enums within each domain.
+                                    </div>
+                                </header>
+                                <p>
+                                    To perform these tests, Inugami includes methods within the UnitTestHelper
+                                    class to simplify their implementation:
+                                </p>
+                            </cite>
+
+                            <dl>
+                                <dt>assertErrorCodeUnique</dt>
+                                <dd>To verify that no duplicates are present within the enumerations.</dd>
+
+                                <dt>assertErrorCode</dt>
+                                <dd>To guarantee the proper definition of the various error codes.</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="userErrorsTest"></inu-code>
+                        </article>
+                       
+                        <!--****************************************************************************************
+                        ** ERRORS CODES
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="services">Test your Services</h2></a>
+                            </header>
+
+                            <p>
+                               In the maven archetype,  The service <em>UserService.getById</em> method is the most representative of Design by Contract. 
+                                
+                            </p>
+                            <ul>
+                                <li>
+                                    At the start of the method, we verify that the ID is a valid UID using a regular expression. 
+                                    If it is not, the server returns the <em>READ_USER_UID_REQUIRED</em> error code (<strong>HTTP 400</strong>).
+                                </li>
+                                <li>
+                                    At the end of the method, we verify that the DAO successfully found the user.
+                                    If not, the <em>READ_USER_NOT_FOUND</em> error code is returned (<strong>HTTP 404</strong>).
+                                </li>
+                            </ul>
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="userService_getById"></inu-code>
+
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        The Asserts class includes two very common regular expressions:
+                                    </div>
+                                </header>
+                                <dl class="no-flex">
+                                    <dt>UID_REGEX</dt>
+                                    <dd>Used for UID validation, following the pattern :
+                                        <inu-code url="data/inugami/framework/source_code.xml" tag="UID_REGEX"></inu-code>
+                                    </dd>
+
+                                    <dt>EMAIL_REGEX</dt>
+                                    <dd>Used for email address validation. This regex is compatible with HTML5 email validation standards.
+                                        <inu-code url="data/inugami/framework/source_code.xml" tag="EMAIL_REGEX"></inu-code>
+                                    </dd>
+                                </dl>
+                            </cite>
+
+                            <p>
+                                The advantage of <strong>Hexagonal Architecture</strong> lies in its ability to test each module independently
+                                and with extreme simplicity. The <strong>Core module</strong> can use mocks to simulate the behavior 
+                                of the <strong>Infrastructure module</strong>, allowing for the simulation of scenarios that would 
+                                be very complex to reproduce in reality. Furthermore, as the Core module contains 
+                                all the business logic, it must include extensive unit testing to ensure proper behavior.
+                                Relying solely on unit tests using <em>Mockito</em>, instead of Spring Boot integration tests,
+                                significantly optimizes execution time.
+                            </p>
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="userServiceTest"></inu-code>
+
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        By using assertText and assertThrows, you reduce your test code volume
+                                    </div>
+                                </header>
+                                <p>
+                                    This writing simplicity is what makes it possible to reach and maintain thousands 
+                                    of unit tests without them becoming a burden for the team.
+                                </p>
+                            </cite>
+
+
+                            <p>
+                                The <em>UnitTestData</em> class is a cornerstone for writing unit tests with a consistent 
+                                and reliable dataset. By centralizing common constants (UIDs, Emails, Phone Numbers)
+                                and pre-built DTOs (like USER_1, USER_2), it ensures that all tests across the project
+                                use the same referential data. This significantly reduces "magic values" and boilerplate
+                                code when setting up mocks. Additionally, it integrates <em>DataGeneratorUtils</em> to provide
+                                random but structured data when specific values are not required.
+
+                            </p>
+                            <inu-code url="data/inugami/framework/source_code.xml" tag="UnitTestData"></inu-code>
+
+                        </article>
+
+                        <!--****************************************************************************************
+                        ** integration
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="integration">Integration tests</h2></a>
+                            </header>
+                                <p>
+                                    The infrastructure module must include integration tests. This module handles
+                                    data persistence and calls to external web services. While web service calls can
+                                    be simulated using mocks, database access is more complex.
+                                    Therefore, starting a Spring context with a database (such as <strong>H2</strong>) is necessary 
+                                    to verify the behavior of <strong>JPQL</strong> queries.
+                                </p>
+
+
+                                <div class="row-reverse">
+                                    <figure class="size-20 padding-right-4">
+                                        <img src="images/framework/integration_test.png" alt="test structure" />
+                                    </figure>
+
+                                    <div class="size-fit">
+                                        
+                                        <p>
+                                            Physical Separation of Concerns: To maintain a clear distinction between testing layers,
+                                            Inugami enforces a strict directory structure.
+                                        </p>
+                                        <dl>
+                                            <dt>/src/test</dt>
+                                            <dd>
+                                                Reserved exclusively for unit tests. These must remain framework-independent and execute instantly.
+                                            </dd>
+
+                                            <dt>/src/test_it</dt>
+                                            <dd>Dedicated to integration tests. This folder contains tests requiring a Spring Context,
+                                                database interactions (H2), or HTTP stubbing.</dd>
+                                        </dl>
+                                        <cite class="info">
+                                            <header>
+                                                <i></i>
+                                                <div>
+                                                    This <strong>physical separation</strong> prevents accidental dependencies and allows
+                                                    for <strong>optimized CI/CD pipelines</strong> by isolating long-running integration
+                                                    suites from lightning-fast unit tests.
+                                                </div>
+                                            </header>
+                                        </cite>
+                                    </div>
+                                </div>
+
+                                <p>
+                                    To enable the /src/test_it structure, the project's reactor POM must explicitly
+                                    define additional test source folders and resources.
+                                    This is achieved using the <strong>build-helper-maven-plugin</strong> to register the new directory
+                                    during the compilation phase, and by configuring the <strong>maven-resources-plugin</strong> to ensure
+                                    that integration snapshots (JSON files) are correctly bundled into the test classpath.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="pom_integration_test"></inu-code>
+
+                                <p>
+                                    The reactor POM configuration reveals several critical architectural choices:
+                                </p>
+                                <dl>
+                                    <dt>Resource Management</dt>
+                                    <dd>
+                                        The <strong>src/test/resources</strong> directory is explicitly added to the test resources to ensure configuration availability.
+                                    </dd>
+
+                                    <dt>Classpath Extension</dt>
+                                    <dd>The <strong>build-helper-maven-plugin</strong> is used to register integration tests
+                                        into the test classpath, enabling physical separation of test types</dd>
+
+                                    <dt>Specialized Plugins</dt>
+                                    <dd>
+                                        <ul>
+                                            <li>
+                                                The <strong>maven-surefire-plugin</strong> is strictly dedicated to executing unit tests for rapid feedback.
+                                            </li>
+                                            <li>
+                                                The <strong>maven-failsafe-plugin</strong> is leveraged for integration tests. The Maven integration-test lifecycle
+                                                includes a specific "pre" phase, which is ideal for orchestrating external
+                                                dependencies such as starting Docker containers or specialized stubs.
+                                            </li>
+                                        </ul>
+                                    </dd>
+                                    <dt>Quality Metrics</dt>
+                                    <dd>
+                                        To ensure rigorous testing standards, the <strong>jacoco-maven-plugin</strong> is
+                                            integrated and configured to aggregate coverage data across both unit and integration suites.
+                                    </dd>
+                                </dl>
+
+                                <p>
+                                    Une fois cette configuration apportée sur le projet on peut créé le runner SpringBoot pour nos test unitaires.
+                                    
+                                </p>
+                                <cite class="warning">
+                                        <header>
+                                        <i></i>
+                                        <div>
+                                            The Spring Boot container for integration tests must start only once.
+                                        </div>
+                                        </header> 
+                                        <p>
+                                        Since container initialization is a time-consuming process, it is essential 
+                                        to group all integration tests within a shared context to maintain acceptable 
+                                        compilation and build times.
+                                        </p>
+                                        <p>
+                                        By centralizing the configuration, Inugami ensures that the heavy lifting of
+                                        starting the application, the database, and technical stubs occurs only once,
+                                        leveraging Spring's context caching to keep the feedback loop fast and efficient.
+                                        </p>
+                                </cite>
+
+                                <p>
+                                    The Spring Boot runner is a standard class in Spring Boot integration testing.
+                                    Its purpose is strictly limited to defining the active profile and the
+                                    associated configuration class.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="SpringBootIntegrationRunner"></inu-code>
+
+                                <p>
+                                    The <strong>SpringBootITConfiguration</strong> class closely resembles the main application class.
+                                    It is annotated with <strong>@SpringBootApplication</strong> and enables Spring component scanning.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="SpringBootITConfiguration"></inu-code>
+
+                                <p>
+                                    Integration tests also require their own configuration; therefore, an <strong>application-test.yaml</strong> file must be added to the project.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="infra-application-test"></inu-code>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            For more complex scenarios, it may be necessary to include a Liquibase configuration to inject specific test data.
+                                        </div>
+                                    </header>
+                                    <p>
+                                        When using Liquibase, it is essential to clearly decouple your scripts:
+                                    </p>
+                                    <dl>
+                                            <dt>Schema creation</dt>
+                                            <dd>First, the scripts to create the database tables, with one dedicated script per table.</dd>
+
+                                            <dt>Data injection</dt>
+                                            <dd>Next, scripts for populating the data, also using one script per table.</dd>
+
+                                            <dt>Constraints</dt>
+                                            <dd>Finally, the scripts for defining constraints (keys, indexes, etc.), with one script per table.</dd>
+                                        </dl>
+                                    <p>
+                                        For more information on integrating Liquibase with Spring Boot, please refer to the documentation : 
+                                        <a href="https://www.baeldung.com/liquibase-refactor-schema-of-java-app">https://www.baeldung.com/liquibase-refactor-schema-of-java-app</a>
+                                        
+                                    </p>
+                                </cite>
+
+                                <p>
+                                    It is now time to write our integration test. The <code>UserDaoIT</code> class 
+                                    will inherit from the <code>SpringBootIntegrationRunner</code> class. 
+                                    This inheritance also enables the injection of the DAO using the 
+                                    <strong>@Autowired</strong> annotation.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserDaoIT"></inu-code>
+
+                                <p>
+                                    Integration tests also leverage the <code>assertText</code> method to simplify 
+                                    assertions. When dealing with large datasets, the <strong>assertTextIntegration</strong> 
+                                    method from the <code>UnitTestHelper</code> class can be used to improve 
+                                    test readability.
+                                </p>
+                                <p>
+                                    This method functions identically to <code>assertText</code>, but uses an 
+                                    external file as the reference. This file must be placed in the 
+                                    <strong>/src/test_it/resources</strong> directory.
+                                </p>
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Snapshot Integrity</strong>: Using 
+                                            <strong>assertTextIntegration</strong> allows you to validate complex 
+                                            database results or API responses against external files, keeping 
+                                            your test code clean and focused on logic rather than data 
+                                            boilerplate.
+                                        </div>
+                                    </header>
+                                </cite>
+                                <p>
+                                    In integration tests, certain data is generated by subsystems like 
+                                    <strong>Hibernate</strong> or <strong>Spring Data</strong> (e.g., auto-generated 
+                                    IDs or timestamps). 
+                                </p>
+                                <p>
+                                    To handle this, <code>assertText</code> and <code>assertTextIntegration</code> 
+                                    can be configured with specific matchers. Instead of a strict equality check, 
+                                    classes like <strong>LocalDateTimeLineMatcher</strong> and <strong>UuidLineMatcher</strong> 
+                                    validate that the generated string follows the expected format.
+                                </p>
+
+                                <p>
+                                    Inugami provides several matching strategies to handle non-deterministic or dynamic data:
+                                </p>
+                                
+                                <dl>
+                                    <dt>SkipLineMatcher</dt>
+                                    <dd>The simplest strategy; it completely ignores the line during comparison.</dd>
+
+                                    <dt>UuidLineMatcher</dt>
+                                    <dd>Validates that the content is a correctly formatted UUID.</dd>
+
+                                    <dt>LocalDateLineMatcher</dt>
+                                    <dd>Ensures the value is an ISO-formatted date.</dd>
+
+                                    <dt>LocalDateTimeLineMatcher</dt>
+                                    <dd>Verifies the presence of an ISO-formatted date and time.</dd>
+
+                                    <dt>NumberLineMatcher</dt>
+                                    <dd>Validates that the line contains a numeric value.</dd>
+
+                                    <dt>RegexLineMatcher</dt>
+                                    <dd>Enables validation through a custom regular expression.</dd>
+
+                                    <dt>RegexLineReplacer</dt>
+                                    <dd>Slightly different, this strategy allows for modifying specific information via regex before the comparison occurs.</dd>
+                                </dl>
+
+
+                                <p>
+                                    Inugami is designed to be extensible. If your project requires a specific 
+                                    validation logic that isn't covered by the built-in strategies, you can 
+                                    create your own <strong>Custom Matcher</strong> by implementing the 
+                                    <code>LineMatcher</code> interface.
+                                </p>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="LineMatcher"></inu-code>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Deterministic Testing</strong>: By using these matchers, you 
+                                            ensure that your integration tests only fail when there is a real 
+                                            regression, effectively ignoring the "noise" created by generated 
+                                            IDs and timestamps.
+                                        </div>
+                                    </header>
+                                </cite>
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** integration
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="rest">Test your REST controller</h2></a>
+                            </header>
+                               <p>
+                                    The REST controllers follow standard Spring conventions. In our example, 
+                                    the <strong>UserRestController</strong> class implements the 
+                                    <strong>UserRestClient</strong> interface.
+                                </p>
+                                <p>
+                                    By implementing the interface, the controller is forced to respect the 
+                                    defined contract, ensuring that the server-side implementation always 
+                                    aligns with the API definition shared with clients.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestController"></inu-code>
+                                
+                                <p>
+                                    The controller acts as an orchestrator: it utilizes the <strong>IUserService</strong> 
+                                    to execute business logic and the <strong>UserAPIMapper</strong> to handle 
+                                    the translation between the <strong>REST DTOs</strong> (external) and 
+                                    the <strong>CORE DTOs</strong> (internal).
+                                </p>
+                                <p>
+                                    The implementation of the mappers follows exactly the same principle as previously mentioned
+                                    (<a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct Mappers</a>).
+                                </p>
+
+                                <p>
+                                    Unit testing controllers in Inugami goes beyond simple assertions. These 
+                                    tests are fundamental to the development lifecycle as they:
+                                </p>
+
+                                <ul>
+                                    <li>
+                                        <strong>Validate Mappers</strong>: They ensure that the data transformation 
+                                        logic between CORE DTOs and API DTOs is accurate and robust.
+                                    </li>
+                                    <li>
+                                        <strong>Generate Documentation & Mocks</strong>: They automatically produce 
+                                        the OpenAPI specifications and JSON mock files, ensuring your 
+                                        documentation is always a "living" reflection of your code.
+                                    </li>
+                                </ul>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <strong>Test-Driven Reliability</strong>: By tying OpenAPI generation 
+                                            to unit tests, Inugami guarantees that your API documentation is 
+                                            never an afterthought—it's a verified byproduct of your 
+                                            testing suite.
+                                        </div>
+                                    </header>
+                                </cite>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestControllerTest"></inu-code>
+                                
+                                <p>
+                                    Just like in other layers, assertText methods are heavily used here to validate the response structure.
+                                    To generate the documentation, we call the generate method of the MockGenerator class, 
+                                    providing it with a specific context (input payload, response, headers, etc.). 
+                                    This context can also include various error codes for documented failure scenarios.
+                                </p>
+
+                                <p>
+                                    While individual tests collect data, the <strong>actual generation</strong> 
+                                    of the OpenAPI specification is performed by the 
+                                    <code>generateOpenApiDocumentation</code> method within the 
+                                    <code>MockGenerator</code> class.
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="generateOpenApiDocumentation"></inu-code>
+
+                                <p>
+                                    The <code>generateOpenApiDocumentation</code> method produces two essential artifacts:
+                                </p>
+
+                                <ul>
+                                    <li>
+                                        <strong>Execution Mocks</strong>: These files store the complete state of 
+                                        the exchange (request, response, headers, and status), providing a 
+                                        ready-to-use dataset for frontend developers.
+                                    </li>
+                                    <li>
+                                        <strong>Decoupled OpenAPI Annotations</strong>: Instead of cluttering your 
+                                        Java code, the metadata is generated as external attributes, which are 
+                                        then seamlessly integrated to build the final API contract.
+                                    </li>
+                                </ul>
+                                <cite class="warning">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            <p>
+                                                The generation process requires a target destination. You must define the 
+                                                <code>mock.generator.path</code> property using one of the following methods:
+                                            </p>
+
+                                            <ul>
+                                                <li>
+                                                    <strong>JVM Argument</strong>: Add <code>-Dmock.generator.path=../demo-interfaces-api/</code> 
+                                                    to your test execution command.
+                                                </li>
+                                                <li>
+                                                    <strong>Maven Property</strong>: Define it within your <code>pom.xml</code> <div class=""></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </header>
+                                </cite>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="context_json"></inu-code>
+
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClientDOC"></inu-code>
+
+                                <p>
+                                    Once the generation process is complete, the final step is to link the 
+                                    produced metadata back to your interface. This is done by adding the 
+                                    generated annotations:
+                                </p>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClient_withDoc"></inu-code>
+
+
+                                <p>
+                                    Inugami goes beyond simple success scenarios. <strong>Defining error codes 
+                                    within the OpenAPI generation context will produce a dedicated section 
+                                    in the documentation to highlight them.</strong>
+                                </p>
+                                <p>
+                                    This ensures that frontend developers and API consumers can easily 
+                                    identify all potential business exceptions, their HTTP status, and 
+                                    the specific error structures associated with each domain.
+                                </p>
+                                <figure>
+                                    <img src="images/framework/openapi_02.png" alt="Error code in OpenApi documentation" width="90%"/>
+                                </figure>
+
+                                <p>
+                                    It is also possible to display the actual data structure that will be returned by the server.
+                                </p>
+                                <figure>
+                                    <img src="images/framework/openapi_03.png" alt="Error code in OpenApi documentation"  width="90%"/>
+                                </figure>
+
+                                <cite class="success">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            Clean Interfaces through Composed Annotations
+                                        </div>
+                                    </header>
+                                    <p>
+                                        Inugami solves the "Annotation Hell" problem by generating a dedicated 
+                                        documentation utility class. Instead of polluting your REST interfaces 
+                                        with dozens of lines of Swagger metadata, the <code>MockGenerator</code> 
+                                        produces a companion class like <code>UserRestClientDOC</code>.
+                                    </p>
+
+                                    <p>
+                                        By using these <strong>Composed Annotations</strong>, your REST interface 
+                                        remains concise and focused on its primary role: defining the API contract. 
+                                        The heavy lifting of documentation is offloaded to these generated markers.
+                                    </p>
+                                </cite>
+
+                                <p>
+                                    Inugami automates the delivery of API assets. The <code>interfaces-api</code> 
+                                    module is configured to produce a specialized <strong>assembly</strong> 
+                                    during the build process.
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>Mock Bundling</strong>: All JSON mocks generated during unit 
+                                        tests are packaged together, providing a ready-to-use sandbox for 
+                                        consumer teams.
+                                    </li>
+                                    <li>
+                                        <strong>OpenAPI Publishing</strong>: The final OpenAPI contract is 
+                                        extracted and versioned alongside your code, ensuring perfect 
+                                        traceability between the implementation and the documentation.
+                                    </li>
+                                </ul>
+                                <inu-code url="data/inugami/framework/source_code.xml" tag="assembly"></inu-code>
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** Logs
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="logs">Test your Logs</h2></a>
+                            </header>
+
+                            <p>
+                                Testing your logs serves multiple purposes :
+                            </p>
+
+                            <dl>
+                                <dt>Validate MDC Context</dt>
+                                <dd>Ensure that critical business information is correctly populated within the MDC (Mapped Diagnostic Context).</dd>
+
+                                <dt>Verify Log Clarity</dt>
+                                <dd>Ensure that during complex processes, logs are explicit enough to provide clear insights into the ongoing execution.</dd>
+
+                                <dt>Enhance Test Coverage</dt>
+                                <dd>Improve overall code and functional coverage by including observability as a verified requirement.</dd>
+                            </dl>
+
+                            <p>
+                                In order to validate log outputs within your test suite, it is necessary to register
+                                the LogTestAppender in your test configuration file.
+                            </p>
+                            <inu-code url="data/inugami/framework/testability.xml" tag="logback_configuration_test"></inu-code>
+
+                            <inu-code url="data/inugami/framework/testability.xml" tag="log_test_service"></inu-code>
+
+                            <inu-code url="data/inugami/framework/testability.xml" tag="log_test_service_test"></inu-code>
+                            <p>
+                                In Inugami, unit testing goes beyond simple "pass or fail." It is designed to be a robust
+                                guardrail for your API contracts and business rules.
+                            </p>
+
+                            <p><strong>Deep Dive: Unit Testing Log Assertions:</strong>
+                                In a standard Java application, logs are "fire and forget." With Inugami, they become
+                                testable assets. Since you have registered the <code>LogTestAppender</code> in your <code>logback-test.xml</code>,
+                                you can now programmatically verify your observability strategy.
+                            </p>
+                              <dl>
+                                <dt>Capturing the Logs</dt>
+                                <dd>
+                                    The LogTestAppender intercepts every log event sent by your service 
+                                    (like the log.info in your UserService). These events are stored in a thread-safe 
+                                    list during the execution of your test.
+                                </dd>
+                                
+                                <dt>Asserting Log Content</dt>
+                                <dd>
+                                    Inugami provides utility methods to scan these captured events. This allows you to
+                                    verify that your "search user" log was not only triggered but also contained
+                                    the correct structured data.
+                                </dd>
+                            </dl>
+
+
+                            <p><strong>Why this matters for "Production-Ready" apps:</strong>
+                            </p>
+                              <dl>
+                                <dt>MDC Continuity</dt>
+                                <dd>You can assert that the Correlation-ID or Tenant-ID is present in the MDC for every log during a complex transaction.</dd>
+                                
+                                <dt>Sensitive Data Leakage</dt>
+                                <dd>You can write a test to ensure that passwords or PII (Personally Identifiable Information) are not present in your logs.</dd>
+                                
+                                <dt>Alerting Reliability</dt>
+                                <dd>
+                                    If your production monitoring (like ELK or Datadog) relies on a specific log pattern
+                                    to trigger alerts, testing that log pattern ensures your alerting system won't fail
+                                    when it's needed most.
+                                </dd>
+                            </dl>
+
+
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** UnitTestHelper
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="unittest_helper">UnitTestHelper: The Developer's Swiss Army Knife</h2></a>
+                            </header>
+
+                            <inu-code url="data/inugami/framework/testability.xml" tag="UnitTestHelper"></inu-code>
+
+                            <p>
+                                <strong>File & Data Management :</strong>
+                            </p>
+                            <dl>
+                                <dt>Reading external reference files (JSON, YAML, Text)</dt>
+                                <dd>is made easy with built-in relative and integration path handling.</dd>
+
+                                <dt>readFileRelative / readFileIntegration</dt>
+                                <dd>Reads content from your test resources without boilerplate file-handling code</dd>
+
+                                <dt>loadJson / loadYaml</dt>
+                                <dd>Directly deserializes a reference file into a Java Object (DTO).</dd>
+
+                                <dt>Data</dt>
+                                <dd>Provides random but structured data generators (getRandomUid, getRandomPhrase, etc.) to avoid hardcoded "test1", "test2" strings.</dd>
+                            </dl>
+
+                            <p>
+                                <strong>Powerful Assertions</strong>
+                                Inugami moves away from simple assertEquals to provide "Smart Assertions".
+                            </p>
+                            <dl>
+                                <dt>assertText</dt>
+                                <dd>Compares a Java object or a String to a reference (Text Block or file). It is the primary tool for verifying API contracts.</dd>
+                                
+                                <dt>assertLogs</dt>
+                                <dd>A unique feature to verify that your business logic triggers the right logs with the correct context.</dd>
+                                
+                                <dt>assertThrows</dt>
+                                <dd>Specialized assertions to verify that not only is an exception thrown, but it also carries the correct Inugami ErrorCode.</dd>
+                                
+                                <dt>assertEnum</dt>
+                                <dd>Ensures that your Enums match your documentation or external references.</dd>
+                            </dl>
+
+                            <p>
+                                <strong>Integration Stubs</strong>
+                                When using Mockito, loadIntegrationTestStub allows you to automatically load mock responses
+                                from JSON files based on the input parameters of the call. This is perfect for simulating
+                                complex database states without large setup methods.
+                            </p>
+                            
+
+                            <p>
+                                <strong>Asynchronous Support</strong>
+                            </p>
+                            <dl>
+                                <dt>waitForDone</dt>
+                                <dd>Simplifies waiting for CompletableFuture results with built-in timeout management, avoiding the dreaded Thread.sleep()</dd>
+                                
+                            </dl>
+
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** UnitTestHelper
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/testability']"><h2 id="unittest_data">UnitTestData: Consistent & Realistic Test Data</h2></a>
+                            </header>
+
+                            <p>
+                                High-quality tests require high-quality data. The <code>UnitTestData</code> utility provides a 
+                                centralized repository of pre-defined constants and dynamic generators, ensuring your
+                                test suite remains consistent and easy to maintain.
+                            </p>
+                            <inu-code url="data/inugami/framework/testability.xml" tag="UnitTestData"></inu-code>
+
+                             <p>
+                                <strong>Pre-defined Constants (The "Object Mother")</strong>
+                                Instead of hardcoding strings like <code>"test-uid-1"</code> or <code>"John Doe"</code>,
+                                Inugami provides realistic, standardized constants. This makes your test code cleaner and more professional.
+                            </p>
+                            <dl>
+                                <dt>Identities</dt>
+                                <dd> Ready-to-use UIDs, Correlation IDs, and Trace IDs that match production formats.</dd>
+
+                                <dt>Temporal Data</dt>
+                                <dd>Fixed dates (like DATE_TIME) to prevent tests from failing due to time-zone shifts or "today" moving forward.</dd>
+                                
+                                <dt>Complex Objects</dt>
+                                <dd>Pre-built DTOs (like USER_1, USER_2) for common business scenarios (e.g., a female user, a minor, an admin).</dd>
+                            </dl>
+
+
+                            <p>
+                                <strong>Dynamic Generators (Randomization)</strong>
+                                When you need to test bulk processing or edge cases without using the same values twice, <code>UnitTestData</code> leverages <code>DataGeneratorUtils</code>:
+                            </p>
+                            <dl>
+                                <dt>getRandomPhrase / getRandomWord</dt>
+                                <dd>Perfect for populating descriptions or labels.</dd>
+
+                                <dt>getRandomBetween / getRandomDouble</dt>
+                                <dd>Simplifies the generation of numeric bounds.</dd>
+                                
+                                <dt>getRandomUid</dt>
+                                <dd>Generates a valid UUID on the fly.</dd>
+                            </dl>
+
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>Why it's a Best Practice</div>
+                                </header>
+                                <p>
+                                    Using a centralized data repository like <code>UnitTestData</code> offers three major advantages:
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>Maintainability: </strong> Need to update the default phone number format? Change it once, and all your tests are updated.
+                                    </li>
+                                    <li>
+                                        <strong>Readability:</strong> UnitTestData.USER_1 is much more explicit than a 20-line builder inside your test method.
+                                    </li>
+                                    <li>
+                                        <strong>Format Integrity:</strong> Using realistic data (like <em>NAVS13</em> or <em>ZIP_CODE</em>) 
+                                        ensures that your regex validations and business rules are tested against real-world patterns.
+                                    </li>
+                                </ul>
+                            </cite>
+
+                            
+
+
+
+
+                        </article>
+
+                    </main>
                 </section>
             </div>
         </div>

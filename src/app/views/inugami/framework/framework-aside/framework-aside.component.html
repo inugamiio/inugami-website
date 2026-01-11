@@ -9,6 +9,7 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Getting started
             </a>
+            @if (gettingStarted()) {
             <ul>
                 <li>
                     <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Archetype</a>
@@ -23,46 +24,39 @@
                 </li>
                 <li>
                     <a  [routerLink]="['/inugami/framework/getting-started']" fragment="modules-details">Modules details</a>
+                
                     <ul>
                         <li>
                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-api">Module-api</a>
-                            @if (gettingStarted()) {
-                                <ul>
+                            <ul>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userDto">UserDTO</a></li>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userDTOSearchRequestDTO">UserDTOSearchRequestDTO</a></li>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userFilters">UserFilters</a></li>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">Services interfaces</a></li>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userErrors">UserErrors</a></li>
                             </ul>
-                            }
                         </li>
                         <li>
                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core">Module-core</a>
-                            @if (gettingStarted()) {
-                                <ul>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-standard-crud">Standard CRUD</a></li>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-dbc">Design by Contract</a></li>
-                                </ul>
-                            }
+                            <ul>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-standard-crud">Standard CRUD</a></li>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-dbc">Design by Contract</a></li>
+                            </ul>
                         </li>
                         <li>
                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure">Module-infrastructure</a>
-                            @if (gettingStarted()) {
-                                <ul>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct Mappers</a></li>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-it">Integration tests</a></li>
-                                </ul>
-                            }
+                            <ul>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct Mappers</a></li>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-it">Integration tests</a></li>
+                            </ul>
                         </li>
                         <li>
-                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces">Module-interfaces</a>
-                             @if (gettingStarted()) {
-                                <ul>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-api">REST interfaces</a></li>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-core">REST controllers</a></li>
-                                    <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-feign">REST feign</a></li>
-                                </ul>
-                            }
+                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces">Module-interfaces</a> 
+                            <ul>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-api">REST interfaces</a></li>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-core">REST controllers</a></li>
+                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-feign">REST feign</a></li>
+                            </ul>
                         </li>
                         <li>
                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-webapp">Module-webapp</a>
@@ -70,6 +64,7 @@
                     </ul>
                 </li>
             </ul>
+            }
         </li>
 
         <li class="wip">
@@ -158,8 +153,15 @@
                     <li>
                         <a [routerLink]="['/inugami/framework/monitoring']" fragment="interception">Interception</a>
                         <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclud_by_properties">Exclud by properties</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclud_by_spi">Exclud by SPI</a></li>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_properties">Exclude by properties</a></li>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_spi">Exclude by SPI</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="tools">Tools</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="log_info_dto">LogInfoDTOs</a></li>
+                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="console_colors">ConsoleColors</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -215,11 +217,24 @@
             </a>
         </li>
 
-        <li class="wip">
+        <li>
             <a routerLink="/inugami/framework/testability"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Testability
             </a>
+
+             @if (testability()) {
+                <ul>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="dto">Test your DTO</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="error">Test your ErrorCodes</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="services">Test your Services</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="integration">Integration testing</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="rest">Test your REST controller</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="logs">Test your Logs</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_helper">UnitTestHelper</a></li>
+                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_data">UnitTestData</a></li>
+                </ul>
+             }
         </li>
 
         <li class="wip">
