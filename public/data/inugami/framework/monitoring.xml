@@ -971,4 +971,460 @@ public class UserKpiExtractor implements KpiExtractorSPI {
 
 ]]>
     </src>
+
+
+    <src name="MdcService" type="java" title="MdcService">
+<![CDATA[
+@Getter
+@Slf4j
+public class MdcService implements MdcServiceSpi {
+
+    private static final String X_B_3_TRACE_ID       = "X-B3-TraceId";
+    public static final  String ISO_DATE             = "yyyy-MM-dd'T'HH:mm:ss.sss";
+    public static final  String CALL_TYPE_REST       = "REST";
+    public static final  String CALL_TYPE_JMS        = "JMS";
+    public static final  String CALL_TYPE_RABBITMQ   = "RABBITMQ";
+    private static final String DEFAULT_STRING_VALUE = "xxxx";
+    private static final String SEP                  = ";";
+    private static final String IN                   = "in";
+    private static final String OUT                  = "out";
+    private static final String SUCCESS              = "success";
+    private static final String ERROR                = "error";
+    public static final  String NULL                 = "null";
+
+    private List<LoggerMdcMappingSPI> mdcMappers = SpiLoader.getInstance()
+                                                            .loadSpiServicesByPriority(LoggerMdcMappingSPI.class);
+
+    private static final MdcService INSTANCE = new MdcService();
+
+    public static MdcService getInstance() {  }
+
+    // =========================================================================
+    // CONSTRUCTOR
+    // =========================================================================
+    public MdcService() { }
+    public void onContextRefreshed(final Object event) { }
+    public void initialize() {  }
+
+
+    // =========================================================================
+    // SET MDC
+    // =========================================================================
+    public MdcServiceSpi setMdc(final Map<String, Serializable> values) {  }
+    public MdcServiceSpi setMdc(final MDCKeys key, final Serializable value) {  }
+    public MdcServiceSpi setMdc(final String key, final Serializable value) { }
+    public MdcServiceSpi addMdc(final Tuple<String, Serializable>... keys) { }
+    public MdcServiceSpi addMdc(final Collection<Tuple<String, Serializable>> keys) {  }
+
+    // =========================================================================
+    // GET MDC
+    // =========================================================================
+    public String getMdc(final MDCKeys key) { }
+    public String getMdc(final String key) {  }
+
+    public boolean getBoolean(final MDCKeys key) {  }
+    public boolean getBoolean(final String key) {  }
+
+    public int getInt(final MDCKeys key) {  }
+    public int getInt(final String key) {  }
+
+    public long getLong(final MDCKeys key) {  }
+    public long getLong(final String key) {  }
+
+    public double getDouble(final MDCKeys key) { }
+    public double getDouble(final String key) { }
+
+    public Charset getCharset(final MDCKeys key) {  }
+    public Charset getCharset(final String key) { }
+
+
+    public LocalDateTime getLocalDateTime(final MDCKeys key) { }
+    public LocalDateTime getLocalDateTime(final String key) { }
+
+    public Map<String, String> getAllMdc() { }
+    public Map<String, Serializable> getAllMdcExtended() {  }
+
+
+    // =========================================================================
+    // REMOVE
+    // =========================================================================
+    public MdcServiceSpi remove(final MDCKeys... keys) { }
+    public MdcServiceSpi remove(final String... keys) {  }
+    public MdcService clear() { }
+
+
+    // =========================================================================
+    // FIELDS
+    // =========================================================================
+    public MdcServiceSpi deviceIdentifier(final String value) { }
+    public String        deviceIdentifier() { }
+    public MdcServiceSpi conversationId(final String value) {  }
+    public String        conversationId() {  }
+    public MdcServiceSpi correlationId(final String value) { }
+    public String        correlationId() { } 
+    public MdcServiceSpi traceId(final String value)  { } 
+    public String        traceId()  { } 
+    public MdcServiceSpi sessionId(final String value)  { } 
+    public String        sessionId()  { } 
+    public MdcServiceSpi processId(final String value) { } 
+    public String        processId()  { } 
+    public MdcServiceSpi requestId(final String value)  { } 
+    public String        requestId()  { } 
+
+
+    public MdcServiceSpi appClass(final String value) { }
+    public String appClass() { }
+
+    public MdcServiceSpi appClassShortName(final String value) { }
+    public String appClassShortName() {  }
+
+    public MdcServiceSpi domain(final String value) {  }
+    public String domain() {  }
+
+    public MdcServiceSpi subDomain(final String value) { }
+    public String subDomain() {  }
+
+    public MdcServiceSpi appMethod(final String value) { }
+    public String appMethod() { }
+
+    public MdcServiceSpi appService(final String value) { }
+    public String appService() { }
+
+    public MdcServiceSpi appSubService(final String value) {  }
+    public String appSubService() {  }
+
+    public MdcServiceSpi applicationVersion(final String value) {  }
+    public String applicationVersion() {  }
+
+    public MdcServiceSpi asset(final String value) { }
+    public String asset() {  }
+
+    public MdcServiceSpi authProtocol(final String value) {  }
+    public String authProtocol() {  }
+
+    public MdcServiceSpi callFrom(final String value) {  }
+    public String callFrom() {  }
+
+    public MdcServiceSpi callType(final String value) { }
+    public String callType() { }
+
+    public MdcServiceSpi country(final String value) { }
+    public String country(){ }
+
+    public MdcServiceSpi customerId(final String value) { }
+    public String customerId() { }
+
+    public MdcServiceSpi deviceIp(final String value) { }
+    public String deviceIp() { }
+    public MdcServiceSpi deviceClass(final String value) { }
+    public String deviceClass() { }
+    public MdcServiceSpi deviceNetworkSpeedDown(final double value) { }
+    public double        deviceNetworkSpeedDown() { }
+    public MdcServiceSpi deviceNetworkSpeedLatency(final double value) { }
+    public double        deviceNetworkSpeedLatency() { }
+    public MdcServiceSpi deviceNetworkSpeedUp(final double value) { }
+    public double        deviceNetworkSpeedUp() { }
+    public MdcServiceSpi deviceNetworkType(final String value) { }
+    public String        deviceNetworkType(){ }
+    public MdcServiceSpi deviceType(final String value){ }
+    public String        deviceType() { }
+
+    public MdcServiceSpi duration(final long value) { }
+    public long duration(){ }
+
+    public MdcServiceSpi env(final String value) { }
+    public String env(){ }
+
+    public MdcServiceSpi errorCategory(final String value) { }
+    public String        errorCategory(){ }
+    public MdcServiceSpi errorCode(final String value){ }
+    public boolean       hasError() { }
+    public MdcServiceSpi errorCode(final ErrorCode errorCode) { }
+    public MdcServiceSpi errorCodeRemove() { }
+    public ErrorCode     errorCode() { }
+    public MdcServiceSpi errorExploitationError(final boolean value) { }
+    public boolean       errorExploitationError() { }
+    public MdcServiceSpi errorField(final String... value) { }
+    public String        errorField() { }
+    public MdcServiceSpi errorMessage(final String value) { }
+    public String        errorMessage() { }
+    public MdcServiceSpi errorMessageDetail(final String value) { }
+    public String        errorMessageDetail() { }
+    public MdcServiceSpi errorRetryable(final boolean value) { }
+    public boolean       errorRetryable() { }
+    public MdcServiceSpi errorRollback(final boolean value) { }
+    public boolean       errorRollback(){ }
+    public MdcServiceSpi errorStatus(final int value) { } 
+    public int           errorStatus() { } 
+    public MdcServiceSpi errorType(final String value) { } 
+    public String        errorType() { } 
+    public MdcServiceSpi errorUrl(final String value)  { } 
+    public String        errorUrl()  { } 
+    public MdcServiceSpi exceptionName(final String value)  { } 
+    public MdcServiceSpi errorDomain(final String value) { } 
+    public String        errorDomain()  { } 
+    public MdcServiceSpi errorSubDomain(final String value)  { } 
+    public String        errorSubDomain() { } 
+    public String        exceptionName() { } 
+
+    public MdcServiceSpi flags(final String value)  { } 
+    public String flags() { } 
+
+    public MdcServiceSpi from(final LocalDateTime value) { } 
+    public LocalDateTime from() { } 
+
+    public MdcServiceSpi groupId(final String value)  { } 
+    public String        groupId()  { } 
+    public MdcServiceSpi artifactId(final String value) { } 
+    public String        artifactId()  { } 
+    public MdcServiceSpi version(final String value)  { } 
+    public String        version()  { } 
+
+    public MdcServiceSpi commitId(final String value)  { } 
+    public String        commitId()  { } 
+    public MdcServiceSpi commitDate(final String value) { } 
+    public String        commitDate() { } 
+
+    public MdcServiceSpi fromTimestamp(final long value)  { } 
+    public long fromTimestamp() { } 
+
+    public MdcServiceSpi functionalUid(final String value) { } 
+    public String functionalUid()  { } 
+
+    public MdcServiceSpi globalStatus(final String value) { } 
+    public String globalStatus()  { } 
+    public void globalStatusSuccess()  { } 
+
+    public void globalStatusError()  { } 
+    public MdcServiceSpi removeGlobalStatus()  { } 
+
+    public MdcServiceSpi healthStatus(final String value)  { } 
+    public String healthStatus()  { } 
+
+    public MdcServiceSpi hostname(final String value)  { } 
+    public String hostname()  { } 
+
+    public MdcServiceSpi httpStatus(final int value)  { } 
+    public int httpStatus()  { } 
+
+    public MdcServiceSpi instanceName(final String value) { } 
+    public String instanceName()  { } 
+
+    public MdcServiceSpi instanceNumber(final String value)  { } 
+    public String instanceNumber()  { } 
+
+    public MdcServiceSpi ioinfoIoLog(final IoInfoDTO info) { } 
+    public MdcServiceSpi removeIoinfoIoLog() { } 
+    public MdcServiceSpi ioinfoPartner(final IoInfoDTO info)  { } 
+
+    public MdcServiceSpi partnerRemove()  { } 
+    public MdcServiceSpi removeIoinfoPartner() { } 
+
+    public MdcServiceSpi language(final String value)  { } 
+    public String language()  { } 
+
+    public MdcServiceSpi lifecycle(final String value) { } 
+    public String        lifecycle()  { } 
+    public MdcServiceSpi lifecycleIn()  { } 
+    public Exception     lifecycleIn(final VoidFunctionWithException function)  { } 
+    public MdcServiceSpi lifecycleOut()  { } 
+    public Exception     lifecycleOut(final VoidFunctionWithException function)  { } 
+    public MdcServiceSpi lifecycleRemove()  { } 
+
+    public MdcServiceSpi majorVersion(final String value)  { } 
+    public String majorVersion()  { } 
+
+    public MdcServiceSpi messageId(final String value)  { } 
+    public String messageId()  { } 
+
+    public MdcServiceSpi methodInCause(final String value)  { } 
+    public String methodInCause() { } 
+
+    public Map<String, String> getTrackingInformation()  { } 
+    public Map<String, String> getTrackingInformation(final Headers headers) { } 
+
+    public MdcServiceSpi orderId(final String value)  { } 
+    public String orderId()  { } 
+
+    public MdcServiceSpi osVersion(final String value)  { } 
+    public String osVersion()  { } 
+
+    public MdcServiceSpi parentSpanId(final String value) { } 
+    public String parentSpanId() { } 
+
+    public MdcServiceSpi partner(final String value)  { } 
+    public String partner()  { } 
+
+    public MdcServiceSpi partnerRequestCharset(final String value) { } 
+    public MdcServiceSpi partnerRequestCharset(final Charset value)  { } 
+
+    public Charset partnerRequestCharset()  { } 
+    public MdcServiceSpi partnerResponseCharset(final String value) { } 
+
+    public MdcServiceSpi partnerResponseCharset(final Charset value)  { } 
+    public Charset partnerResponseCharset()  { } 
+
+    public MdcServiceSpi partnerResponseDuration(final long value)  { } 
+    public long partnerResponseDuration() { } 
+
+    public MdcServiceSpi partnerResponseMessage(final String value)  { } 
+    public String partnerResponseMessage()  { } 
+
+    public MdcServiceSpi partnerResponseStatus(final int value) { } 
+    public int partnerResponseStatus()  { } 
+
+    public MdcServiceSpi partnerService(final String value)  { } 
+    public String partnerService()  { } 
+
+    public MdcServiceSpi partnerSubService(final String value)  { } 
+    public String partnerSubService() { } 
+
+    public MdcServiceSpi partnerType(final String value) { } 
+    public String partnerType()  { } 
+
+    public MdcServiceSpi partnerUrl(final String value)  { } 
+    public String partnerUrl()  { } 
+
+    public MdcServiceSpi partnerVerb(final String value) { } 
+    public String partnerVerb()  { } 
+
+    public MdcServiceSpi price(final double value)  { } 
+    public double price()  { } 
+
+    public MdcServiceSpi principal(final String value)  { } 
+    public String principal()  { } 
+
+    public MdcServiceSpi productId(final String value)  { } 
+    public String productId()  { } 
+    
+    public MdcServiceSpi processName(final String value) { } 
+    public String processName()  { } 
+
+    public MdcServiceSpi processStatus(final String value)  { } 
+    public String processStatus()  { } 
+
+    public MdcServiceSpi quantity(final double value)  { } 
+    public double quantity()  { } 
+
+    public MdcServiceSpi remoteAddress(final String value)  { } 
+    public String remoteAddress()  { } 
+
+    public MdcServiceSpi requestHeaders(final String value) { } 
+    public String requestHeaders()  { } 
+
+    public MdcServiceSpi reservationNumber(final String value)  { } 
+    public String reservationNumber()  { } 
+
+    public MdcServiceSpi responseHeaders(final String value) { } 
+    public String responseHeaders()  { } 
+
+    public MdcServiceSpi service(final String value) { } 
+    public String service()  { } 
+
+    public MdcServiceSpi size(final double value)  { } 
+    public double size()  { } 
+
+    public MdcServiceSpi until(final LocalDateTime value)  { } 
+    public LocalDateTime until()  { } 
+
+    public MdcServiceSpi untilTimestamp(final long value)  { } 
+    public long untilTimestamp()  { } 
+
+    public MdcServiceSpi uri(final String value)  { } 
+    public String uri()  { } 
+
+    public MdcServiceSpi url(final String value)  { } 
+    public String url()  { } 
+
+    public MdcServiceSpi urlPattern(final String value)  { } 
+    public String urlPattern()  { } 
+
+    public MdcServiceSpi urlPatternVerb(final String value)  { } 
+    public String urlPatternVerb()  { } 
+
+    public MdcServiceSpi userAgent(final String value)  { } 
+    public String userAgent()  { } 
+
+    public MdcServiceSpi userId(final String value)  { } 
+    public String userId()  { } 
+
+    public MdcServiceSpi verb(final String value)  { } 
+    public String verb()  { } 
+
+    public MdcServiceSpi status(final int status)  { } 
+    public int status()  { }    
+
+    public MdcServiceSpi warning(final String value)  { } 
+    public String warning()  { } 
+}
+
+]]>
+    </src>
+
+
+        <src name="mdcServiceUsage" type="java" title="Usage of MdcService">
+<![CDATA[
+public List<ProductOrder> pay(Collection<ProductOrder> products){
+    MdcService.getInstance()
+              .quantity(products.size())
+              .price(products.stream()
+                             .mapToDouble(ProductOrder::getPrice)
+                             .sum());
+}
+]]>
+    </src>
+
+        <src name="LoggerMdcMappingSPI" type="java" title="LoggerMdcMappingSPI">
+<![CDATA[
+public interface LoggerMdcMappingSPI {
+    boolean accept(final String key);
+
+    Serializable convert(final String value);
+}
+]]>
+    </src>
+
+
+     <src name="MdcInitializerSpi" type="java" title="MdcInitializerSpi">
+<![CDATA[
+@FunctionalInterface
+public interface MdcInitializerSpi {
+    String  DEFAULT_STRING  = "xxxx";
+    long    DEFAULT_LONG    = 0L;
+    double  DEFAULT_DOUBLE  = 0.0;
+    boolean DEFAULT_BOOLEAN = false;
+
+    Map<String, Serializable> getDefaultValue();
+
+    default Map.Entry<String, Serializable> buildEntry(final MDCKeys key, Serializable value) {}
+    default Map.Entry<String, Serializable> buildEntry(final String key, Serializable value) { }
+}
+]]>
+    </src>
+
+         <src name="MdcDynamicFieldSPI" type="java" title="MdcDynamicFieldSPI">
+<![CDATA[
+public interface MdcDynamicFieldSPI {
+    Map<String, Serializable> generate();
+}
+]]>
+    </src>
+    <src name="exclud_url_interception" type="yaml" title="Exclud interception by properties">
+<![CDATA[
+inugami:
+    monitoring:
+        interceptor:
+            url:
+                skip: .*api-docs.*;.*swagger-ui.*
+]]>
+    </src>
+
+        <src name="interceptable" type="java" title="Exclud interception by SPI">
+<![CDATA[
+@FunctionalInterface
+public interface Interceptable {
+    boolean isInterceptable(final RequestData request);
+}
+]]>
+    </src>
 </xml>

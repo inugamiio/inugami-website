@@ -1043,7 +1043,293 @@
                                  <figure>
                                     <img src="images/framework/kpi_service_sensor.png" alt="KPI from UserKpiExtractor in Kibana" width="90%" />
                                 </figure>
+
+                                 <cite class="warning">
+                                    <header>
+                                        <i></i>
+                                        <div>
+                                            To activate this feature and enable the execution of your <strong>KpiExtractorSPI</strong> implementations,
+                                            you must set the following property in your configuration:
+                                            <code>inugami.monitoring.interceptors.kpi.enabled=true</code>
+                                        </div>
+                                    </header>
+                                </cite>
                             </inu-doc-item>
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** Metrics
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="mdcService">MdcService</h2></a>
+                            </header>
+                            <p>
+                                The <code>MdcService</code> is a sophisticated wrapper around the <em>SLF4J Mapped Diagnostic Context</em> (MDC).
+                                While standard MDC only handles strings, Inugami's MdcService manages complex types
+                                (Dates, Booleans, Numbers) and ensures that your log context is automatically synchronized
+                                with the global RequestContext.
+                            </p>
+
+
+                            <strong>Key Capabilities:</strong>
+                            <dl>
+                                <dt>Standardized Keys</dt>
+                                <dd>It uses a predefined set of <code>MDCKeys</code> (Environment, Hostname, TraceID,
+                                    CorrelationID) to ensure log consistency across all services.</dd>
+
+                                <dt>Automatic Initialization</dt>
+                                <dd>On every request, it automatically populates the context with device info, network speeds,
+                                    and versioning metadata.</dd>
+
+                                <dt>SPI Extensibility</dt>
+                                <dd>Through LoggerMdcMappingSPI, you can define custom transformation rules for your context data.</dd>
+
+                                <dt>Tracking Headers</dt>
+                                <dd>It natively supports distributed tracing headers like X-Correlation-Id, X-B3-TraceId,
+                                    and X-Conversation-Id.</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="MdcService"></inu-code>
+
+
+                            <p><strong>Initialization and Lifecycle :</strong>
+                                These methods ensure the logging context is synchronized with the application's state.
+                            </p>
+                            <dl>
+                                <dt>getInstance</dt>
+                                <dd>Returns the Singleton instance of the service.</dd>
+
+                                <dt>initialize</dt>
+                                <dd>The core setup method. it extracts data from the RequestContext (Environment, Hostname,
+                                    Asset, Version) and standard headers (User-Agent, IP, Device Info) to populate the MDC
+                                    immediately upon request entry.</dd>
+
+                                <dt>onContextRefreshed</dt>
+                                <dd>Automatically reloads SPI mappers (LoggerMdcMappingSPI) whenever the Spring context is refreshed.</dd>
+                            </dl>
+
+
+                            <p><strong>Context Enrichment (Setters)</strong>
+                                These methods allow developers to add custom metadata to the current thread's logs.
+                            </p>
+                            <dl>
+                                <dt>setMdc</dt>
+                                <dd>
+                                    The primary entry point for adding data. It features Smart Type Handling
+                                    <ul>
+                                        <li>
+                                            Dates/Calendars: Formatted to yyyy-MM-dd'T'HH:mm:ss.sss.
+                                        </li>
+                                        <li>
+                                            Java 8 Date API: Supports LocalDateTime and LocalDate with ISO formatting.
+                                        </li>
+                                        <li>
+                                            Null Safety: If a value is null or empty, it automatically triggers a remove(key)
+                                            to keep the context clean.
+                                        </li>
+                                    </ul>
+                                </dd>
+
+                                <dt>addMdc</dt>
+                                <dd>Allows batch insertion of multiple key-value pairs.</dd>
+
+                                <dt>deviceIdentifier, correlationId,traceId,</dt>
+                                <dd>Specifically manages distributed tracing IDs. If no ID is provided, the service automatically
+                                    generates and assigns a new <code>UUID</code>.</dd>
+                            </dl>
+
+
+
+                            <p><strong>Data Retrieval (Typed Getters :</strong>
+                                Used to extract information from the context, often for logic branching or passing data to sub-systems.
+                            </p>
+                            <dl>
+                                <dt>getMdc</dt>
+                                <dd> Returns the raw String value from the context.</dd>
+
+                                <dt>getInt,getLong,...</dt>
+                                <dd>Provides safe parsing of MDC strings into numeric or boolean types, returning default
+                                    values (0 or false) if the key is missing or invalid.</dd>
+
+                                <dt>getLocalDateTime</dt>
+                                <dd>Safely parses stored timestamps back into Java 8 date objects.</dd>
+
+                                <dt>getAllMdcExtended</dt>
+                                <dd>Returns a sorted map of the entire context, processed through any registered 
+                                    <code>LoggerMdcMappingSPI</code> for custom data transformation.</dd>
+                            </dl>
+
+
+                            <p><strong>Advanced Error Mapping :</strong>
+                            One of Inugami's most powerful features is how it structures error reporting.
+                            </p>
+                            <dl>
+                                <dt>errorCode</dt>
+                                <dd>Instead of a simple error message, this method deconstructs a complex ErrorCode object
+                                    into multiple searchable dimensions: errorCategory, errorStatus, errorDomain,
+                                    errorRetryable, etc.</dd>
+
+                                <dt>hasError</dt>
+                                <dd>A utility to check if the current context contains any error markers.</dd>
+
+                                <dt>errorCodeRemove</dt>
+                                <dd>A bulk cleanup method to remove all error-related MDC keys.</dd>
+                            </dl>
+
+                            <p><strong>Flow and Lifecycle Management :</strong>
+                            Used to track the direction and success of operations.
+                            </p>
+                            <dl>
+                                <dt>lifecycleIn,lifecycleOut </dt>
+                                <dd>Tags logs as "Entry" or "Exit" points. For example on IOLOG</dd>
+
+                                <dt>lifecycle</dt>
+                                <dd>A high-level wrapper. It sets the lifecycle to "In", executes your functional code,
+                                    and ensures the lifecycle tag is removed in a finally block, even if an exception occurs.</dd>
+
+                                <dt>globalStatusSuccess, globalStatusError</dt>
+                                <dd>ets a high-level status flag, perfect for creating "Success Rate" dashboards.</dd>
+                            </dl>
+
+
+                            <p><strong>Distributed Tracing & Cleanup</strong>
+                            </p>
+                            <dl>
+                                <dt>getTrackingInformation</dt>
+                                <dd>Returns a map containing the essential headers (X-Correlation-Id, X-Trace-Id, etc.)
+                                    required to propagate the context when calling external partners or microservices.</dd>
+
+                                <dt>clear, remove</dt>
+                                <dd>Essential for memory management. clear() wipes the entire context, which is mandatory
+                                    when threads are returned to a pool (e.g., in a Servlet container) to prevent context
+                                    leaking between users.</dd>
+                            </dl>
+
+
+                            <p>
+                                All essential information for monitoring—both technical and business-related—must be
+                                defined within the MDC context to ensure it is available in your monitoring tools.
+                            </p>
+
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        By centralizing your metrics and metadata in the MDC, you create a single
+                                        source of truth. This allows your monitoring platform (such as ELK) to correlate
+                                        system health with business performance in real-time.
+                                    </div>
+                                </header>
+                            </cite>
+
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="mdcServiceUsage"></inu-code>
+                            <cite class="success">
+                                <header>
+                                    <i></i>
+                                    <div>
+                                        In this example, we capture the <strong>volume</strong> and the <strong>total value</strong>
+                                        of an order directly within the execution flow. By doing so, every log entry generated during the
+                                        payment process will automatically include the order's <strong>financial weight</strong>
+                                        in <strong>real-time</strong>.
+                                    </div>
+                                </header>
+                            </cite>
+
+                            
+
+                            <p>
+                                In SLF4J, MDC values are not typed, they are defined strictly as Strings.
+                                If you are using MDC fields that represent non-string data (such as numbers, booleans, or dates), 
+                                ou must inform Inugami of their actual types by implementing the MdcInitializerSpi interface.
+                                 This ensures that the data is correctly serialized and indexed, allowing for accurate filtering 
+                                 and mathematical aggregations in your monitoring tools.
+                            </p>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="LoggerMdcMappingSPI"></inu-code>
+
+
+                            <p>
+                                Inugami also allows you to invoke an SPI Service to dynamically add data during log encoding by implementing the <code>MdcDynamicFieldSPI</code> interface.
+                            </p>
+                            <p>
+                                This interface is particularly useful for injecting global system metrics or environmental
+                                metadata that must be calculated at the exact moment a log entry is generated, ensuring
+                                your logs always contain the most up-to-date contextual information without cluttering
+                                your business logic.
+                            </p>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="LoggerMdcMappingSPI"></inu-code>
+
+
+                            <p>
+                                If you are using dynamic indexes (which is not recommended for production but can be useful
+                                during Demos or POCs), it is necessary to initialize the index with the various MDC fields.
+                            </p>
+                            <inu-code url="data/inugami/framework/monitoring.xml" tag="MdcInitializerSpi"></inu-code>
+
+
+                        </article>
+
+
+                        <!--****************************************************************************************
+                        ** Interception
+                        ****************************************************************************************-->
+                        <article>
+                            <header>
+                                <a [routerLink]="['/inugami/framework/monitoring']"><h2 id="interception">Interception</h2></a>
+                            </header>
+
+                            <p>
+                                By default, Inugami attempts to intercept all incoming requests to ensure maximum observability.
+                                However, depending on the other frameworks you are using (such as Spring Actuator or Swagger),
+                                you may need to exclude certain endpoints from interception.
+                            </p>
+                            
+                            <p>
+                                This can be achieved in two ways:
+                            </p>
+                            <ul>
+                                <li>
+                                    Via Configuration: By defining exclusion patterns in your properties file.
+                                </li>
+                                <li>Via SPI Service: By implementing the <code>Interceptable</code> SPI interface for fine-grained, programmatic control.</li>
+                            </ul>
+
+                            <inu-doc-item title="Exclud by properties" [level]="3" href="inugami/framework/monitoring#dependencies" id="exclud_by_properties">
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="exclud_url_interception"></inu-code>
+
+
+                                 <dl>
+                                    <dt>Regex Support</dt>
+                                    <dd>The skip property accepts Regular Expressions. In the example above, <code>.*api-docs.*</code>
+                                         ensures that any URL containing "api-docs" (regardless of what comes before or after)
+                                         will be ignored by the Inugami interceptor.</dd>
+                                    
+                                    <dt>Delimiter</dt>
+                                    <dd>Patterns are separated by a semicolon (;).</dd>
+                                    
+                                    <dt>Best Practice</dt>
+                                    <dd>Always exclude your OpenAPI/Swagger endpoints and health check paths (like /actuator/health)
+                                        to keep your business KPIs clean and reduce unnecessary processing overhead.</dd>
+                                </dl>
+
+                            </inu-doc-item>
+
+                            <inu-doc-item title="Exclud by SPI" [level]="3" href="inugami/framework/monitoring#dependencies" id="MyTechnicalFilter">
+                                <inu-code url="data/inugami/framework/monitoring.xml" tag="interceptable"></inu-code>
+
+                                <dl>
+                                    <dt>Dynamic Logic</dt>
+                                    <dd>Unlike the skip regex property which is static, Interceptable can change its behavior based on the application state or request content.</dd>
+
+                                    <dt>Rich Context</dt>
+                                    <dd>You have access to the RequestData object, which is already pre-populated with parsed information, making your filtering logic much simpler to write.</dd>
+
+                                    <dt>Performance</dt>
+                                    <dd>If a request is marked as non-interceptable here, Inugami will bypass the entire KPI extraction and MDC initialization flow for this specific call, saving resources.</dd>
+                                </dl>
+                            </inu-doc-item>
+
                         </article>
                 </main>
             </section>

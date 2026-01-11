@@ -1,62 +1,149 @@
 <section id="home">
     <header>
-        <h1>Annoncements</h1>
+        <h1>Inugami</h1>
     </header>
 
 
+    <main>
+
+        <section class="inugami-intro">
+            <header>
+                <h2>The Enterprise Observability Framework</h2>
+                <p>
+                    Inugami is a high-performance, non-intrusive Java framework <strong>designed to bridge the gap</strong> between
+                    <strong>technical</strong> monitoring and <strong>business intelligence</strong>.
+                </p>
+                <p>
+                     It provides a robust architecture to capture,
+                    enrich, and export critical execution data without impacting the end-user experience.
+                </p>
+            </header>
+
+            <article>
+                <header>
+                    <h3>Core Philosophy: "Observe Everything, Impact Nothing"</h3>
+                </header>
+                <p>
+                    Inugami is built on the principle that monitoring should be a transparent "sidecar" to your busines
+                     logic. By leveraging asynchronous processing and optimized data structures, it ensures that deep
+                     observability never comes at the cost of latency.
+                </p>
+            </article>
+
+            <article>
+                <header>
+                    <h3>Key Features</h3>
+                </header>
+
+                 <dl>
+                    <dt>Asynchronous KPI Extraction</dt>
+                    <dd>Extract complex business indicators from requests and responses using the KpiExtractorSPI.
+                        Processing is decoupled from the main thread, ensuring lightning-fast response times.</dd>
+
+                    <dt>Contextual Intelligence (MDC)</dt>
+                    <dd>The MdcService provides a typed, structured way to manage the Mapped Diagnostic Context.
+                        It automatically correlates technical metadata (TraceIDs, spans) with business data (Order IDs, customer profiles).</dd>
+
+                    <dt>Extensible via SPI</dt>
+                    <dd>Inugami is designed for customization. Whether it’s dynamic field injection (MdcDynamicFieldSPI)
+                        , custom type mapping, or sophisticated interception filtering (Interceptable), the framework adapts to your specific architecture.</dd>
+                </dl>
+            </article>
 
 
-    @for (annoncement of annoncements();track annoncement.id;) {
-    <inu-annoncement [data]="annoncement">
-        @if (annoncement.description) {
-            <div class="annoncement-description" [innerHTML]="annoncement.description">
-            </div>
-        }
+            <article>
+                <header>
+                    <h3>Why Choose Inugami?</h3>
+                </header>
 
-        <ul>
-            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            + features
-            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-            @if (annoncement.features) {
-                <li class="feature">
-                    <span class="annoncement-feature">Features:</span>
+                 <dl>
+                    <dt>Unified Source of Truth</dt>
+                    <dd>Merge technical health and business performance into a single dashboard.</dd>
+
+
+                    <dt>Developer Friendly</dt>
+                    <dd>Clean APIs and SPIs mean your business code remains focused on logic, not logging.</dd>
+
+
+                    <dt>Production Ready</dt>
+                    <dd>Built-in protection against memory leaks (MDC cleanup) and performance bottlenecks.</dd>
+
+
+                    <dt>Flexible Storage</dt>
+                    <dd>While optimized for modern log aggregators like Elasticsearch/Kibana, its structured output can be adapted to any monitoring stack.</dd>
+                </dl>
+
+                <cite class="success">
+                    <header>
+                        <i></i>
+                        <div>Inugami is designed as a first-class citizen of the <strong>Spring Boot ecosystem</strong></div>
+                    </header>
+                    <p>
+                        It leverages the core principles of Spring to minimize boilerplate code and automate infrastructure setup.
+                    </p>
+                </cite>
+            </article>
+        </section>
+
+        <section>
+            <header>
+                <h2>Annoncements</h2>
+            </header>
+            @for (annoncement of annoncements();track annoncement.id;) {
+                <inu-annoncement [data]="annoncement">
+                    @if (annoncement.description) {
+                        <div class="annoncement-description" [innerHTML]="annoncement.description">
+                        </div>
+                    }
+
                     <ul>
-                        @for (feature of annoncement.features;track feature.link;) {
-                            <li>
-                                <a [href]="feature.link" target="_blank">{{feature.title}}</a>
-                                @if (feature.examples) {
-                                   @for (example of feature.examples;track example.value;) {
-                                    @if(example.description){
-                                        <p [innerHTML]="example.description"></p>
+                        <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                        + features
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        @if (annoncement.features) {
+                            <li class="feature">
+                                <span class="annoncement-feature">Features:</span>
+                                <ul>
+                                    @for (feature of annoncement.features;track feature.link;) {
+                                        <li>
+                                            <a [href]="feature.link" target="_blank">{{feature.title}}</a>
+                                            @if (feature.examples) {
+                                            @for (example of feature.examples;track example.value;) {
+                                                @if(example.description){
+                                                    <p [innerHTML]="example.description"></p>
+                                                }
+                                                @if(example.value){
+                                                    <inu-code [source]="example.value" [type]="example.type"></inu-code>
+                                                }
+                                            }
+                                            }
+                                        </li>
                                     }
-                                    @if(example.value){
-                                        <inu-code [source]="example.value" [type]="example.type"></inu-code>
+                                </ul>
+                            </li>
+                        }
+
+                        <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                        + features
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        @if (annoncement.fix) {
+                            <li class="fix">
+                                <span class="annoncement-fix">Issues fixed:</span>
+                                <ul>
+                                    @for (fix of annoncement.fix;track fix.link;) {
+                                        <li>
+                                            <a [href]="fix.link" target="_blank">{{fix.title}}</a>
+                                            
+                                        </li>
                                     }
-                                   }
-                                }
+                                </ul>
                             </li>
                         }
                     </ul>
-                </li>
-            }
+                </inu-annoncement>
+                }
+        </section>
+    </main>
 
-            <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            + features
-            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-            @if (annoncement.fix) {
-                <li class="fix">
-                    <span class="annoncement-fix">Issues fixed:</span>
-                    <ul>
-                        @for (fix of annoncement.fix;track fix.link;) {
-                            <li>
-                                <a [href]="fix.link" target="_blank">{{fix.title}}</a>
-                                
-                            </li>
-                        }
-                    </ul>
-                </li>
-            }
-        </ul>
-    </inu-annoncement>
-    }
+    
 </section>
