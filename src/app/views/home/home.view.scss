@@ -37,3 +37,13 @@ figure{
     
     }
 }
+.inugami-intro-header-content{
+    display: flex;
+    gap: 4rem;
+    padding: 1rem;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
