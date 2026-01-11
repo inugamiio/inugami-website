@@ -1,20 +1,38 @@
 /**/
 .inugami-intro{
-header{
-    p{
+    header{
+        figure{
+            display: flex;
+            align-items: center;
+        }
+        p{
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+        h2{
+            padding-right: 2rem;
+        }
+        h3{
+            padding: 0;
+        }
+    }
+    main{
         padding-right: 2rem;
+        padding-left: 2rem; 
+    }
+    article{
+        
         padding-left: 2rem;
+        margin-bottom: 0.5rem;
+        &.first{
+            margin-top: 2rem;
+        }
+        dl{
+            padding-left: 2rem;
+        }
+        p{
+            padding-left: 4rem;
+        }
+    
     }
-}
-article{
-    padding-left: 2rem;
-    margin-bottom: 2rem;
-    dl{
-        padding-left: 2rem;
-    }
-    p{
-        padding-left: 4rem;
-    }
-   
-}
 }

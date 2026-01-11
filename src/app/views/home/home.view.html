@@ -7,8 +7,13 @@
     <main>
 
         <section class="inugami-intro">
-            <header>
+            <header class="inugami-intro-header">
                 <h2>The Enterprise Observability Framework</h2>
+
+                <figure>
+                    <img src="images/inugami-logo-128.png" alt="Inugami logo" width="128px" />
+                </figure>
+                            
                 <p>
                     Inugami is a high-performance, non-intrusive Java framework <strong>designed to bridge the gap</strong> between
                     <strong>technical</strong> monitoring and <strong>business intelligence</strong>.
@@ -19,70 +24,73 @@
                 </p>
             </header>
 
-            <article>
-                <header>
-                    <h3>Core Philosophy: "Observe Everything, Impact Nothing"</h3>
-                </header>
-                <p>
-                    Inugami is built on the principle that monitoring should be a transparent "sidecar" to your busines
-                     logic. By leveraging asynchronous processing and optimized data structures, it ensures that deep
-                     observability never comes at the cost of latency.
-                </p>
-            </article>
-
-            <article>
-                <header>
-                    <h3>Key Features</h3>
-                </header>
-
-                 <dl>
-                    <dt>Asynchronous KPI Extraction</dt>
-                    <dd>Extract complex business indicators from requests and responses using the KpiExtractorSPI.
-                        Processing is decoupled from the main thread, ensuring lightning-fast response times.</dd>
-
-                    <dt>Contextual Intelligence (MDC)</dt>
-                    <dd>The MdcService provides a typed, structured way to manage the Mapped Diagnostic Context.
-                        It automatically correlates technical metadata (TraceIDs, spans) with business data (Order IDs, customer profiles).</dd>
-
-                    <dt>Extensible via SPI</dt>
-                    <dd>Inugami is designed for customization. Whether it’s dynamic field injection (MdcDynamicFieldSPI)
-                        , custom type mapping, or sophisticated interception filtering (Interceptable), the framework adapts to your specific architecture.</dd>
-                </dl>
-            </article>
-
-
-            <article>
-                <header>
-                    <h3>Why Choose Inugami?</h3>
-                </header>
-
-                 <dl>
-                    <dt>Unified Source of Truth</dt>
-                    <dd>Merge technical health and business performance into a single dashboard.</dd>
-
-
-                    <dt>Developer Friendly</dt>
-                    <dd>Clean APIs and SPIs mean your business code remains focused on logic, not logging.</dd>
-
-
-                    <dt>Production Ready</dt>
-                    <dd>Built-in protection against memory leaks (MDC cleanup) and performance bottlenecks.</dd>
-
-
-                    <dt>Flexible Storage</dt>
-                    <dd>While optimized for modern log aggregators like Elasticsearch/Kibana, its structured output can be adapted to any monitoring stack.</dd>
-                </dl>
-
-                <cite class="success">
+            <main>
+                <article class="first">
                     <header>
-                        <i></i>
-                        <div>Inugami is designed as a first-class citizen of the <strong>Spring Boot ecosystem</strong></div>
+                        <h3>Core Philosophy: "Observe Everything, Impact Nothing"</h3>
                     </header>
                     <p>
-                        It leverages the core principles of Spring to minimize boilerplate code and automate infrastructure setup.
+                        Inugami is built on the principle that monitoring should be a transparent "sidecar" to your busines
+                        logic. By leveraging asynchronous processing and optimized data structures, it ensures that deep
+                        observability never comes at the cost of latency.
                     </p>
-                </cite>
-            </article>
+                </article>
+
+                <article>
+                    <header>
+                        <h3>Key Features</h3>
+                    </header>
+
+                    <dl>
+                        <dt>Asynchronous KPI Extraction</dt>
+                        <dd>Extract complex business indicators from requests and responses using the KpiExtractorSPI.
+                            Processing is decoupled from the main thread, ensuring lightning-fast response times.</dd>
+
+                        <dt>Contextual Intelligence (MDC)</dt>
+                        <dd>The MdcService provides a typed, structured way to manage the Mapped Diagnostic Context.
+                            It automatically correlates technical metadata (TraceIDs, spans) with business data (Order IDs, customer profiles).</dd>
+
+                        <dt>Extensible via SPI</dt>
+                        <dd>Inugami is designed for customization. Whether it’s dynamic field injection (MdcDynamicFieldSPI)
+                            , custom type mapping, or sophisticated interception filtering (Interceptable), the framework adapts to your specific architecture.</dd>
+                    </dl>
+                </article>
+
+
+                <article>
+                    <header>
+                        <h3>Why Choose Inugami?</h3>
+                    </header>
+
+                    <dl>
+                        <dt>Unified Source of Truth</dt>
+                        <dd>Merge technical health and business performance into a single dashboard.</dd>
+
+
+                        <dt>Developer Friendly</dt>
+                        <dd>Clean APIs and SPIs mean your business code remains focused on logic, not logging.</dd>
+
+
+                        <dt>Production Ready</dt>
+                        <dd>Built-in protection against memory leaks (MDC cleanup) and performance bottlenecks.</dd>
+
+
+                        <dt>Flexible Storage</dt>
+                        <dd>While optimized for modern log aggregators like Elasticsearch/Kibana, its structured output can be adapted to any monitoring stack.</dd>
+                    </dl>
+
+                    <cite class="success">
+                        <header>
+                            <i></i>
+                            <div>Inugami is designed as a first-class citizen of the <strong>Spring Boot ecosystem</strong></div>
+                        </header>
+                        <p>
+                            It leverages the core principles of Spring to minimize boilerplate code and automate infrastructure setup.
+                        </p>
+                    </cite>
+                </article>
+            </main>
+            
         </section>
 
         <section>
