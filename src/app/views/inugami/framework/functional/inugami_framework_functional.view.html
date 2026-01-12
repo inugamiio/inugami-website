@@ -81,12 +81,28 @@
                         <inu-code url="data/inugami/framework/functional.xml" tag="ConsumerWithException"></inu-code>
 
                         <p>
-                            The <code>ConsumerWithException</code> interface is ideal for <strong>Listener-based</strong> approaches. 
+                            The <code>ConsumerWithException</code> interface is ideal for <strong>Event Dispatcher</strong> approaches. 
                             In this design pattern, listeners are invoked for notification purposes. However, since 
                             listeners execute their own specific logic upon notification, there is no guarantee that 
                             they will not encounter errors. Despite this, the service responsible for notifying these 
                             listeners should not fail as a result of a single listener's error.
                         </p>
+
+                        <inu-code url="data/inugami/framework/functional.xml" tag="ConsumerWithExceptionUsage"></inu-code>
+
+                        <cite class="success">
+                            <header>
+                                <i></i>
+                                <div>
+                                    Inugami's <code>RunSafeUtils</code> class
+                                </div>                                
+                            </header>
+                            <p>
+                                allows for the execution of actions that carry a risk of failure but are not critical
+                                to the primary process. In such scenarios, it eliminates the need for verbose <code>try/catch blocks</code>,
+                                making the code significantly more readable and maintainable
+                            </p>
+                        </cite>
                     </inu-doc-item>
 
                 </article>
