@@ -44,7 +44,19 @@
                         <a [routerLink]="['/inugami/framework/functional']"><h2 id="action_With_exception">ActionWithException</h2></a>
                     </header>
 
-                    <inu-code url="data/inugami/framework/functional.xml" tag="ActionWithException"></inu-code>
+                   <inu-code url="data/inugami/framework/functional.xml" tag="ActionWithException"></inu-code>
+
+                   <p>
+                   The ActionWithException functional interface allows you to encapsulate an action that may potentially
+                   throw an error. This error can then be caught and handled by the method consuming the interface—for
+                   instance, to map the exception to a standardized error code.
+                   </p>
+
+                   <p>
+                    This logic is implemented in the <code>Asserts</code> class, specifically through the <code>wrapErrorForSupplierWithException</code> method.
+                   </p>
+                   <inu-code url="data/inugami/framework/functional.xml" tag="ActionWithExceptionUsage"></inu-code>
+
                 </article>
 
                 <article>

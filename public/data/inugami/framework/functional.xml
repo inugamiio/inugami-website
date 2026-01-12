@@ -24,6 +24,27 @@ public interface ActionWithException {
 ]]>
     </src>
 
+        <src name="ActionWithExceptionUsage" type="java" title="Usage of ActionWithException">
+        <![CDATA[
+@UtilityClass
+public class Asserts {
+    //...
+    public static <T> T wrapErrorForSupplierWithException(final ActionWithException action, final ErrorCode errorCode) {
+        return wrapErrorForSupplierWithException(action, errorCode, null);
+    }
+}
+
+public class UserService{
+    // ...
+
+    public void getUserById(final String id) {
+        final UserDTO user = Asserts.wrapErrorForSupplierWithException(()-> userDao.getElementById(id),
+                                                                        UserError.READ_USER_NOT_FOUND);
+    }
+}
+]]>
+    </src>
+
 <src name="BiConsumerWithException" type="java" title="BiConsumerWithException">
         <![CDATA[
 @FunctionalInterface
