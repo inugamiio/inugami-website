@@ -449,4 +449,100 @@ public interface TaskFinishListener {
 }
 ]]>
     </src>
+
+        <src name="FunctionalUtils" type="java" title="FunctionalUtils">
+        <![CDATA[
+@UtilityClass
+public final class FunctionalUtils {
+
+
+    // =========================================================================
+    // OR
+    // =========================================================================
+    public static <T> T or(T value, T ref) { }
+
+    public static <T> T or(T value, Supplier<T> ref) { }
+
+    public static <T> Optional<T> orOptional(T value, Supplier<T> supplier) { }
+
+    // =================================================================================================================
+    // IF NOT NULL
+    // =================================================================================================================
+    public static <T, R> R ifNotNull(final T value, final Function<T, R> processor)  { }
+
+    // =================================================================================================================
+    // APPLY IF NOT NULL
+    // =================================================================================================================
+    public static <T> boolean applyIfNotNull(final T data, final Consumer<T> consumer) { }
+
+    public static <T> boolean applyIfNotNull(final T data, final T defaultValue, final Consumer<T> consumer) { }
+
+    public static <T> void processIfNull(T object, VoidFunction supplier)  { }
+
+    public static <T> void processIfNotNull(T object, VoidFunction supplier) { }
+
+    public static <T> void processIfNotNull(T object, Consumer<T> supplier) { }
+
+
+    // =================================================================================================================
+    // APPLY IF NULL
+    // =================================================================================================================
+    public static <T> T applyIfNull(final T data, final Supplier<T> supplier)  { }
+
+
+    // =================================================================================================================
+    // APPLY IF EMPTY
+    // =================================================================================================================
+    public static <T extends Collection<?>> T applyIfEmpty(final T data, final Supplier<T> supplier) { }
+
+    public static <T extends Map<?, ?>> T applyIfEmpty(final T data, final Supplier<T> supplier) { }
+
+    public static String applyIfEmpty(final String data, final Supplier<String> supplier) { }
+
+    public static String orNull(final String data) { }
+
+    // =================================================================================================================
+    // APPLY IF NOT EMPTY
+    // =================================================================================================================
+    public static <T extends Collection<?>> T applyIfNotEmpty(final T data, final Supplier<T> supplier) { }
+
+    public static <T extends Map<?, ?>> T applyIfNotEmpty(final T data, final Supplier<T> supplier) { }
+
+    public static String applyIfNotEmpty(final String data, final Supplier<String> supplier) { }
+
+    // =================================================================================================================
+    // APPLY IF CHANGE
+    // =================================================================================================================
+    public static boolean applyIfChange(final boolean ref,
+                                        final boolean newValue,
+                                        final Consumer<Boolean> consumer) { }
+
+    public static boolean applyIfChange(final short ref,
+                                        final short newValue,
+                                        final Consumer<Short> consumer) { }
+
+    public static boolean applyIfChange(final int ref,
+                                        final int newValue,
+                                        final IntConsumer consumer) { }
+
+    public static boolean applyIfChange(final float ref,
+                                        final float newValue,
+                                        final Consumer<Float> consumer)  { }
+
+    public static boolean applyIfChange(final long ref, final long newValue, final LongConsumer consumer) { }
+
+    public static boolean applyIfChange(final double ref, final double newValue, final DoubleConsumer consumer) { }
+
+    public static <T extends Object> boolean applyIfChange(final T ref, final T newValue, final Consumer<T> consumer) { }
+
+
+    public static <T extends Object> boolean applyIfChangeAndNotNull(final T ref,
+                                                                     final T newValue,
+                                                                     final Consumer<T> consumer) { }
+
+    public static <T extends Object> boolean hasChange(final T ref, final T newValue)  { }
+
+}
+]]>
+    </src>
 </xml>

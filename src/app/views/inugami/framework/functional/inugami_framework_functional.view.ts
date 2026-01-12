@@ -30,5 +30,9 @@ export class InugamiFrameworkFunctionalView{
 requires io.inugami.framework.interfaces;
         `
     );
-
+    protected supplier_T: WritableSignal<string> = signal<string>(
+        `
+Supplier<T>
+        `
+    );
 }
