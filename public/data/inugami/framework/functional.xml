@@ -280,6 +280,34 @@ public interface ValidatorFunction<T, E extends Exception> {
 ]]>
     </src>
 
+        <src name="ValidatorFunctionUsage" type="java" title="Usage of ValidatorFunction">
+        <![CDATA[
+@Service
+public class UserValidationService {
+
+    public void validateUserCreation(UserDTO user) throws CheckedException {
+        List<ValidatorFunction<UserDTO, CheckedException>> validators = List.of(
+            this::checkEmailFormat,
+            this::checkPasswordStrength,
+            this::checkDuplicateAccount
+        );
+
+        for (var validator : validators) {
+            validator.validate(user);
+        }
+    }
+
+    private void checkEmailFormat(UserDTO user) throws UserException {
+        final String email = Optional.ofNullable(user).map(UserDTO::getEmail).orElse("");
+        if(!email.contains("@")){
+            throw new UserException(ErrorCode.INVALID_EMAIL);
+        }
+    }
+    //...
+}
+]]>
+    </src>
+
     <src name="IsEmptyFacet" type="java" title="IsEmptyFacet">
         <![CDATA[
 @FunctionalInterface
@@ -289,14 +317,30 @@ public interface IsEmptyFacet {
 ]]>
     </src>
 
-    <src name="PostProcessing" type="java" title="PostProcessing">
+        <src name="IsEmptyFacetUsage" type="java" title="Usage of IsEmptyFacet">
         <![CDATA[
-@FunctionalInterface
-public interface PostProcessing<T> {
-    void postProcessing(final T context) throws TechnicalException;
+@Data
+public class AddressDTO implements IsEmptyFacet {
+    private String street;
+    private String city;
+
+    @Override
+    public boolean isEmpty() {
+        return StringUtils.isBlank(street) && StringUtils.isBlank(city);
+    }
+}
+
+//-----------------------
+public class AddressService {
+    public List<AddressDTO> sanitizeAddresses(List<AddressDTO> addresses) {
+        return addresses.stream()
+                        .filter(addr -> !addr.isEmpty()) 
+                        .toList();
+    }
 }
 ]]>
     </src>
+
 
     <src name="SupplierWithException" type="java" title="SupplierWithException">
         <![CDATA[
@@ -307,11 +351,83 @@ public interface SupplierWithException<T, E extends Exception> {
 ]]>
     </src>
 
+        <src name="SupplierWithExceptionUsage" type="java" title="Usage of SupplierWithException">
+        <![CDATA[
+@RequiredArgsConstructor
+@Service
+public class ProductService {
+    private final List<StockService> stockServices;
+
+    public List<ProductStock> findProductInStocks(final String productUid){
+        final List<ProductStock> result = new ArrayList<>();
+
+
+        for(StockService stockService : stockServices){
+            searchProductInRegionalStock(()-> stockService.findProduct(productUid), 
+                                        stockService.getRegion(),
+                                        result::add);
+        }
+
+        return;
+    }
+
+    protected void searchProductInRegionalStock(SupplierWithException<ProductStock, CheckedException> action,
+                                                String region,
+                                                Consumer<ProductStock> consumer){
+        try{
+            FunctionalUtils.applyIfNotNull(action.get(), consumer::accept)
+        }catch(CheckedException e){
+            WarningContext.getInstance().addWarnings(UserWarning.PRODUCT_NOT_AVAILABLE
+                                        .toBuilder()
+                                        .addMessageDetail("Product isn't available in stock region {0}", region));
+        }
+    }
+}
+]]>
+    </src>
+
     <src name="SupplierWithThrowable" type="java" title="SupplierWithThrowable">
         <![CDATA[
 @FunctionalInterface
 public interface SupplierWithThrowable<T> {
     T get() throws Throwable;
+}
+]]>
+    </src>
+
+
+
+    <src name="SupplierWithThrowableUsage" type="java" title="Usage of SupplierWithThrowable">
+        <![CDATA[
+@RequiredArgsConstructor
+@Service
+public class ProductService {
+    private final List<StockService> stockServices;
+
+    public List<ProductStock> findProductInStocks(final String productUid){
+        final List<ProductStock> result = new ArrayList<>();
+
+
+        for(StockService stockService : stockServices){
+            searchProductInRegionalStock(()-> stockService.findProduct(productUid), 
+                                        stockService.getRegion(),
+                                        result::add);
+        }
+
+        return;
+    }
+
+    protected void searchProductInRegionalStock(SupplierWithException<ProductStock, CheckedException> action,
+                                                String region,
+                                                Consumer<ProductStock> consumer){
+        try{
+            FunctionalUtils.applyIfNotNull(action.get(), consumer::accept)
+        }catch(Throwable e){
+            WarningContext.getInstance().addWarnings(UserWarning.PRODUCT_NOT_AVAILABLE
+                                        .toBuilder()
+                                        .addMessageDetail("Product isn't available in stock region {0}", region));
+        }
+    }
 }
 ]]>
     </src>

@@ -175,6 +175,19 @@
 
                     <inu-doc-item title="ValidatorFunction" [level]="3" href="inugami/framework/functional#validator_function" id="validator_function">
                         <inu-code url="data/inugami/framework/functional.xml" tag="ValidatorFunction"></inu-code>
+
+                        <p>
+                            The ValidatorFunction interface is a specialized functional contract dedicated to business
+                            validation logic. Unlike a standard <code>Predicate</code> that returns a boolean, this interface
+                            validates an input of type <code>T</code> and signals failure by throwing a specific exception of type <code>E</code>.
+                        </p>
+
+                        <p>
+                            This approach is ideal for building validation pipelines where you need to know exactly why 
+                            a validation failed. It allows developers to keep validation rules isolated, reusable, 
+                            and capable of propagating detailed error contexts through structured exceptions.
+                        </p>
+                        <inu-code url="data/inugami/framework/functional.xml" tag="ValidatorFunctionUsage"></inu-code>
                     </inu-doc-item>
                 </article>
 
@@ -183,13 +196,19 @@
                         <a [routerLink]="['/inugami/framework/functional']"><h2 id="is_empty_facet">IsEmptyFacet</h2></a>
                     </header>
                     <inu-code url="data/inugami/framework/functional.xml" tag="IsEmptyFacet"></inu-code>
-                </article>
 
-                <article>
-                    <header>
-                        <a [routerLink]="['/inugami/framework/functional']"><h2 id="post_processing">PostProcessing</h2></a>
-                    </header>
-                    <inu-code url="data/inugami/framework/functional.xml" tag="PostProcessing"></inu-code>
+                    <p>
+                        The <code>IsEmptyFacet</code> interface is a functional 'trait' used to standardize how objects
+                        signal <strong>their emptiness</strong>. By implementing this interface, a class provides a
+                        consistent way for orchestrators, validators to check if an object contains any meaningful data.
+                    </p>
+                    <p>
+                        It is particularly useful in complex forms or deep data structures where you need to prune 'empty'
+                        objects before persistence or transmission, ensuring that only relevant data remains
+                        in your processing pipeline.
+                    </p>
+
+                    <inu-code url="data/inugami/framework/functional.xml" tag="IsEmptyFacetUsage"></inu-code>
                 </article>
 
                 <article>
@@ -198,10 +217,58 @@
                     </header>
                      <inu-doc-item title="SupplierWithException" [level]="3" href="inugami/framework/functional#supplier_with_exception" id="supplier_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="SupplierWithException"></inu-code>
+
+                        <p>
+                            The <code>SupplierWithException</code> interface represents a provider of results that can
+                            throw a checked exception.
+                        </p>
+                        <p>
+                            While the standard Java <code>Supplier</code> is restricted to non-throwing operations,
+                            this interface allows you to encapsulate 'lazy' logic—such as fetching a secret from a vault, 
+                            reading a file, or acquiring a database connection—without forcing an immediate <code>try-catch block</code>.
+                            It bridges the gap between deferred execution and robust error handling
+                        </p>
+
+                        <inu-code url="data/inugami/framework/functional.xml" tag="SupplierWithExceptionUsage"></inu-code>
+
+                        <p>
+                            This example demonstrates a <code>ProductService</code> querying several regional stock services. 
+                            Each regional search is wrapped in a <code>SupplierWithException</code>, allowing the orchestrator
+                            to collect available stocks while gracefully handling failures in specific regions.
+                        </p>
+
+                        <strong>Key Advantages:</strong>
+                        <dl>
+                            <dt>Fault Tolerance</dt>
+                            <dd>A failure in one regional StockService (e.g., a timeout or connection error) does not
+                                crash the entire search. The error is caught and converted into a user warning.</dd>
+
+                            <dt>Declarative Safety</dt>
+                            <dd>The searchProductInRegionalStock method provides a clean, reusable template for executing 
+                                "risky" suppliers.</dd>
+
+                            <dt>Separation of Concerns</dt>
+                            <dd>The business logic (findProductInStocks) focuses on the iteration, while the safety logic (searchProductInRegionalStock) focuses on exception management and state reporting.</dd>
+                        </dl>
                     </inu-doc-item>
+
 
                     <inu-doc-item title="SupplierWithThrowable" [level]="3" href="inugami/framework/functional#supplier_with_throwable" id="supplier_with_throwable">
                         <inu-code url="data/inugami/framework/functional.xml" tag="SupplierWithThrowable"></inu-code>
+
+                        <p>
+                           The SupplierWithThrowable interface is the highest level of protection. It is used when
+                           orchestrating multiple external providers where the reliability of the underlying code is
+                           unknown or out of your control.
+                        </p>
+
+                        <p>
+                            Unlike <code>SupplierWithException</code>, which only catches standard exceptions,
+                            <code>SupplierWithThrowable</code> ensures that no failure whatsoever (even JVM Errors) can
+                            escape the execution block and crash the main process. This allows the orchestrator to collect 
+                            esults from healthy providers while converting failures into non-blocking warnings.
+                        </p>
+                        <inu-code url="data/inugami/framework/functional.xml" tag="SupplierWithThrowableUsage"></inu-code>
                     </inu-doc-item>
                 </article>
 
@@ -213,10 +280,31 @@
 
                         <inu-doc-item title="TaskStartListener" [level]="3" href="inugami/framework/functional#task_start_listener" id="task_start_listener">
                             <inu-code url="data/inugami/framework/functional.xml" tag="TaskStartListener"></inu-code>
+                            <p>
+                                The TaskStartListener interface is a specialized observer designed for monitoring and telemetry.
+                                It provides a standard contract to capture the exact moment a task begins, along with its metadata.
+                            </p>
+                            <p>
+                                By using this interface, you can decouple your task execution logic from your monitoring
+                                infrastructure. Whether you are logging to a console, sending metrics to Prometheus, or
+                                tracking execution in a database, the listener ensures that your core logic remains
+                                focused on the task at hand while providing full transparency into the system's activity.
+                            </p>
                         </inu-doc-item>
 
                         <inu-doc-item title="TaskFinishListener" [level]="3" href="inugami/framework/functional#task_finish_listener" id="task_finish_listener">
                             <inu-code url="data/inugami/framework/functional.xml" tag="TaskFinishListener"></inu-code>
+                            <p>
+                                The TaskFinishListener interface is post-execution observability. It captures the full
+                                lifecycle of a task upon completion, providing essential metrics such as execution
+                                duration and delay, alongside the functional outcome (the result or the exception).
+                            </p>
+
+                            <p>
+                                This interface allows for advanced telemetry, such as calculating success rates, profiling
+                                slow tasks, or triggering specific alerts when an exception is captured, all while keeping
+                                the business logic completely unaware of the monitoring stack.
+                            </p>
                         </inu-doc-item>
                     </header>
                 </article>
