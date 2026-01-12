@@ -54,6 +54,77 @@ public interface BiConsumerWithException<T,V> {
 ]]>
     </src>
 
+    <src name="BiConsumerWithException" type="java" title="BiConsumerWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface BiConsumerWithException<T,V> {
+    void process(final T value, final V secondValue) throws Exception;
+}
+]]>
+    </src>
+
+        <src name="BiConsumerWithExceptionUsage" type="java" title="Usage of BiConsumerWithException">
+        <![CDATA[
+@UtilityClass
+public class Asserts {
+    //...
+    public <T> void assertModel(final Collection<T> models,
+                                final BiConsumerWithException<T, Integer>... validations) {
+        // ...
+    }
+}
+
+
+@RequiredArgsConstructor
+@Service
+public class UserService{
+    @Transactional
+    @Override
+    public Collection<UserDTO> create(final Collection<UserDTO> values) {
+        assertNotEmpty(CREATE_INVALID_DATA, values);
+
+        assertModel(values,
+            (v, index) -> assertNull(fromErrorCode(CREATE_UID_FORBIDDEN)
+                            .addField(FIELD_UID, index)
+                            .build(), v.getUid()),
+
+            (v, index) -> {
+                assertNotEmpty(fromErrorCode(CREATE_FIRSTNAME_INVALID)
+                            .addField(FIELD_FIRSTNAME, index)
+                            .build(), v.getFirstName());
+
+                v.setFirstName(v.getFirstName().trim());
+                assertLowerOrEquals(fromErrorCode(CREATE_FIRSTNAME_INVALID)
+                            .addField(FIELD_FIRSTNAME, index)
+                            .build(), MAX_SIZE, v.getFirstName().length());
+            },
+
+            (v, index) -> {
+                assertNotEmpty(fromErrorCode(CREATE_LASTNAME_INVALID)
+                            .addField(FIELD_LASTNAME, index)
+                            .build(), v.getLastName());
+                v.setLastName(v.getLastName().trim());
+                assertLowerOrEquals(fromErrorCode(CREATE_LASTNAME_INVALID)
+                            .addField(FIELD_LASTNAME, index)
+                            .build(), MAX_SIZE, v.getLastName().length());
+            },
+
+            (v, index) -> {
+                assertNotEmpty(fromErrorCode(CREATE_EMAIL_INVALID)
+                            .addField(FIELD_EMAIL, index)
+                            .build(), v.getEmail());
+                v.setEmail(v.getEmail().trim());
+                assertRegexMatch(fromErrorCode(CREATE_EMAIL_INVALID)
+                            .addField(FIELD_EMAIL, index)
+                            .build(), EMAIL_REGEX, v.getEmail());
+            });
+
+        return userDao.create(values);
+    }
+]]>
+    </src>
+
+
 <src name="ConsumerWithException" type="java" title="ConsumerWithException">
         <![CDATA[
 @FunctionalInterface

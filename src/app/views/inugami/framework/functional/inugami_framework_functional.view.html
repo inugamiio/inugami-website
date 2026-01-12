@@ -66,15 +66,29 @@
 
                     <inu-doc-item title="BiConsumerWithException" [level]="3" href="inugami/framework/functional#bi_consumer_with_exception" id="bi_consumer_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="BiConsumerWithException"></inu-code>
+
+                        <p>
+                            The BiConsumerWithException functional interface allows for the invocation of a method that
+                            may potentially throw an exception. This interface accepts two input parameters and is utilized,
+                            for example, in Inugami's DTO validation processes (such as <code>Asserts.assertModel</code>).
+                        </p>
+                        <inu-code url="data/inugami/framework/functional.xml" tag="BiConsumerWithExceptionUsage"></inu-code>
+
                     </inu-doc-item>
+
 
                     <inu-doc-item title="ConsumerWithException" [level]="3" href="inugami/framework/functional#consumer_with_exception" id="consumer_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="ConsumerWithException"></inu-code>
+
+                        <p>
+                            The <code>ConsumerWithException</code> interface is ideal for <strong>Listener-based</strong> approaches. 
+                            In this design pattern, listeners are invoked for notification purposes. However, since 
+                            listeners execute their own specific logic upon notification, there is no guarantee that 
+                            they will not encounter errors. Despite this, the service responsible for notifying these 
+                            listeners should not fail as a result of a single listener's error.
+                        </p>
                     </inu-doc-item>
 
-                    <inu-doc-item title="BiConsumerWithException" [level]="3" href="inugami/framework/functional#tri_consumer" id="tri_consumer">
-                        <inu-code url="data/inugami/framework/functional.xml" tag="BiConsumerWithException"></inu-code>
-                    </inu-doc-item>
                 </article>
 
 
