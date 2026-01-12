@@ -38,6 +38,10 @@ export class App implements OnInit{
               title: 'Exception',
               path: 'inugami/framework/exception'
             },
+            {
+              title: 'Functional',
+              path: 'inugami/framework/functional'
+            },
              {
               title: 'Monitoring',
               path: 'inugami/framework/monitoring'

@@ -15,6 +15,7 @@ export class FrameworkAsideComponent implements OnInit {
 
     protected gettingStarted: WritableSignal<boolean> = signal<boolean>(false);
     protected exceptionManagement: WritableSignal<boolean> = signal<boolean>(false);
+    protected functional: WritableSignal<boolean> = signal<boolean>(false);
     protected monitoring: WritableSignal<boolean> = signal<boolean>(false);
     protected testability: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -35,6 +36,9 @@ export class FrameworkAsideComponent implements OnInit {
                 break;
             case 'exception':
                 this.exceptionManagement.set(true);
+                break;
+            case 'functional':
+                this.functional.set(true);
                 break;
             case 'monitoring':
                 this.monitoring.set(true);

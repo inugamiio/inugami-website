@@ -97,18 +97,51 @@
             }
         </li>
 
-        <li class="wip">
+        <li>
             <a routerLink="/inugami/framework/functional"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Functional
             </a>
-        </li>
+            @if (functional()) {
+                <ul>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="action_With_exception">ActionWithException</a></li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer">Consumer</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="bi_consumer_with_exception">BiConsumerWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer_with_exception">ConsumerWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="tri_consumer">TriConsumer</a></li>
+                        </ul>
+                    </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/logs"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Logs obfuscator
-            </a>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="function">Function</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="filter_function">FilterFunction</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="function_with_exception">FunctionWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="generic_action_with_exception">GenericActionWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function">VoidFunction</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function_with_exception">VoidFunctionWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="validator_function">ValidatorFunction</a></li>
+                        </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="is_empty_facet">IsEmptyFacet</a></li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="post_processing">PostProcessing</a></li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a></li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="task">Task</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="task_start_listener">TaskStartListener</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="task_finish_listener">TaskFinishListener</a></li>
+                        </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier">Supplier</a>
+                        <ul>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a></li>
+                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
+                        </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
+                </ul>
+            }
         </li>
 
         <li>

@@ -16,7 +16,7 @@ import { InugamiFrameworkMonitoringSensorView } from './views/inugami/framework/
 import { InugamiFrameworkMonitoringProviderView } from './views/inugami/framework/monitoring_provider/inugami_framework_monitoring_provider.view';
 import { InugamiFrameworkMonitoringActiveMqView } from './views/inugami/framework/monitoring_activemq/inugami_framework_monitoring_activemq.view';
 import { InugamiFrameworkMonitoringFeignView } from './views/inugami/framework/monitoring_feign/inugami_framework_monitoring_feign.view';
-import { InugamiFrameworkLogsView } from './views/inugami/framework/logs/inugami_framework_logs.view';
+
 
 export const routes: Routes = [
     { path: "", component: HomeView },
@@ -27,7 +27,6 @@ export const routes: Routes = [
             { path: "components", component: InugamiFrameworkComponentsView },
             { path: "exception", component: InugamiFrameworkExceptionView },
             { path: "functional", component: InugamiFrameworkFunctionalView },
-            { path: "logs", component: InugamiFrameworkLogsView },
             { path: "monitoring", component: InugamiFrameworkMonitoringView },
             { path: "monitoring-activemq", component: InugamiFrameworkMonitoringActiveMqView },
             { path: "monitoring-feign", component: InugamiFrameworkMonitoringFeignView },

@@ -1,0 +1,162 @@
+<xml>
+    <src name="dependencies_maven" type="xml" title="Maven dependencies">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+</dependency>
+]]>
+    </src>
+
+        <src name="dependencies_java" type="java" title="Java dependencies">
+        <![CDATA[
+requires io.inugami.framework.interfaces;
+]]>
+    </src>
+
+
+    <src name="ActionWithException" type="java" title="ActionWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface ActionWithException {
+    <T> T process() throws Throwable;
+}
+]]>
+    </src>
+
+<src name="BiConsumerWithException" type="java" title="BiConsumerWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface BiConsumerWithException<T,V> {
+    void process(final T value, final V secondValue) throws Exception;
+}
+]]>
+    </src>
+
+<src name="ConsumerWithException" type="java" title="ConsumerWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface ConsumerWithException<T> {
+    void process(final T value) throws Exception;
+}
+]]>
+    </src>
+
+<src name="BiConsumerWithException" type="java" title="BiConsumerWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface BiConsumerWithException<T,V> {
+    void process(final T value, final V secondValue) throws Exception;
+}
+]]>
+    </src>
+
+<src name="FilterFunction" type="java" title="FilterFunction">
+        <![CDATA[
+@FunctionalInterface
+public interface FilterFunction<T> {
+    boolean accept(final T input);
+}
+]]>
+    </src>
+
+<src name="FunctionWithException" type="java" title="FunctionWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface FunctionWithException<I, O, E extends Throwable> {
+    O process(final I input) throws E;
+}
+]]>
+    </src>
+
+
+<src name="GenericActionWithException" type="java" title="GenericActionWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface GenericActionWithException<T> {
+    T process() throws Throwable;
+}
+]]>
+    </src>
+
+    <src name="VoidFunction" type="java" title="VoidFunction">
+        <![CDATA[
+@FunctionalInterface
+public interface VoidFunction {
+    void process();
+}
+]]>
+    </src>
+
+    <src name="VoidFunctionWithException" type="java" title="VoidFunctionWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface VoidFunctionWithException {
+    void process() throws Exception;
+}
+]]>
+    </src>
+
+    <src name="ValidatorFunction" type="java" title="ValidatorFunction">
+        <![CDATA[
+@FunctionalInterface
+public interface ValidatorFunction<T, E extends Exception> {
+    void validate(final T input) throws E;
+}
+]]>
+    </src>
+
+    <src name="IsEmptyFacet" type="java" title="IsEmptyFacet">
+        <![CDATA[
+@FunctionalInterface
+public interface IsEmptyFacet {
+    boolean isEmpty();
+}
+]]>
+    </src>
+
+    <src name="PostProcessing" type="java" title="PostProcessing">
+        <![CDATA[
+@FunctionalInterface
+public interface PostProcessing<T> {
+    void postProcessing(final T context) throws TechnicalException;
+}
+]]>
+    </src>
+
+    <src name="SupplierWithException" type="java" title="SupplierWithException">
+        <![CDATA[
+@FunctionalInterface
+public interface SupplierWithException<T, E extends Exception> {
+    T get() throws E;
+}
+]]>
+    </src>
+
+    <src name="SupplierWithThrowable" type="java" title="SupplierWithThrowable">
+        <![CDATA[
+@FunctionalInterface
+public interface SupplierWithThrowable<T> {
+    T get() throws Throwable;
+}
+]]>
+    </src>
+
+    <src name="TaskStartListener" type="java" title="TaskStartListener">
+        <![CDATA[
+@FunctionalInterface
+public interface TaskStartListener {
+    void onStart(final long time, final String name);
+}
+]]>
+    </src>
+
+    <src name="TaskFinishListener" type="java" title="TaskFinishListener">
+        <![CDATA[
+@FunctionalInterface
+public interface TaskFinishListener {
+    void onFinish(final long time, final long delay, final String name, final Object result, final Exception error);
+}
+]]>
+    </src>
+</xml>
