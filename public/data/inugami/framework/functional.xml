@@ -166,20 +166,66 @@ public interface BiConsumerWithException<T,V> {
 ]]>
     </src>
 
-<src name="FilterFunction" type="java" title="FilterFunction">
-        <![CDATA[
-@FunctionalInterface
-public interface FilterFunction<T> {
-    boolean accept(final T input);
-}
-]]>
-    </src>
 
 <src name="FunctionWithException" type="java" title="FunctionWithException">
         <![CDATA[
 @FunctionalInterface
 public interface FunctionWithException<I, O, E extends Throwable> {
     O process(final I input) throws E;
+}
+]]>
+    </src>
+
+
+    <src name="FunctionWithExceptionUsage" type="java" title="Usage of FunctionWithException">
+        <![CDATA[
+@RequiredArgsConstructor
+@Service
+public OrderOrchestratorService{
+    private final OrderService    orderService;
+    private final StockService    stockService;
+    private final TaxesService    taxeService;
+    private final ConsumerService consumerService;
+
+    @Transactional
+    public OrderDTOStatus processOrder(final OrderDTO order){
+        OrderDTOStatus result = null;
+
+        //--- Chain of Command
+        List<FunctionWithException<OrderDTOStatus, OrderDTO, CheckedException>> steps = List.of(
+            ()-> this.validateOrder(order),
+            ()-> this.reserveStock(order),
+            ()-> this.calculateTaxes(order),
+            ()-> this.notifyConsumers(order)
+        );
+
+        //--- process synchronization
+        for(final var step :steps){
+            try{
+                result = step.process(Optional.ofNullable(result)
+                                              .map(OrderDTOStatus::getOrder)
+                                              .orElse(user));
+            }catch(CheckedException e){
+                esbService.sendFailSynchronization(user);
+                Asserts.throwException(OrderError.ORDER_PROCESSING_ERROR)
+            }
+        }
+        
+        return result;
+    }
+
+    protected OrderDTOStatus validateOrder(final OrderDTO user) throws UncheckedException{
+        // ...
+    }
+    protected OrderDTOStatus reserveStock(final OrderDTO user) throws UncheckedException{
+        // ...
+    }
+    protected OrderDTOStatus calculateTaxes(final OrderDTO user) throws UncheckedException{
+        // ...
+    }
+    protected OrderDTOStatus notifyConsumers(final OrderDTO user) throws UncheckedException{
+        // ...
+    }
 }
 ]]>
     </src>
@@ -208,6 +254,19 @@ public interface VoidFunction {
 @FunctionalInterface
 public interface VoidFunctionWithException {
     void process() throws Exception;
+}
+]]>
+    </src>
+
+
+    <src name="VoidFunctionWithExceptionUsage" type="java" title="Usage of VoidFunctionWithException">
+        <![CDATA[
+public void processAndCleanup(OrderDTO order) {
+    try {
+        businessService.save(order);
+    } finally {
+        RunSafeUtils.runSafeVoid(() -> resourceManager.releaseLock(order.getId()));
+    }
 }
 ]]>
     </src>

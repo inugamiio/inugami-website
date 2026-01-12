@@ -113,24 +113,64 @@
                         <a [routerLink]="['/inugami/framework/functional']"><h2 id="function">Function</h2></a>
                     </header>
 
-                    <inu-doc-item title="FilterFunction" [level]="3" href="inugami/framework/functional#filter_function" id="filter_function">
-                        <inu-code url="data/inugami/framework/functional.xml" tag="FilterFunction"></inu-code>
-                    </inu-doc-item>
-
                     <inu-doc-item title="FunctionWithException" [level]="3" href="inugami/framework/functional#function_with_exception" id="function_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="FunctionWithException"></inu-code>
+
+                        <p>
+                            In complex systems, data processing often follows a Chain of Command. Each step (or "link")
+                            in the chain performs a specific transformation. Using FunctionWithException allows these
+                            steps to perform heavy operations (DB access, specialized parsing) that might throw exceptions,
+                            while keeping the orchestrator clean.
+                        </p>
+
+                        <inu-code url="data/inugami/framework/functional.xml" tag="FunctionWithExceptionUsage"></inu-code>
+
                     </inu-doc-item>
 
                     <inu-doc-item title="GenericActionWithException" [level]="3" href="inugami/framework/functional#generic_action_with_exception" id="generic_action_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="GenericActionWithException"></inu-code>
+
+                        <p>
+                            The <code>GenericActionWithException</code> interface is very similar in usage to <code>FunctionWithException</code>,
+                             with one key difference: it acts as a <code>Supplier</code> that takes no input parameters.
+                        </p>
+                      
+                        <p>
+                            It is designed to encapsulate a standalone operation that produces a result of type <code>T</code>
+                            while allowing for the propagation of any <code>Throwable</code>. This makes it the ideal
+                            choice for wrapping isolated blocks of logic, external calls, or factory methods that are 
+                            prone to failure but do not require external data to execute.
+                        </p>
+                        
                     </inu-doc-item>
 
                     <inu-doc-item title="VoidFunction" [level]="3" href="inugami/framework/functional#void_function" id="void_function">
                         <inu-code url="data/inugami/framework/functional.xml" tag="VoidFunction"></inu-code>
+                        <p>
+                            The VoidFunction interface represents a simple command that takes no arguments and returns no result.
+                        </p>
+                        <p>
+                            While it is structurally identical to the standard Java Runnable, it is used within the 
+                            Inugami framework to clearly signal a functional 'action' or 'callback'. 
+                            It is the ideal choice for triggering side effects—such as clearing a cache,  or sending a message,
+                            where the execution is guaranteed not to throw checked exceptions.
+                        </p>
                     </inu-doc-item>
 
                     <inu-doc-item title="VoidFunctionWithException" [level]="3" href="inugami/framework/functional#void_function_with_exception" id="void_function_with_exception">
                         <inu-code url="data/inugami/framework/functional.xml" tag="VoidFunctionWithException"></inu-code>
+                        <p>
+                            The <code>VoidFunctionWithException</code> interface is the robust counterpart to <code>VoidFunction</code>.
+                            It represents a standalone action that takes no input and returns no output, but is explicitly
+                            permitted to throw a checked exception.
+                        </p>
+                        <p>
+                            It is used when you need to trigger a procedure—such as a cleanup task,
+                            a file commit, or a system notification—that might fail, requiring the caller to either 
+                            handle the error or delegate it to a recovery utility like RunSafeUtils.
+                        </p>
+
+                        <inu-code url="data/inugami/framework/functional.xml" tag="VoidFunctionWithExceptionUsage"></inu-code>
                     </inu-doc-item>
 
                     <inu-doc-item title="ValidatorFunction" [level]="3" href="inugami/framework/functional#validator_function" id="validator_function">
