@@ -242,13 +242,6 @@
             </a>
         </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/security"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Security
-            </a>
-        </li>
-
         <li>
             <a routerLink="/inugami/framework/testability"
                 routerLinkActive="active"
@@ -269,11 +262,25 @@
              }
         </li>
 
-        <li class="wip">
+        <li>
             <a routerLink="/inugami/framework/tools"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Tools
             </a>
+            @if (tools()) {
+                <ul>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="cron">Cron</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="documentation">Documentation</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="string">String</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="injection">Injection</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="file">File</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="marshalling">Marshalling</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="security">Security</a></li>
+                </ul>
+            }
         </li>
     </ul>
 </menu>

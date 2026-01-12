@@ -49,6 +49,10 @@ export class App implements OnInit{
              {
               title: 'Testability',
               path: 'inugami/framework/testability'
+            },
+             {
+              title: 'Tools',
+              path: 'inugami/framework/tools'
             }
           ]
         }

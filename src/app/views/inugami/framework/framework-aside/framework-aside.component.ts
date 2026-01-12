@@ -18,6 +18,7 @@ export class FrameworkAsideComponent implements OnInit {
     protected functional: WritableSignal<boolean> = signal<boolean>(false);
     protected monitoring: WritableSignal<boolean> = signal<boolean>(false);
     protected testability: WritableSignal<boolean> = signal<boolean>(false);
+    protected tools: WritableSignal<boolean> = signal<boolean>(false);
 
     ngOnInit(): void {
         this.router.url
@@ -45,6 +46,9 @@ export class FrameworkAsideComponent implements OnInit {
                 break;
             case 'testability':
                 this.testability.set(true);
+                break;
+            case 'tools':
+                this.tools.set(true);
                 break;
         }
     }

@@ -11,7 +11,6 @@ import { InugamiFrameworkMultithreadingView } from './views/inugami/framework/mu
 import { InugamiFrameworkFunctionalView } from './views/inugami/framework/functional/inugami_framework_functional.view';
 import { InugamiFrameworkReflectionView } from './views/inugami/framework/reflection/inugami_framework_reflection.view';
 import { InugamiFrameworkComponentsView } from './views/inugami/framework/components/inugami_framework_components.view';
-import { InugamiFrameworkSecurityView } from './views/inugami/framework/security/inugami_framework_security.view';
 import { InugamiFrameworkMonitoringSensorView } from './views/inugami/framework/monitoring_sensor/inugami_framework_monitoring_sensor.view';
 import { InugamiFrameworkMonitoringProviderView } from './views/inugami/framework/monitoring_provider/inugami_framework_monitoring_provider.view';
 import { InugamiFrameworkMonitoringActiveMqView } from './views/inugami/framework/monitoring_activemq/inugami_framework_monitoring_activemq.view';
@@ -33,7 +32,6 @@ export const routes: Routes = [
             { path: "monitoring-provider", component: InugamiFrameworkMonitoringProviderView },
             { path: "monitoring-sensor", component: InugamiFrameworkMonitoringSensorView },
             { path: "multithreading", component: InugamiFrameworkMultithreadingView },
-            { path: "security", component: InugamiFrameworkSecurityView },
             { path: "reflection", component: InugamiFrameworkReflectionView },
             { path: "testability", component: InugamiFrameworkTestabilityView },
             { path: "tools", component: InugamiFrameworkToolsView }
