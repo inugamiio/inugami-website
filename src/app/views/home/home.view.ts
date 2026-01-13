@@ -3,13 +3,16 @@ import { InuAnnoncement } from '../../components/annoncement/annoncement.compone
 import { HttpServices } from '../../services/http.service';
 import { Annoncement, AnnoncementExample, AnnoncementItem } from '../../components/annoncement/annoncement.model';
 import { InuCodeComponent } from '../../components/code/code.component';
+import { InuIcon } from 'inugami-icons';
+
 
 @Component({
     templateUrl: './home.view.html',
     styleUrls: ['./home.view.scss'],
     imports: [
         InuAnnoncement,
-        InuCodeComponent
+        InuCodeComponent,
+        InuIcon
     ]
 })
 export class HomeView implements OnInit {
