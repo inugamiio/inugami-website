@@ -1,14 +1,16 @@
 import { Component,  input, OnInit, signal } from "@angular/core";
+import { InuIcon } from "inugami-icons";
 @Component({
     selector: 'inu-copy',
     templateUrl: './copy.component.html',
-    styleUrls: ['./copy.component.scss']
+    styleUrls: ['./copy.component.scss'],
+    imports : [InuIcon]
 })
 export class InuCopyComponent {
     //==================================================================================================================
     // ATTRIBUTES
     //==================================================================================================================
-    iconClass =input.required<string>();
+    icon =input.required<string>();
     label=input.required<string>();
     content = input.required<string>();
     copied = signal(false);

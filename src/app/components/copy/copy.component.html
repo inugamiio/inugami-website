@@ -1,7 +1,9 @@
 <button  class="inu-copy-button" (click)="copy()" [class.active]="copied()" [title]="label()">
     @if(copied()){
-        <span class="icon ico-success"></span>
+      <inu-icon [size]="2.5" icon="approval"></inu-icon>
     }@else {
-        <span [class]="iconClass()"></span>
+        @if (icon()) {
+            <inu-icon [size]="2.5" [icon]="icon()"></inu-icon>
+        }
     }
 </button>

@@ -2673,10 +2673,10 @@ ini@^6.0.0:
   resolved "https://registry.npmjs.org/ini/-/ini-6.0.0.tgz"
   integrity sha512-IBTdIkzZNOpqm7q3dRqJvMaldXjDHWkEDfrwGEQTs5eaQMWV+djAhR+wahyNNMAa+qpbDUhBMVt4ZKNwpPm7xQ==
 
-inugami-icons@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.6.tgz#4f5ac606416f3d7aa45184216f1c976532f9ed76"
-  integrity sha512-W2edLGRLXusHjL7xxZ7lnQHp+gss9gsFCGxGqLgKTihG6gkKB+GPHVU3jBXJKQfHDr7Ezd0ggNETAeTUPgXMqg==
+inugami-icons@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.8.tgz#175a2f9818ce58e53c11c242b92387b21041daee"
+  integrity sha512-6SwPLsopLV3bX9ZG68OAolqNCxk71OmztNeAIaSMTGd2/WyEDQWty9bc3YokzACRxY0rjLa8CLEEmrUnPNyFog==
   dependencies:
     tslib "^2.3.0"
 
