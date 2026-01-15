@@ -2680,6 +2680,13 @@ inugami-icons@0.0.8:
   dependencies:
     tslib "^2.3.0"
 
+inugami-ng@0.0.2:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/inugami-ng/-/inugami-ng-0.0.1.tgz#c43dfed5bec8bc8a690bf411a882bf4d15021369"
+  integrity sha512-NFHUj0G/tqmdugO+HNcUp8jp7V9vPfstw03AT/R1TuDTp+qUq4NkZh1Y2sJgwm/tEpRazzYblnxEbu700GUu+g==
+  dependencies:
+    tslib "^2.3.0"
+
 ip-address@^10.0.1:
   version "10.1.0"
   resolved "https://registry.npmjs.org/ip-address/-/ip-address-10.1.0.tgz"
