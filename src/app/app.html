@@ -21,11 +21,11 @@
           <div class="collapse navbar-collapse nav-ontop" id="navbarTogglerTop">
   <ul class="navbar-nav me-auto mb-2 mb-lg-0 ontop">
     @for (link of links();track link.path;) {
-      
+
 
       <li class="nav-item">
         @if (link.external) {
-          <a  target="_blank"
+          <a  [target]="link.target?link.target:'_blank'"
               [href]="link.path">{{link.title}}</a>
         }
         @else{
@@ -56,7 +56,7 @@
         }
         }
       </li>
-    }  
+    }
   </ul>
 </div>
     </div>
@@ -69,7 +69,7 @@
 <div class="collapse navbar-collapse" id="navbarToggler">
   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     @for (link of links();track link.path;) {
-      
+
 
       <li class="nav-item">
         @if (link.external) {
@@ -104,6 +104,6 @@
         }
         }
       </li>
-    }  
+    }
   </ul>
 </div>
