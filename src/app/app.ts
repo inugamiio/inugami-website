@@ -8,7 +8,7 @@ import {
   RouterOutlet,
   UrlSegment
 } from '@angular/router';
-import {SiteLink, TARGET_PARENT} from './models/website-model';
+import {SiteLink, TARGET_BLANK, TARGET_PARENT} from './models/website-model';
 import {ViewportScroller} from '@angular/common';
 import {GaActionEnum, GoogleAnalyticsService} from 'ngx-google-analytics';
 import {filter} from 'rxjs';
@@ -79,22 +79,31 @@ export class App implements OnInit {
       path: 'http://inugami.io/showcase',
       external: true,
       gaEvent: 'inugamiio_showcase',
-      gaCategory: 'internal_link',
-      target: TARGET_PARENT
+      gaCategory: 'internal_link'
     },
     {
       title: 'GitHub',
       path: 'https://github.com/inugamiio',
       external: true,
       gaEvent: 'github_inugamiio',
-      gaCategory: 'external_link'
+      gaCategory: 'external_link',
+      target: TARGET_BLANK
     },
     {
       title: 'Maven central',
       path: 'https://central.sonatype.com/artifact/io.inugami/inugami/overview',
       external: true,
       gaEvent: 'maven_central_inugamiio',
-      gaCategory: 'external_link'
+      gaCategory: 'external_link',
+      target: TARGET_BLANK
+    },
+    {
+      title: 'NPM',
+      path: 'https://www.npmjs.com/package/inugami-ng',
+      external: true,
+      gaEvent:'npm_inugaming',
+      gaCategory:'external_link',
+      target:TARGET_BLANK
     }
   ]);
 

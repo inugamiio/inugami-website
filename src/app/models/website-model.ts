@@ -7,7 +7,7 @@ export interface SiteLink{
   icon?:string;
   styleClass?:string;
   external?:boolean;
-  target?:string,
+  target?:'_blank'|'_self'|'_parent',
   children?: SiteLinkChildren[];
   gaEvent?:string;
   gaCategory?:string;
