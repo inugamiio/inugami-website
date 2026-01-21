@@ -98,58 +98,48 @@ public class UserService implements IUserService {
 
             <src name="log_test_service_test" type="java" title="UserServiceTest.java">
         <![CDATA[
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-    //==================================================================================================================
-    // ATTRIBUTES
-    //==================================================================================================================
-    @Mock
-    private IUserDao    userDao;
-    @InjectMocks
-    private UserService userService;
+@Test
+void getById_nominal() {
+    when(userDao.getById(UnitTestData.UID, true)).thenReturn(buildUserDTO());
 
-    //==================================================================================================================
-    // READ
-    //==================================================================================================================
-    @Test
-    void getByIds_nominal() {
-        when(userDao.getByIds(List.of(UnitTestData.UID))).thenReturn(List.of(buildUserDTO()));
-        assertText(userService.getByIds(List.of(UnitTestData.UID)),
-                   """
-                           [ {
-                             "audit" : {
-                               "createdBy" : "system",
-                               "createdDate" : "2023-05-27T12:00:00",
-                               "lastModifiedBy" : "user-1",
-                               "lastModifiedDate" : "2023-06-01T12:00:00",
-                               "version" : 1
-                             },
-                             "email" : "john.smith@mock.org",
-                             "firstName" : "John",
-                             "lastName" : "Smith",
-                             "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
-                           } ]
-                           """);
-    }
-    //==================================================================================================================
-    // TOOLS
-    //==================================================================================================================
-    private UserDTO buildUserDTO() {
-        return UserDTO.builder()
-                      .uid(UnitTestData.UID)
-                      .firstName(UnitTestData.FIRSTNAME)
-                      .lastName(UnitTestData.LASTNAME)
-                      .email(UnitTestData.EMAIL)
-                      .audit(AuditDTO.builder()
-                                     .createdBy("system")
-                                     .createdDate(UnitTestData.DATE_TIME.minusDays(5))
-                                     .lastModifiedBy("user-1")
-                                     .lastModifiedDate(UnitTestData.DATE_TIME)
-                                     .version(1L)
-                                     .build())
-                      .build();
-    }
-
+    assertLogs(() -> assertText(userService.getById(UnitTestData.UID, true),
+                                """
+                                        {
+                                          "audit" : {
+                                            "createdBy" : "system",
+                                            "createdDate" : "2023-05-27T12:00:00",
+                                            "lastModifiedBy" : "user-1",
+                                            "lastModifiedDate" : "2023-06-01T12:00:00",
+                                            "version" : 1
+                                          },
+                                          "email" : "john.smith@mock.org",
+                                          "firstName" : "John",
+                                          "lastName" : "Smith",
+                                          "uid" : "bb895294-efe7-484b-b670-14d004eaf461"
+                                        }
+                                        """),
+               UserService.class,
+               """
+                       [
+                           {
+                               "loggerName":"com.my.project.core.domain.user.UserService",
+                               "level":"INFO",
+                               "mdc":{}
+                               "message":[
+                                   "search user : ",
+                                   "uid:	bb895294-efe7-484b-b670-14d004eaf461",
+                                   "full:	true"
+                               ]
+                           },
+                           {
+                               "loggerName":"com.my.project.core.domain.user.UserService",
+                               "level":"DEBUG",
+                               "mdc":{}
+                               "message":"found user : UserDTO(uid=bb895294-efe7-484b-b670-14d004eaf461, firstName=John, lastName=Smith, email=john.smith@mock.org)"
+                           }
+                       ]
+                       """
+              );
 }
 ]]>
     </src>
@@ -174,7 +164,7 @@ public class UnitTestHelper {
     // BUILD PATH
     // =========================================================================
     public static File buildTestFilePath(final String... filePathParts) { }
-    public static File buildIntegrationTestFilePath(final String... filePathParts) 
+    public static File buildIntegrationTestFilePath(final String... filePathParts)
     public static File buildPath(final String... parts) { }
 
     // =========================================================================
@@ -283,7 +273,7 @@ public class UnitTestHelper {
                                              final String logs,
                                              final LineMatcher... matchers){ }
 
-    
+
     public static void assertLogs(final VoidFunctionWithException process,
                                   final String pattern,
                                   final String logs,
