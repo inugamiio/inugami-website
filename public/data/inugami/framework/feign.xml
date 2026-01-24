@@ -357,4 +357,21 @@ inugami:
       ssrf-enabled: false
 ]]>
   </src>
+
+  <src name="FeignPartnerErrorResolver" type="java" title="FeignPartnerErrorResolver">
+    <![CDATA[
+public interface FeignPartnerErrorResolver {
+    List<Integer> XL_STATUS      = List.of(502, 503, 504, 505, 507);
+    List<Integer> XL_AUTH_STATUS = List.of(401, 403);
+
+    boolean accept(final Response wrappedResponse, final String feignClient, final String urlTemplate);
+
+    ErrorCode resolve(final Response wrappedResponse, final String feignClient, final String urlTemplate);
+
+    default Exception buildException(ErrorCode errorCode) {  }
+
+    default boolean isXlError(final Response wrappedResponse) { }
+}
+]]>
+  </src>
 </xml>

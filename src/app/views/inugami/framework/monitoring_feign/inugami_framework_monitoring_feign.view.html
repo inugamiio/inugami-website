@@ -177,9 +177,119 @@
             </p>
             <inu-code url="data/inugami/framework/feign.xml" tag="configSSRF"></inu-code>
           </article>
+
+
+          <article>
+            <header>
+              <a [routerLink]="['/inugami/framework/monitoring-feign']"><h2 id="mdc">MDC</h2></a>
+            </header>
+
+
+            <strong>Partner Information</strong>
+            <dl>
+              <dt>partner</dt>
+              <dd>The high-level name of the integrated partner (e.g., openmeteo).</dd>
+
+              <dt>partnerService</dt>
+              <dd>The specific service being called.</dd>
+
+              <dt>partnerSubService</dt>
+              <dd>The specific operation or endpoint within the service.</dd>
+
+              <dt>partnerType</dt>
+              <dd>The nature of the partner (e.g., REST, SOAP, JMS).</dd>
+
+              <dt>partnerUrl</dt>
+              <dd>The full target URL of the request.</dd>
+
+              <dt>partnerVerb</dt>
+              <dd>The HTTP method used (e.g., GET, POST, PUT).</dd>
+            </dl>
+
+
+            <strong>Request & Response Metadata</strong>
+            <dl>
+              <dt>partnerRequestCharset</dt>
+              <dd>The character encoding of the outgoing request.</dd>
+
+              <dt>partnerResponseCharset</dt>
+              <dd>The character encoding of the incoming response.</dd>
+
+              <dt>partnerResponseDuration</dt>
+              <dd>The total execution time of the call in milliseconds.</dd>
+
+              <dt>partnerResponseStatus</dt>
+              <dd>The HTTP status code returned by the partner (e.g., 200, 404, 500).</dd>
+
+              <dt>partnerResponseMessage</dt>
+              <dd>The raw status text or summary of the response.</dd>
+            </dl>
+
+
+            <strong>Advanced Error Diagnostics</strong>
+            <dl>
+              <dt>errorDomain</dt>
+              <dd>Main service domain (e.g., USER, CARD, PAYMENT).</dd>
+
+              <dt>errorType</dt>
+              <dd>The specific category of error (e.g., functional, technical, security).</dd>
+
+              <dt>errorCategory</dt>
+              <dd>A grouping for similar error types to simplify reporting.</dd>
+
+              <dt>errorCode</dt>
+              <dd>A unique functional or technical code identifying the specific error.</dd>
+
+              <dt>errorMessage</dt>
+              <dd>A concise human-readable error summary.</dd>
+
+              <dt>errorMessageDetail</dt>
+              <dd>Extensive details about the failure (e.g., stack trace snippet or raw error body).</dd>
+
+              <dt>errorField</dt>
+              <dd>If applicable, the specific data field that caused a validation error.</dd>
+
+              <dt>errorStatus</dt>
+              <dd>The internal mapping of the error status.</dd>
+
+              <dt>errorUrl</dt>
+              <dd>Link to the specific error documentation or troubleshooting guide</dd>
+
+              <dt>errorRetryable</dt>
+              <dd>A boolean (true/false) indicating if the operation can be safely retried.</dd>
+
+              <dt>errorRollback</dt>
+              <dd>Indicates if the current transaction was or should be rolled back.</dd>
+
+              <dt>errorExploitationError</dt>
+              <dd>A flag identifying critical errors that require immediate attention from the operations/SRE team.</dd>
+            </dl>
+          </article>
+
+          <article>
+            <header>
+              <a [routerLink]="['/inugami/framework/monitoring-feign']"><h2 id="error_resolver">Error code resolver</h2></a>
+            </header>
+
+
+
+            <p>
+              Inugami relies on a highly granular error code logic. However, your partners may not necessarily
+              implement this logic. If that is the case, you can implement this logic within your application using the
+              <code>FeignPartnerErrorResolver</code> SPI. This interface is part of a Strategy pattern within the Inugami engine's
+              Feign client error interception logic.
+            </p>
+
+            <inu-cite level="success" title="Spring or SPI">
+              Like all Inugami SPIs, you can implement them using either standard Java SPI mechanisms or as Spring Beans.
+            </inu-cite>
+            <inu-code url="data/inugami/framework/feign.xml" tag="FeignPartnerErrorResolver"></inu-code>
+
+          </article>
         </main>
       </section>
     </div>
+
   </div>
 
 </section>
