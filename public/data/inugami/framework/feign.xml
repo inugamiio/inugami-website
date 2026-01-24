@@ -242,58 +242,58 @@ public class WeatherDAO implements IWeatherDAO {
 
   <src name="partnerLog" type="text" title="PARTNERLOG">
     <![CDATA[
-[24/01 14:49:15]|IOLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /ws/weather/versoix
+[24/01 18:35:09]|IOLOG|INFO |http-nio-8080-exec-2|0e62f42b-9597-445c-9113-8febd52a5cff|[GET] /ws/weather/versoix
 headers :
 	accept: */*
 	accept-encoding: gzip, deflate, br
 	cache-control: no-cache
 	connection: keep-alive
-	cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+	cookie: JSESSIONID=595C84D4BDEF00D864C298C3F565154C
 	host: localhost:8080
-	postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+	postman-token: 5410c2b5-c96f-4db7-a3ce-6358b8bbae07
 	user-agent: PostmanRuntime/7.29.2
 payload :
 
-[24/01 14:49:15]|PARTNERLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /forecast?latitude=46.2831&longitude=6.1673&current_weather=true
+[24/01 18:35:09]|PARTNERLOG|INFO |http-nio-8080-exec-2|0e62f42b-9597-445c-9113-8febd52a5cff|[GET] https://api.open-meteo.com/v1/forecast?latitude=46.2831&longitude=6.1673&current_weather=true
 request:
 	headers:
-		x-b3-traceid : 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-b3-traceid : 0e62f42b-9597-445c-9113-8febd52a5cff
 		x-correlation-id : 0f41ca74-0e50-456e-9789-88669c08f5a7
 
-[24/01 14:49:16]|PARTNERLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] https://api.open-meteo.com/v1/forecast?latitude=46.2831&longitude=6.1673&current_weather=true
+[24/01 18:35:10]|PARTNERLOG|INFO |http-nio-8080-exec-2|0e62f42b-9597-445c-9113-8febd52a5cff|[GET] https://api.open-meteo.com/v1/forecast?latitude=46.2831&longitude=6.1673&current_weather=true
 request:
 	headers:
-		x-b3-traceid : 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-b3-traceid : 0e62f42b-9597-445c-9113-8febd52a5cff
 		x-correlation-id : 0f41ca74-0e50-456e-9789-88669c08f5a7
-		x-date : 1769262555553
+		x-date : 1769276109862
 response:
 	status: 200
-	duration: 520ms
+	duration: 626ms
 	message: OK
 	headers:
 		connection : keep-alive
 		content-type : application/json; charset=utf-8
-		date : Sat, 24 Jan 2026 13:49:15 GMT
+		date : Sat, 24 Jan 2026 17:35:10 GMT
 		transfer-encoding : chunked
 	payload:
-{"latitude":46.28,"longitude":6.1599994,"generationtime_ms":0.1004934310913086,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":387.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-01-24T13:45","interval":900,"temperature":5.2,"windspeed":7.1,"winddirection":60,"is_day":1,"weathercode":3}}
+{"latitude":46.28,"longitude":6.1599994,"generationtime_ms":0.7338523864746094,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":387.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-01-24T17:30","interval":900,"temperature":3.5,"windspeed":5.5,"winddirection":23,"is_day":0,"weathercode":3}}
 
-[24/01 14:49:16]|IOLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /ws/weather/versoix
+[24/01 18:35:10]|IOLOG|INFO |http-nio-8080-exec-2|0e62f42b-9597-445c-9113-8febd52a5cff|[GET] /ws/weather/versoix
 headers :
 	accept: */*
 	accept-encoding: gzip, deflate, br
 	cache-control: no-cache
 	connection: keep-alive
-	cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+	cookie: JSESSIONID=595C84D4BDEF00D864C298C3F565154C
 	host: localhost:8080
-	postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+	postman-token: 5410c2b5-c96f-4db7-a3ce-6358b8bbae07
 	user-agent: PostmanRuntime/7.29.2
 payload :
 
 response:
 	status:200
-	datetime:1769262556182
-	duration:727
+	datetime:1769276110564
+	duration:777
 	contentType:application/json
 	headers:
 		Access-Control-Allow-Credentials: true
@@ -302,19 +302,19 @@ response:
 		Access-Control-Allow-Origin: *
 		Access-Control-Expose-Headers:
 		Content-Type: application/json
-		Set-Cookie: JSESSIONID=D29990600AEED26C946D06E580B4CFA4; Path=/; HttpOnly
+		Set-Cookie: JSESSIONID=2084E4199A2D81C6C86188A830073A23; Path=/; HttpOnly
 		accept: */*
 		accept-encoding: gzip, deflate, br
 		cache-control: no-cache
 		connection: keep-alive
-		cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+		cookie: JSESSIONID=595C84D4BDEF00D864C298C3F565154C
 		host: localhost:8080
-		postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+		postman-token: 5410c2b5-c96f-4db7-a3ce-6358b8bbae07
 		user-agent: PostmanRuntime/7.29.2
-		x-b3-traceid: 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-b3-traceid: 0e62f42b-9597-445c-9113-8febd52a5cff
 		x-correlation-id: 0f41ca74-0e50-456e-9789-88669c08f5a7
 		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
-	payload:{"code":"OVERCAST","elevation":387.0,"icon":"cloudy-dense","label":"Overcast","latitude":46.28,"longitude":6.1599994,"temperature":5.2,"time":"2026-01-24T13:45:00","weathercode":3,"windspeed":7.1}
+	payload:{"code":"OVERCAST","elevation":387.0,"icon":"cloudy-dense","label":"Overcast","latitude":46.28,"longitude":6.1599994,"temperature":3.5,"time":"2026-01-24T17:30:00","weathercode":3,"windspeed":5.5}
 ]]>
   </src>
 
