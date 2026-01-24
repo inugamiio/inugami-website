@@ -1,26 +1,26 @@
-import { Component, signal, WritableSignal } from '@angular/core';
-import { FrameworkAsideComponent } from '../framework-aside/framework-aside.component';
-import { InuCodeComponent } from '../../../../components/code/code.component';
-import { InuDocItemComponent } from '../../../../components/doc-item/doc-item.component';
-import { RouterLink } from '@angular/router';
-import { InuCopyComponent } from '../../../../components/copy/copy.component';
+import {Component, signal, WritableSignal} from '@angular/core';
+import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
+import {InuDocItemComponent} from '../../../../components/doc-item/doc-item.component';
+import {RouterLink} from '@angular/router';
+import {InuCopyComponent} from '../../../../components/copy/copy.component';
+import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
-    templateUrl: './inugami_framework_exception.view.html',
-    styleUrls: ['./inugami_framework_exception.view.scss'],
-    imports:[
-        FrameworkAsideComponent,
-        InuCodeComponent,
-        InuDocItemComponent,
-        InuCopyComponent,
-        RouterLink
-    ]
+  templateUrl: './inugami_framework_exception.view.html',
+  styleUrls: ['./inugami_framework_exception.view.scss'],
+  imports: [
+    FrameworkAsideComponent,
+    InuDocItemComponent,
+    InuCopyComponent,
+    RouterLink,
+    InuCode
+  ]
 })
-export class InugamiFrameworkExceptionView{
-    
+export class InugamiFrameworkExceptionView {
 
-     protected mavenDependencies: WritableSignal<string> = signal<string>(
-        `
+
+  protected mavenDependencies: WritableSignal<string> = signal<string>(
+    `
 <dependency>
     <groupId>io.inugami.framework</groupId>
     <artifactId>inugami_api_interfaces</artifactId>
@@ -42,13 +42,13 @@ export class InugamiFrameworkExceptionView{
     <scope>test</scope>
 </dependency>
         `
-    );
-    protected javaDependencies: WritableSignal<string> = signal<string>(
-        `
+  );
+  protected javaDependencies: WritableSignal<string> = signal<string>(
+    `
 requires io.inugami.framework.interfaces;
 requires io.inugami.monitoring.core;
 requires io.inugami.monitoring.springboot;
         `
-    );
+  );
 
 }

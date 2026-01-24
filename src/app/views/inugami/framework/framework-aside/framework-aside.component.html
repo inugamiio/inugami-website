@@ -24,7 +24,7 @@
                 </li>
                 <li>
                     <a  [routerLink]="['/inugami/framework/getting-started']" fragment="modules-details">Modules details</a>
-                
+
                     <ul>
                         <li>
                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-api">Module-api</a>
@@ -51,7 +51,7 @@
                             </ul>
                         </li>
                         <li>
-                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces">Module-interfaces</a> 
+                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces">Module-interfaces</a>
                             <ul>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-api">REST interfaces</a></li>
                                 <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-core">REST controllers</a></li>
@@ -207,11 +207,19 @@
             </a>
         </li>
 
-        <li class="wip">
+        <li>
             <a routerLink="/inugami/framework/monitoring-feign"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">Monitoring Feign
             </a>
+          @if (feign()) {
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="integration">Integration</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="steps">Step by step</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="configs">Configuration</a></li>
+            </ul>
+          }
+
         </li>
 
         <li class="wip">

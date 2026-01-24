@@ -2,17 +2,16 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {InuAnnoncement} from '../../components/annoncement/annoncement.component';
 import {HttpServices} from '../../services/http.service';
 import {Annoncement, AnnoncementExample, AnnoncementItem} from '../../components/annoncement/annoncement.model';
-import {InuCodeComponent} from '../../components/code/code.component';
 import {InuIcon} from 'inugami-icons';
 import {InuCite} from 'inugami-ng/components/inu-cite';
-
+import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
   templateUrl: './home.view.html',
   styleUrls: ['./home.view.scss'],
   imports: [
     InuAnnoncement,
-    InuCodeComponent,
+    InuCode,
     InuIcon,
     InuCite
   ]

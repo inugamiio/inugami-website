@@ -1,15 +1,185 @@
 <section id="framework-getting-started" class="page-section">
-    <div class="page-section-content">
-        <aside class="bd-sidebar">
-            <framework-aside></framework-aside>
-        </aside>
-        <div class="bd-content">
-            <section>
-                    <header>
-                    <h1>Inugami Framework : Monitoring Feign</h1>
-                </header>
-            </section>
-        </div>
+  <div class="page-section-content">
+    <aside class="bd-sidebar">
+      <framework-aside></framework-aside>
+    </aside>
+    <div class="bd-content">
+      <section>
+        <header>
+          <h1>Inugami Framework : Monitoring Feign</h1>
+        </header>
+
+
+        <!--################################################################################################
+        # MAIN
+        #################################################################################################-->
+        <main>
+          <p>
+            Spring Cloud Feign has established itself as the go-to solution for web service integration within the
+            Spring Boot ecosystem. This library allows developers to create the necessary connectors for invoking
+            and decoding web services simply by defining a Java interface.
+
+            However, while Feign handles service calls efficiently, it lacks comprehensive out-of-the-box monitoring.
+            Monitoring your application's external calls is crucial for several reasons:
+          </p>
+
+          <dl>
+            <dt>Auditability</dt>
+            <dd>Knowing exactly which web service was invoked and when.</dd>
+
+            <dt>Observability</dt>
+            <dd>Capturing the precise response and payload for troubleshooting and performance tracking.</dd>
+          </dl>
+
+          <inu-copy icon="maven" label="copy maven dependency" [content]="mavenDependencies()"></inu-copy>
+          <div>
+            <inu-code url="data/inugami/framework/feign.xml" tag="dependencies_maven"></inu-code>
+          </div>
+
+
+          <inu-copy icon="java" label="copy java dependency" [content]="javaDependencies()"></inu-copy>
+          <div>
+            <inu-code url="data/inugami/framework/feign.xml" tag="dependencies_java"></inu-code>
+          </div>
+
+          <inu-cite level="success" title="Native SSRF protection ">
+            By default, Inugami configures Feign to protect the library against SSRF (Server-Side Request Forgery)
+            attacks.
+          </inu-cite>
+
+          <!--****************************************************************************************
+          ** Integration
+          ****************************************************************************************-->
+          <article>
+            <header>
+              <a [routerLink]="['/inugami/framework/monitoring-feign']"><h2 id="integration">Integration</h2></a>
+            </header>
+
+            <p>
+              Once the Maven dependency and the JPMS (Java Module System) dependencies have been added to your
+              project, you simply need to enable annotation scanning for the Inugami packages.
+            </p>
+            <inu-code url="data/inugami/framework/source_code.xml" tag="SpringBootITConfiguration"></inu-code>
+
+            <p>
+              Applying this configuration ensures that the entire Inugami Feign stack—including decoders and
+              interceptors—is initialized and functional.
+              Nonetheless, <strong>we recommend</strong> using a <strong>fine-grained configuration</strong> for your
+              Feign client declarations.
+            </p>
+          </article>
+
+          <!--****************************************************************************************
+          ** step by step
+          ****************************************************************************************-->
+          <article>
+            <header>
+              <a [routerLink]="['/inugami/framework/monitoring-feign']"><h2 id="steps">Step by step</h2></a>
+            </header>
+
+            <p>
+              To understand how to properly integrate a Feign client, we will use a publicly available web service as
+              an example. There is a freely accessible web service providing Swiss weather data. It is the perfect
+              candidate for Inugami integration. The service is available at the following URL:
+              <code>https://api.open-meteo.com/v1/forecast?latitude=46.2831&longitude=6.1673&current_weather=true</code>
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="weather_swiss_response"></inu-code>
+
+            <p>
+              This example is based on the architecture outlined in the
+              <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Getting Started</a> section.
+
+            </p>
+
+            <figure class="padding-right-4">
+              <img src="images/framework/feign-01.png" alt="integration of feign into infrastructure layer" width="256px" />
+            </figure>
+
+            <p>
+              The starting point involves defining the specific model for our partner inside the infrastructure layer.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="WeatherResponseDTO"></inu-code>
+            <inu-code url="data/inugami/framework/feign.xml" tag="CurrentWeatherDTO"></inu-code>
+            <inu-code url="data/inugami/framework/feign.xml" tag="WeatherConditionType"></inu-code>
+
+            <p>
+              After defining the model, we can move on to creating the actual Feign interface.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="OpenMeteoWeather"></inu-code>
+            <p>
+              What stands out here is that the Feign interface is completely devoid of any Feign-specific annotations.
+              This is perfectly normal, as its conversion into a Feign client will be handled within a configuration
+              bean. The goal of this approach is to strictly follow the same pattern used for our own web service
+              integrations. Consequently, we only use standard Spring Web annotations
+            </p>
+
+            <p>
+              Configurations should never be hardcoded. Following Spring Boot best practices, we use
+              <code>ConfigurationProperties</code> to create a dedicated configuration object.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="OpenMeteoProperties"></inu-code>
+
+            <p>
+              All that’s left is to let the magic happen. To do this, we add a configuration bean to define our Feign client.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="OpenMeteoConfiguration"></inu-code>
+
+            <p>
+              What we can observe is that the openMeteoFeignBuilder is the first bean to be constructed. This
+              <em>Inugami-provided</em> object assists us in building our Feign clients. In our example, we have only
+              one service, but you can quickly reach a multitude of Feign services. This approach centralizes and
+              mutualizes the configuration.
+            </p>
+
+            <p>
+              Using this builder leads to a significant reduction in the complexity of your Feign client setup.
+            </p>
+
+            <p>
+              From this point on, your DAO can inject the Feign client and invoke the web service. In a
+              <em>Hexagonal Architecture approach</em>, we never use a partner's raw data directly within our application.
+              We must map them onto internal DTOs belonging to the application's model.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="WeatherDAO"></inu-code>
+
+
+            <inu-code url="data/inugami/framework/feign.xml" tag="PARTNERLOG"></inu-code>
+            <p>
+              When invoking our web service, the DAO uses our Feign client to retrieve data. During this call, a
+              <em>PARTNERLOG</em> entry is emitted. Upon reception, a second log traces the partner's response.
+              These logs are, of course, indexable in an engine like Elasticsearch, allowing you to take full
+              advantage of the MDC keys generated by Inugami for Feign calls.
+            </p>
+
+            <inu-cite level="success" title="Full example">
+              You can find the complete integration example in the demo project:
+              <a href="ttps://github.com/inugamiio/inugami-demo" target="_blank">ttps://github.com/inugamiio/inugami-demo</a>
+            </inu-cite>
+          </article>
+
+          <!--****************************************************************************************
+          ** configuration
+          ****************************************************************************************-->
+          <article>
+            <header>
+              <a [routerLink]="['/inugami/framework/monitoring-feign']"><h2 id="configs">Configuration</h2></a>
+            </header>
+            <p>
+              As mentioned above, Inugami natively protects against SSRF (Server-Side Request Forgery) attacks.
+              Calls to partner addresses on <em>localhost</em> are <strong>restricted</strong>. An error will be
+              automatically triggered in such cases.
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="SSRF"></inu-code>
+
+            <p>
+              In the case of integration tests using WireMock, however, it is necessary to allow this type of action.
+              You must therefore add the following property to your test configuration:
+            </p>
+            <inu-code url="data/inugami/framework/feign.xml" tag="configSSRF"></inu-code>
+          </article>
+        </main>
+      </section>
     </div>
+  </div>
 
 </section>

@@ -1,0 +1,360 @@
+<xml>
+    <src name="dependencies_maven" type="xml" title="Maven dependencies">
+        <![CDATA[
+<dependency>
+    <groupId>io.inugami.monitoring</groupId>
+    <artifactId>inugami_monitoring_springboot</artifactId>
+</dependency>
+]]>
+    </src>
+
+  <src name="dependencies_java" type="java" title="Java dependencies">
+    <![CDATA[
+requires io.inugami.monitoring.springboot;
+]]>
+  </src>
+
+
+  <src name="weather_swiss_response" type="json" title="Swiss Weather API response">
+    <![CDATA[
+{
+    "latitude": 46.28,
+    "longitude": 6.1599994,
+    "generationtime_ms": 0.06818771362304688,
+    "utc_offset_seconds": 0,
+    "timezone": "GMT",
+    "timezone_abbreviation": "GMT",
+    "elevation": 387.0,
+    "current_weather_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature": "°C",
+        "windspeed": "km/h",
+        "winddirection": "°",
+        "is_day": "",
+        "weathercode": "wmo code"
+    },
+    "current_weather": {
+        "time": "2026-01-24T13:15",
+        "interval": 900,
+        "temperature": 5.4,
+        "windspeed": 7.1,
+        "winddirection": 49,
+        "is_day": 1,
+        "weathercode": 3
+    }
+}
+]]>
+  </src>
+
+  <src name="WeatherResponseDTO" type="java" title="infrastructure.webservice.openmeteo.dto.WeatherResponseDTO">
+    <![CDATA[
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class WeatherResponseDTO implements Serializable {
+    private static final long serialVersionUID = -2312840444499728577L;
+    @EqualsAndHashCode.Include
+    private double latitude;
+    @EqualsAndHashCode.Include
+    private double longitude;
+    private double elevation;
+
+    @JsonProperty("current_weather")
+    private CurrentWeatherDTO currentWeather;
+}
+]]>
+  </src>
+
+  <src name="CurrentWeatherDTO" type="java" title="infrastructure.webservice.openmeteo.dto.CurrentWeatherDTO">
+    <![CDATA[
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class CurrentWeatherDTO implements Serializable {
+    private static final long serialVersionUID = -2500189081715400761L;
+    @ToString.Include
+    private double temperature;
+    private double windspeed;
+    @ToString.Include
+    private int weathercode;
+    @ToString.Include
+    @EqualsAndHashCode.Include
+    private String time;
+}
+]]>
+  </src>
+
+  <src name="WeatherConditionType" type="java" title="WeatherConditionType">
+    <![CDATA[
+@Getter
+@RequiredArgsConstructor
+public enum WeatherConditionType {
+    UNDEFINED(-1, "Not defined", "undefined"),
+    CLEAR(0, "Clear sky", "sunny"),
+    MAINLY_CLEAR(1, "Mainly clear", "cloudy-sunny"),
+    PARTIALLY_CLOUDY(2, "Partly cloudy", "cloudy"),
+    OVERCAST(3, "Overcast", "cloudy-dense"),
+    FOG(45, "Fog", "fog"),
+    RIME_FOG(48, "Depositing rime fog", "fog-ice"),
+    DRIZZLE_LIGHT(51, "Light drizzle", "rain-light"),
+    DRIZZLE_MODERATE(53, "Moderate drizzle", "rain"),
+    DRIZZLE_DENSE(55, "Dense drizzle", "rain-heavy"),
+    RAIN_SLIGHT(61, "Slight rain", "rain-light"),
+    RAIN_MODERATE(63, "Moderate rain", "rain"),
+    RAIN_HEAVY(65, "Heavy rain", "rain-heavy"),
+    SNOW_FALL_SLIGHT(71, "Slight snow fall", "snow-light"),
+    SNOW_FALL_MODERATE(73, "Moderate snow fall", "snow"),
+    SNOW_FALL_HEAVY(75, "Heavy snow fall", "snow-heavy"),
+    SNOW_GRAINS(77, "Snow grains", "snow-grains"),
+    RAIN_SHOWERS_SLIGHT(80, "Slight rain showers", "rain-showers"),
+    RAIN_SHOWERS_MODERATE(81, "Moderate rain showers", "rain-showers"),
+    RAIN_SHOWERS_VIOLENT(82, "Violent rain showers", "rain-showers-heavy"),
+    SNOW_SHOWERS_SLIGHT(85, "Slight snow showers", "snow-showers"),
+    SNOW_SHOWERS_HEAVY(86, "Heavy snow showers", "snow-showers-heavy"),
+    THUNDERSTORM(95, "Thunderstorm", "thunderstorm"),
+    THUNDERSTORM_HAIL_SLIGHT(96, "Thunderstorm with slight hail", "thunderstorm-hail"),
+    THUNDERSTORM_HAIL_HEAVY(99, "Thunderstorm with heavy hail", "thunderstorm-hail-heavy");
+
+    private static final Collection<WeatherConditionType> VALUES =
+            Collections.unmodifiableCollection(Arrays.asList(values()));
+    private final        int                              code;
+    private final        String                           label;
+    private final        String                           iconKey;
+
+    public static WeatherConditionType fromCode(int code) {
+        return VALUES.stream()
+                     .filter(condition -> condition.code == code)
+                     .findFirst()
+                     .orElse(UNDEFINED);
+    }
+}
+]]>
+  </src>
+
+
+
+
+  <src name="OpenMeteoWeather" type="java" title="OpenMeteoWeather feign client">
+    <![CDATA[
+@RequestMapping(path = "v1")
+public interface OpenMeteoWeather {
+    @GetMapping("forecast")
+    WeatherResponseDTO getForecast(@RequestParam("latitude") double latitude,
+                                   @RequestParam("longitude") double longitude,
+                                   @RequestParam("current_weather") boolean current);
+}
+]]>
+  </src>
+
+  <src name="OpenMeteoProperties" type="java" title="OpenMeteoProperties">
+    <![CDATA[
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@ConfigurationProperties(prefix = "application.partners.openmeteo", ignoreUnknownFields = true)
+public class OpenMeteoProperties {
+    @Builder.Default
+    private String baseUrl = "https://api.open-meteo.com";
+    private String user;
+    private String password;
+
+    public PartnerConfigurationDTO toPartnerConfigurationDTO() {
+        return PartnerConfigurationDTO.builder()
+                                      .baseUrl(baseUrl)
+                                      .user(user)
+                                      .password(password)
+                                      .build();
+    }
+}
+]]>
+  </src>
+
+  <src name="OpenMeteoConfiguration" type="java" title="OpenMeteoConfiguration">
+    <![CDATA[
+@EnableConfigurationProperties(OpenMeteoProperties.class)
+@Configuration
+public class OpenMeteoConfiguration {
+
+    @Bean
+    public FeignBuilder openMeteoFeignBuilder(final Client client,
+                                            final Encoder encoder,
+                                            final Decoder decoder,
+                                            final OpenMeteoProperties openMeteoPartnerConfiguration,
+                                            final List<RequestInterceptor> interceptors,
+                                            final Contract contract) {
+        return FeignBuilder.builder()
+                           .client(client)
+                           .encoder(encoder)
+                           .decoder(decoder)
+                           .partnerConfiguration(openMeteoPartnerConfiguration.toPartnerConfigurationDTO())
+                           .interceptors(interceptors)
+                           .contract(contract)
+                           .build()
+                           .init();
+    }
+    //==================================================================================================================
+    // CLIENTS
+    //==================================================================================================================
+    @Bean
+    public OpenMeteoWeather openMeteoWeather(final FeignBuilder openMeteoFeignBuilder) {
+        return openMeteoFeignBuilder.buildClient(OpenMeteoWeather.class);
+    }
+}
+]]>
+
+  <src name="WeatherDAO" type="java" title="WeatherDAO">
+    <![CDATA[
+@Service
+@RequiredArgsConstructor
+public class WeatherDAO implements IWeatherDAO {
+
+    //==================================================================================================================
+    // ATTRIBUTES
+    //==================================================================================================================
+    private final OpenMeteoWeather openMeteoWeather;
+    private final WeatherResponseDTOMapper weatherResponseDTOMapper;
+
+
+    //==================================================================================================================
+    // READ
+    //==================================================================================================================
+
+    @Override
+    public WeatherConditionDTO getWeather(final SwissCities city) {
+        final var resultSet = openMeteoWeather.getForecast(city.getLatitude(), city.getLongitude(), true);
+        return weatherResponseDTOMapper.convertToDto(resultSet);
+    }
+}
+]]>
+  </src>
+
+
+  <src name="partnerLog" type="text" title="PARTNERLOG">
+    <![CDATA[
+[24/01 14:49:15]|IOLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /ws/weather/versoix
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+	host: localhost:8080
+	postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+	user-agent: PostmanRuntime/7.29.2
+payload :
+
+[24/01 14:49:15]|PARTNERLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /forecast?latitude=46.2831&longitude=6.1673&current_weather=true
+request:
+	headers:
+		x-b3-traceid : 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-correlation-id : 0f41ca74-0e50-456e-9789-88669c08f5a7
+
+[24/01 14:49:16]|PARTNERLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] https://api.open-meteo.com/v1/forecast?latitude=46.2831&longitude=6.1673&current_weather=true
+request:
+	headers:
+		x-b3-traceid : 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-correlation-id : 0f41ca74-0e50-456e-9789-88669c08f5a7
+		x-date : 1769262555553
+response:
+	status: 200
+	duration: 520ms
+	message: OK
+	headers:
+		connection : keep-alive
+		content-type : application/json; charset=utf-8
+		date : Sat, 24 Jan 2026 13:49:15 GMT
+		transfer-encoding : chunked
+	payload:
+{"latitude":46.28,"longitude":6.1599994,"generationtime_ms":0.1004934310913086,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":387.0,"current_weather_units":{"time":"iso8601","interval":"seconds","temperature":"°C","windspeed":"km/h","winddirection":"°","is_day":"","weathercode":"wmo code"},"current_weather":{"time":"2026-01-24T13:45","interval":900,"temperature":5.2,"windspeed":7.1,"winddirection":60,"is_day":1,"weathercode":3}}
+
+[24/01 14:49:16]|IOLOG|INFO |http-nio-8080-exec-1|604d578d-4624-4360-8bea-8d7eaee4ad7c|[GET] /ws/weather/versoix
+headers :
+	accept: */*
+	accept-encoding: gzip, deflate, br
+	cache-control: no-cache
+	connection: keep-alive
+	cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+	host: localhost:8080
+	postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+	user-agent: PostmanRuntime/7.29.2
+payload :
+
+response:
+	status:200
+	datetime:1769262556182
+	duration:727
+	contentType:application/json
+	headers:
+		Access-Control-Allow-Credentials: true
+		Access-Control-Allow-Headers:
+		Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+		Access-Control-Allow-Origin: *
+		Access-Control-Expose-Headers:
+		Content-Type: application/json
+		Set-Cookie: JSESSIONID=D29990600AEED26C946D06E580B4CFA4; Path=/; HttpOnly
+		accept: */*
+		accept-encoding: gzip, deflate, br
+		cache-control: no-cache
+		connection: keep-alive
+		cookie: JSESSIONID=0F67698F92DB7B2A2AABE7756F3C9EB9
+		host: localhost:8080
+		postman-token: bbde23d5-e241-4171-94e8-3eda7f824ccb
+		user-agent: PostmanRuntime/7.29.2
+		x-b3-traceid: 604d578d-4624-4360-8bea-8d7eaee4ad7c
+		x-correlation-id: 0f41ca74-0e50-456e-9789-88669c08f5a7
+		x-device-identifier: 2f411cae-e3b4-4465-b86a-e001c2b64d74
+	payload:{"code":"OVERCAST","elevation":387.0,"icon":"cloudy-dense","label":"Overcast","latitude":46.28,"longitude":6.1599994,"temperature":5.2,"time":"2026-01-24T13:45:00","weathercode":3,"windspeed":7.1}
+]]>
+  </src>
+
+
+
+  <src name="SSRF" type="text" title="SSRF">
+    <![CDATA[
+[24/01 14:59:11]|PARTNERLOG|INFO |main|[GET] /forecast?latitude=46.2831&longitude=6.1673&current_weather=true
+request:
+	headers:
+		x-b3-traceid : 58d47fd8-a575-41dd-9408-974137eec7f1
+		x-correlation-id : f8782854-2b41-4cb2-863b-2afb60a735b1
+		x-device-identifier : system
+
+
+io.inugami.framework.interfaces.exceptions.UncheckedException: SSRF request detected
+
+	at io.inugami.monitoring.springboot@4.2.5-SNAPSHOT/io.inugami.monitoring.springboot.partnerlog.feign.OkClientAntiSsrfInterceptor.intercept(OkClientAntiSsrfInterceptor.java:50)
+	at okhttp3@4.12.0/okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109)
+	at okhttp3@4.12.0/okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201)
+	at okhttp3@4.12.0/okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at feign.okhttp@13.6/feign.okhttp.OkHttpClient.execute(OkHttpClient.java:182)
+	at feign.core@13.6/feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:92)
+	at feign.core@13.6/feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:53)
+	at feign.core@13.6/feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:104)
+	at jdk.proxy1/jdk.proxy1.$Proxy177.getForecast(Unknown Source)
+	at com.my.project.infrastructure/com.my.project.infrastructure.webservice.openmeteo.dao.WeatherDAO.getWeather(WeatherDAO.java:47)
+	at com.my.project.infrastructure/com.my.project.infrastructure.webservice.openmeteo.dao.WeatherDAOIT.getWeather_nominal(WeatherDAOIT.java:61)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+]]>
+  </src>
+
+  <src name="configSSRF" type="yaml" title="Configure SSRF">
+    <![CDATA[
+inugami:
+  monitoring:
+    feign:
+      ssrf-enabled: false
+]]>
+  </src>
+</xml>

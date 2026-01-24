@@ -1,25 +1,23 @@
-import { Component, signal, WritableSignal } from '@angular/core';
-import { FrameworkAsideComponent } from '../framework-aside/framework-aside.component';
-import { InuCodeComponent } from '../../../../components/code/code.component';
-import { InuDocItemComponent } from '../../../../components/doc-item/doc-item.component';
-import { InuCopyComponent } from '../../../../components/copy/copy.component';
-import { RouterLink } from '@angular/router';
+import {Component, signal, WritableSignal} from '@angular/core';
+import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
+import {InuCopyComponent} from '../../../../components/copy/copy.component';
+import {RouterLink} from '@angular/router';
+import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
-    templateUrl: './inugami_framework_testability.view.html',
-    styleUrls: ['./inugami_framework_testability.view.scss'],
-    imports:[
-            FrameworkAsideComponent,
-            InuCodeComponent,
-            InuDocItemComponent,
-            InuCopyComponent,
-            RouterLink
-    ]
+  templateUrl: './inugami_framework_testability.view.html',
+  styleUrls: ['./inugami_framework_testability.view.scss'],
+  imports: [
+    FrameworkAsideComponent,
+    InuCode,
+    InuCopyComponent,
+    RouterLink
+  ]
 })
-export class InugamiFrameworkTestabilityView{
-    
-     protected mavenDependencies: WritableSignal<string> = signal<string>(
-        `
+export class InugamiFrameworkTestabilityView {
+
+  protected mavenDependencies: WritableSignal<string> = signal<string>(
+    `
 <dependency>
     <groupId>io.inugami.framework.commons</groupId>
     <artifactId>inugami_commons_test</artifactId>
@@ -31,5 +29,5 @@ export class InugamiFrameworkTestabilityView{
     <artifactId>inugami_logs_obfuscator</artifactId>
 </dependency>
         `
-    );
+  );
 }

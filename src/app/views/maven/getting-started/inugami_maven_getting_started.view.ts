@@ -1,14 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { MavenAsideComponent } from './maven-aside/maven-aside.component';
-import { InuCodeComponent } from '../../../components/code/code.component';
 import { InuDocItemComponent } from '../../../components/doc-item/doc-item.component';
+import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
     templateUrl: './inugami_maven_getting_started.view.html',
     styleUrls: ['./inugami_maven_getting_started.view.scss'],
     imports: [
         MavenAsideComponent,
-        InuCodeComponent,
+        InuCode,
         InuDocItemComponent
     ]
 })
