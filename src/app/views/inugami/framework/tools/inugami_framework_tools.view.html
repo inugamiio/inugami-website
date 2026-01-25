@@ -16,72 +16,315 @@
                     <main>
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
-                            <a href="inugami/framework/tools#cron"><h2 id="cron">Cron</h2></a>
+                            <a href="inugami/framework/tools#cron"><h2 id="cron">CronResolver</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
-Cron :
-    CronResolver (inugami_common)
-                            -->
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_java"></inu-code>
+
+                          <p>
+                            The <code>CronResolver</code> is a lightweight, high-performance utility designed to
+                            validate if a specific timestamp matches a given Cron expression. It abstracts the
+                            complexity of calendar calculations, providing a clean API for scheduling logic.
+                          </p>
+
+                          <strong>Key Features</strong>
+                          <dl>
+                            <dt>Fluent API</dt>
+                            <dd>Initialize easily with <code>CronResolver.of("0 0 * * * *")</code></dd>
+
+                            <dt>Multi-Format Support</dt>
+                            <dd>Native support for LocalDateTime, long (timestamp), and Calendar</dd>
+
+                            <dt>Timezone Aware</dt>
+                            <dd>Precise firing validation using <code>ZoneOffset</code>.</dd>
+                          </dl>
+
+                          <inu-code url="data/inugami/framework/tools.xml" tag="CronResolver"></inu-code>
                         </div>
                     </article>
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#documentation"><h2 id="documentation">Documentation</h2></a>
                         </header>
                         <div class="content">
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_java"></inu-code>
 
-                            <inu-doc-item title="Description" [level]="3" href="inugami/framework/getting-started#doc-description" id="doc-description">
-                                <inu-code url="data/inugami/tools.xml" tag="Description"></inu-code>
+                            <inu-doc-item title="Description" [level]="3" href="inugami/framework/tools#doc-description" id="doc-description">
+                              <p>
+                                The <code>Description</code> annotation provides a way to attach rich, structured
+                                metadata to your code. Since it is retained at runtime, this information can be used by
+                                the framework to describe APIs, explain business logic, or provide troubleshooting steps
+                                directly to the end-user or SRE teams.
+                              </p>
+                              <strong>Key Attributes</strong>
+                              <dl>
+                                <dt>value</dt>
+                                <dd>A clear, human-readable description of the element.</dd>
+
+                                <dt>example</dt>
+                                <dd>A concrete example of the expected input or format (perfect for UI placeholders).</dd>
+
+                                <dt>url</dt>
+                                <dd>A link to external documentation (Wiki, Confluence, or GitHub).</dd>
+
+                                <dt>potentialErrors</dt>
+                                <dd>An array of <code>PotentialError</code> to document known failure modes and their resolutions.</dd>
+                              </dl>
+
+                              <inu-code url="data/inugami/framework/tools.xml" tag="Description"></inu-code>
                             </inu-doc-item>
 
-                            <!-- 
-    Description(inugami_api_interfaces)
-    Glossaries(inugami_api_interfaces)
-    Glossary(inugami_api_interfaces)
-    Partner(inugami_api_interfaces)
-    PotentialErrors(inugami_api_interfaces)
-    JmsEvent(inugami_api_interfaces)
-    JmsSender(inugami_api_interfaces)
-    RabbitMqEvent(inugami_api_interfaces)
-    RabbitMqSender(inugami_api_interfaces)
-                            -->
+                            <inu-doc-item title="Glossaries" [level]="3" href="inugami/framework/tools#doc-glossaries" id="doc-glossaries">
+                              <p>
+                                The <code>Glossaries</code> and <code>Glossary</code> annotations allow you to define
+                                multi-language documentation directly on your classes, methods, and fields.
+                                This is particularly useful for generating multilingual API documentation.
+                              </p>
+                              <inu-code url="data/inugami/framework/tools.xml" tag="Glossaries"></inu-code>
+                            </inu-doc-item>
+
+                          <inu-doc-item title="Partner" [level]="3" href="inugami/framework/tools#doc-partner" id="doc-partner">
+                            <p>
+                              The <code>Partner</code> annotation acts as a bridge between isolated applications.
+                              By decorating your WebService clients or Message Listeners with this metadata, you enable
+                              automated tools to reconstruct the entire ecosystem's topology.
+                            </p>
+
+                            <strong>Why Maven isn't enough</strong>
+                            <dl>
+                              <dt>Maven/Gradle</dt>
+                              <dd>Sees JAR dependencies (Library A depends on Library B).</dd>
+
+                              <dt>Inugami Partner</dt>
+                              <dd>Sees Systemic dependencies (App A calls Service B via HTTP/OAuth2).</dd>
+                            </dl>
+
+                            <strong>Key Metadata Fields</strong>
+                            <dl>
+                              <dt>name / shortName</dt>
+                              <dd>Clear identification of the external partner.</dd>
+
+                              <dt>type</dt>
+                              <dd>The nature of the partner (e.g., "REST", "SOAP", "JMS").</dd>
+
+                              <dt>service / subService</dt>
+                              <dd>Granular mapping of the specific business domain being called.</dd>
+
+                              <dt>protocol / tokenType</dt>
+                              <dd>Documents the communication contract (e.g., HTTPS, MTLS, JWT).</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="Partner"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="PotentialErrors" [level]="3" href="inugami/framework/tools#doc-potential-errors" id="doc-potential-errors">
+                            <p>
+                              Unlike standard exception handling, Inugami treats errors as structured data.
+                              The <code>PotentialError</code> annotation (and its container <code>PotentialErrors</code>)
+                              allows developers to define a complete error contract directly on methods or classes.
+                            </p>
+
+                            <strong>Key Attributes</strong>
+                            <dl>
+                              <dt>errorCode & errorCodeClass</dt>
+                              <dd>Provides a unique, searchable identifier for the error.</dd>
+
+                              <dt>throwsAs</dt>
+                              <dd>Explicitly defines the Java Exception class triggered.</dd>
+
+                              <dt>httpStatus</dt>
+                              <dd>Maps the business error to a standard HTTP response code (e.g., 401, 404, 500).</dd>
+
+                              <dt>domain & subDomain</dt>
+                              <dd>Categorizes errors for high-level architectural reporting.</dd>
+
+                              <dt>payload</dt>
+                              <dd>Describes the structure of the error response body.</dd>
+
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="PotentialErrors"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="JMS" [level]="3" href="inugami/framework/tools#doc-jms" id="doc-jms">
+                            <p>
+                              In a distributed architecture, tracking asynchronous flows is notoriously difficult.
+                              Inugami brings transparency to messaging by documenting producers and their payloads
+                              directly in the code.
+                            </p>
+
+                            <strong>The Challenge: The "Black Box" of JMS</strong>
+                            <p>
+                              Standard JMS implementations often hide the relationship between the sender, the queue,
+                              and the message structure. This makes impact analysis nearly impossible when a message
+                              schema changes.
+                            </p>
+
+                            <strong>The Inugami Solution</strong>
+                            <p>
+                              By using <code>JmsSender</code> and <code>JmsEvent</code>, the framework explicitly declares the messaging contract.
+                            </p>
+                            <dl>
+                              <dt>JmsSender</dt>
+                              <dd>Decorated with <code>Partner</code> (type = "JMS"), it identifies the method as a
+                                message producer. It captures the destination (Queue or Topic) and a unique id for the flow.</dd>
+
+                              <dt>JmsEvent</dt>
+                              <dd>Placed on the method parameter, it identifies the specific Class (DTO) being sent.</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="sendOrderUpdate"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="RabbitMQ" [level]="3" href="inugami/framework/tools#doc-rabbit-mq" id="doc-rabbit-mq">
+                            <p>
+                              The <code>RabbitMqSender</code> and <code>RabbitMqEvent</code> annotations bring the same
+                              level of architectural transparency to <strong>AMQP-based</strong> systems as they do for JMS.
+                            </p>
+                            <strong>Capturing the Routing Logic</strong>
+                            <p>
+                              Unlike simple queues, RabbitMQ's power lies in its routing. By documenting the
+                              exchangeName and routingKey.
+                            </p>
+                            <dl>
+                              <dt>Fanout patterns</dt>
+                              <dd>One exchange pushing to multiple queues.</dd>
+
+                              <dt>Direct/Topic patterns</dt>
+                              <dd>Messages filtered by routing keys.</dd>
+                            </dl>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="rabbit"></inu-code>
+                          </inu-doc-item>
                         </div>
                     </article>
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#string"><h2 id="string">String</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
-    StringComparator (inugami_api_interfaces)
-    StringTools (inugami_api_interfaces)
-    MessagesFormatter(inugami_api_interfaces)
-                            -->
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_java"></inu-code>
+
+                          <inu-doc-item title="StringComparator" [level]="3" href="inugami/framework/tools#string-stringcomparator" id="string-stringcomparator">
+                            <p>
+                              The <code>StringComparator</code> is a <strong>null-safe</strong> utility designed to
+                              provide a normalized comparison between strings. It avoids common
+                              <strong>NullPointerException</strong> issues and standardizes the result to a strict
+                              trinary output.
+                            </p>
+
+                            <strong>Key Logic Flow</strong>
+                            <p>The comparator follows a specific priority for null values and results:</p>
+                            <dl>
+                              <dt>Null Handling</dt>
+                              <dd>A null value is considered "greater than" a non-null reference (pushed to the end of lists).</dd>
+
+                              <dt>Normalization</dt>
+                              <dd>Results from the native compareTo are mapped strictly to -1, 0, or 1.</dd>
+                            </dl>
+
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="StringComparator"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="StringTools" [level]="3" href="inugami/framework/tools#string-stringtools" id="string-stringtools">
+                            <p>
+                              The StringTools class is a high-performance, international-ready utility designed for
+                              advanced string manipulation. Unlike standard libraries, it focuses on semantic
+                              preservation during normalization and null-safe operations.
+                            </p>
+
+                            <p>
+                              Standard Java normalization (NFD) often fails on special characters like ß, ł, or œ,
+                              either leaving them as-is or deleting them. StringTools uses a Strategy-Based Approach
+                              to ensure that these characters are correctly mapped to their ASCII equivalents.
+                            </p>
+
+                            <dl>
+                              <dt>Smart ASCII Conversion</dt>
+                              <dd>Combines Unicode decomposition with custom transliteration strategies.</dd>
+
+                              <dt>Strategy Pattern</dt>
+                              <dd>Uses a list of UnaryOperator to apply specific language rules (Polish, German, French, etc.).</dd>
+
+                              <dt>Optimized Regex</dt>
+                              <dd>The replaceAll method avoids unnecessary processing by checking for matches before execution.</dd>
+
+                              <dt>Fluent Formatting</dt>
+                              <dd>Integrated with <code>MessagesFormatter</code> for clean, argument-based string building</dd>
+                            </dl>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="StringTools"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="MessagesFormatter" [level]="3" href="inugami/framework/tools#string-messagesformatter" id="string-messagesformatter">
+                            <p>
+                              The MessagesFormatter is a robust wrapper around Java’s MessageFormat. It provides a
+                              <strong>safer</strong> and more <strong>predictable</strong> way to inject dynamic values
+                              into string templates, specifically designed to handle common encoding and syntax pitfalls.
+                            </p>
+                            <p>
+                              In standard Java MessageFormat, a single quote ' is a special character used to escape
+                              placeholders. If your message contains a word like "Don't", the formatter will fail
+                              to inject the following variables.
+                            </p>
+
+
+                            <p>
+                              <code>MessagesFormatter</code> automatically escapes single quotes by doubling them (''),
+                              ensuring that the human-readable text doesn't break the formatting logic.
+                            </p>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>Robust Placeholder Detection</dt>
+                              <dd>The class uses a pre-compiled Regex  to check if the string actually needs formatting.
+                                If no placeholders are found, it returns the string as-is, saving the overhead of initializing the MessageFormat engine.
+                              </dd>
+
+                              <dt>Universal String Conversion</dt>
+                              <dd>The convertToStringArray method ensures that any object (Integer, Boolean, custom DTO)
+                                passed as an argument is safely converted via String.valueOf().
+                                This prevents ClassCastException and ensures consistent rendering.</dd>
+
+                              <dt>NBSP Sanitization</dt>
+                              <dd>ne of the most insidious bugs in internationalized systems is the Non-Breaking Space
+                                (NBSP - \u00A0). Often introduced by copy-pasting from Word or web pages, these characters
+                                can break comparison logic or cause weird rendering in consoles.
+                                The fix: Every formatted string is passed through a final replaceAll(NBSP, " ") to ensure
+                                only standard space characters are returned.
+                              </dd>
+                            </dl>
+
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="MessagesFormatterUsage"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="MessagesFormatter"></inu-code>
+                          </inu-doc-item>
                         </div>
                     </article>
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#collection"><h2 id="collection">Collection</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
     ListUtils (inugami_api_interfaces)
     MapUtils (inugami_api_interfaces)
                             -->
@@ -90,29 +333,29 @@ Cron :
 
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#encoding"><h2 id="encoding">Encoding</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
  Hex (inugami_api_interfaces)
                             -->
                         </div>
                     </article>
-                                        
+
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#infra"><h2 id="infra">Infrastructure</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
    PortGenerator  (inugami_api_interfaces)
                             -->
                         </div>
@@ -121,14 +364,14 @@ Cron :
 
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#injection"><h2 id="injection">Injection</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
        SpiLoader (inugami_api_interfaces)
       \-  SpiPriority (inugami_api_interfaces)
     ProxyBuilder(inugami_common)
@@ -139,14 +382,14 @@ Cron :
 
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#file"><h2 id="file">File</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
 PathUtils  (inugami_api_interfaces)
     FilesUtils (inugami_common)
     Unzip (inugami_common)
@@ -166,14 +409,14 @@ PathUtils  (inugami_api_interfaces)
 
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#marshalling"><h2 id="marshalling">Marshalling</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
 Marshalling:
     JsonMarshaller (inugami_api)
     JsonBuilder(inugami_api_interfaces)
@@ -188,14 +431,14 @@ Marshalling:
 
 
                     <!--****************************************************************************************
-                    ** 
+                    **
                     ****************************************************************************************-->
                     <article>
                         <header>
                             <a href="inugami/framework/tools#security"><h2 id="security">Security</h2></a>
                         </header>
                         <div class="content">
-                            <!-- 
+                            <!--
 Security :
     EncryptionUtils (inugami_common)
                             -->

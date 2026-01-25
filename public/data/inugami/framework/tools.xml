@@ -1,5 +1,182 @@
 <xml>
- 
+  <!--==================================================================================================================
+  = DEPENDENCIES
+  ===================================================================================================================-->
 
+  <src name="dep_inugami_api_interfaces_maven" type="xml" title="Maven inugami_api_interfaces">
+    <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api_interfaces</artifactId>
+</dependency>
+]]>
+  </src>
+  <src name="dep_inugami_api_interfaces_java" type="java" title="Java inugami_api_interfaces">
+    <![CDATA[
+requires io.inugami.framework.interfaces;
+]]>
+  </src>
 
+  <src name="dep_inugami_commons_maven" type="xml" title="Maven inugami_commons">
+    <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons</artifactId>
+</dependency>
+]]>
+  </src>
+  <src name="dep_inugami_commons_java" type="java" title="Java inugami_commons">
+    <![CDATA[
+requires io.inugami.framework.commons;
+]]>
+  </src>
+
+  <!--==================================================================================================================
+  = EXAMPLES
+  ===================================================================================================================-->
+  <src name="CronResolver" type="java" title="CronResolver">
+    <![CDATA[
+@Slf4j
+public class CronResolver {
+    public static CronResolver of(final String expression) {  }
+
+    public boolean willFire(@NonNull final LocalDateTime date, @NonNull final ZoneOffset offset) { }
+
+    public boolean willFire(final long date) { }
+
+    public boolean willFire(@NonNull final Calendar date) {  }
+}
+]]>
+  </src>
+
+  <src name="Description" type="java" title="Description">
+    <![CDATA[
+@Description(
+    value = "Calculates the partner risk score based on transaction history.",
+    example = "0.85",
+    url = "https://doc.inugami.io/risk-engine",
+    potentialErrors = {
+        @PotentialError(code = "ERR_001", description = "Partner service unavailable")
+    }
+)
+public Double calculateRiskScore(@Description("The unique partner identifier") String partnerId) {
+    // ...
+}
+]]>
+  </src>
+
+  <src name="Glossaries" type="java" title="Glossaries">
+    <![CDATA[
+@Glossaries({
+    @Glossary(language = "en", value = "Legal Name", description = "The official name of the entity"),
+    @Glossary(language = "fr", value = "Raison Sociale", description = "Le nom officiel de l'entité juridique")
+})
+private String legalName;
+]]>
+  </src>
+
+  <src name="Partner" type="java" title="Partner">
+    <![CDATA[
+@Partner(
+    name = "Global Payment Gateway",
+    shortName = "GPG",
+    type = "EXTERNAL_API",
+    service = "Payments",
+    protocol = "HTTPS",
+    tokenType = "OAuth2"
+)
+public interface PaymentClient {
+    @PostMapping("/v1/charge")
+    void process(@RequestBody PaymentRequest request);
+}
+]]>
+  </src>
+
+  <src name="PotentialErrors" type="java" title="PotentialErrors">
+    <![CDATA[
+@PotentialError(
+    errorCode = "ERR_PAY_001",
+    httpStatus = 402,
+    errorMessage = "Payment Required",
+    description = "The transaction was declined by the provider.",
+    domain = "BILLING"
+)
+public void processTransaction() { ... }
+]]>
+  </src>
+
+  <src name="sendOrderUpdate" type="java" title="JmsSender">
+    <![CDATA[
+@JmsSender(id = "order-events", destination = "jms/orders/v1")
+public void sendOrderUpdate(@JmsEvent(OrderDTO.class) OrderDTO order) {
+    jmsTemplate.convertAndSend(destination, order);
+}
+]]>
+  </src>
+
+  <src name="rabbit" type="java" title="rabbit">
+    <![CDATA[
+@Service
+public class DispatchService {
+
+    @RabbitMqSender(
+        id = "order-dispatch",
+        echangeName = "ex.orders",
+        routingKey = "order.created.v1"
+    )
+    public void dispatch(@RabbitMqEvent(OrderDTO.class) OrderDTO order) {
+        // Logic to send to RabbitMQ...
+    }
+}
+]]>
+  </src>
+
+  <src name="StringComparator" type="java" title="StringComparator">
+    <![CDATA[
+@UtilityClass
+public final class StringComparator {
+
+    public static int compareTo(final String value, final String ref) { }
+
+    private static int convertCompareToResult(final int result) {  }
+}
+]]>
+  </src>
+
+  <src name="StringTools" type="java" title="StringTools">
+    <![CDATA[
+@UtilityClass
+public final class StringTools {
+    public static boolean fistCharUpperCase(final String value) {  }
+
+    public static String replaceAll(final Pattern regex, final String data, final String replacement) {  }
+
+    public static String convertToAscii(final String value) {  }
+
+    private static String cleanSpecialChars(final String value) { }
+
+    public static boolean containsChars(final String value, final String specialChar) {  }
+
+    public static String format(final String message, final Object... values) { }
+}
+]]>
+  </src>
+
+  <src name="MessagesFormatter" type="java" title="MessagesFormatter">
+    <![CDATA[
+
+]]>
+  </src>
+
+  <src name="MessagesFormatterUsage" type="java" title="MessagesFormatter usage">
+    <![CDATA[
+// Standard usage with placeholders {0}, {1}, etc.
+String msg = MessagesFormatter.format("Error on service {0}: {1}", "AuthService", "Timeout");
+// Result: "Error on service AuthService: Timeout"
+
+// Handling the single quote trap automatically
+String tricky = MessagesFormatter.format("It's a process for {0}", "Inugami");
+// Native Java would fail. Inugami result: "It's a process for Inugami"
+]]>
+  </src>
 </xml>

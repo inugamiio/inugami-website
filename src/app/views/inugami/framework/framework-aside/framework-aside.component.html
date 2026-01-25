@@ -280,8 +280,23 @@
             @if (tools()) {
                 <ul>
                     <li><a [routerLink]="['/inugami/framework/tools']" fragment="cron">Cron</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="documentation">Documentation</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="string">String</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="documentation">Documentation</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-description">Description</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-glossaries">Glossaries</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-partner">Partner</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-potential-errors">PotentialErrors</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-jms">JMS</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-rabbit-mq">RabbitMQ</a>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="string">String</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringcomparator">StringComparator</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringtools">StringTools</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-messagesformatter">MessagesFormatter</a>
+                      </ul>
+                    </li>
                     <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a></li>
                     <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a></li>
                     <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a></li>
