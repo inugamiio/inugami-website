@@ -1,6 +1,41 @@
 <xml>
 
     <annoncements>
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.5" date="2026-01-25">
+        <features>
+          <item title="[#437] FEAT : Hardened Feign SSRF protection"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/716a460d480963bd54863df549e67dc19d5dc244">
+          </item>
+          <item title="[#437] FEAT : add generic models"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/210e4eb3ff3fafa96d39b4a4c021c168d172d4b2">
+          </item>
+          <item title="[#437] FEAT : Add specific logs when security errors occur"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/fdd0f0e5b3769a442f5fccf0aec8eb3cd15c7e48">
+          </item>
+
+          <item title="[#437] FEAT : Hardened zip bomb protection to support zip entries with undeclared sizes"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/9915479616b2cfecf26ae0678f093935af9f031b">
+          </item>
+          <item title="[#437] FEAT : Hardened zip slip protection"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/59200146f787e1898a36ddc94d94619864807616">
+          </item>
+
+        </features>
+        <fix>
+          <item title="[#437] FIX : fix traceId and add requestId"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/ed9fb4280aa67cc0ed17e49f663eb21631e27690">
+          </item>
+          <item title="[#417] FIX :  clean up"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/168f5290e7d713c0bdf1e70a9c3ba7bccdee83e2">
+          </item>
+
+          <item title="[#417] FIX : trace full partner URL in inbound partnerlog"
+                link="https://github.com/inugamiio/inugami/pull/437/commits/c2ebd2783b6e99d6ae6aab9ef77eb6c1575bebb7">
+          </item>
+        </fix>
+      </annoncement>
+
     <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
       <annoncement application="inugami" version="4.2.4" date="2026-01-09">
         <fix>

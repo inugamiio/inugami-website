@@ -212,6 +212,7 @@ public class OpenMeteoConfiguration {
     }
 }
 ]]>
+  </src>
 
   <src name="WeatherDAO" type="java" title="WeatherDAO">
     <![CDATA[
@@ -240,7 +241,7 @@ public class WeatherDAO implements IWeatherDAO {
   </src>
 
 
-  <src name="partnerLog" type="text" title="PARTNERLOG">
+  <src name="PARTNERLOG_logs" type="text" title="PARTNERLOG">
     <![CDATA[
 [24/01 18:35:09]|IOLOG|INFO |http-nio-8080-exec-2|0e62f42b-9597-445c-9113-8febd52a5cff|[GET] /ws/weather/versoix
 headers :

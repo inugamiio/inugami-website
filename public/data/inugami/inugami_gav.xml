@@ -7,7 +7,7 @@
 <dependency>
     <groupId>io.inugami.framework</groupId>
     <artifactId>inugami_api_interfaces</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -29,7 +29,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.framework</groupId>
     <artifactId>inugami_api</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -51,7 +51,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.framework.commons</groupId>
     <artifactId>inugami_common_components</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -73,7 +73,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.framework.commons</groupId>
     <artifactId>inugami_commons</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -95,7 +95,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.framework.commons</groupId>
     <artifactId>inugami_commons_spring</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -117,7 +117,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.framework.commons</groupId>
     <artifactId>inugami_commons_test</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
     <scope>test</scope>
 </dependency>
 ]]>
@@ -140,7 +140,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_logs_obfuscator</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -161,7 +161,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_monitoring_api</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -182,7 +182,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_monitoring_core</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -203,7 +203,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring.providers</groupId>
     <artifactId>inugami_monitoring_providers_els</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -224,7 +224,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring.providers</groupId>
     <artifactId>inugami_monitoring_providers_graphite</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -245,7 +245,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring.providers</groupId>
     <artifactId>inugami_monitoring_providers_log</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -266,7 +266,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring.sensors</groupId>
     <artifactId>inugami_monitoring_sensors_default</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -287,7 +287,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_monitoring_springboot</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -308,7 +308,7 @@ open module my.module {
 <dependency>
     <groupId>io.inugami.monitoring</groupId>
     <artifactId>inugami_monitoring_springboot_activemq</artifactId>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
@@ -330,7 +330,7 @@ open module my.module {
     <groupId>io.inugami.maven</groupId>
     <artifactId>inugami_maven_springboot</artifactId>
     <packaging>maven-archetype</packaging>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
 </dependency>
 ]]>
     </src>
