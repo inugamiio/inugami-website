@@ -297,13 +297,48 @@
                         <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-messagesformatter">MessagesFormatter</a>
                       </ul>
                     </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="injection">Injection</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="file">File</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="marshalling">Marshalling</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="security">Security</a></li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="list-listutils">ListUtils</a>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="maputils">MapUtils</a>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="hex">Hex</a>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="port-generator">PortGenerator</a></li>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="injection">Injection</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="spiloader">Spiloader</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="spring-spiloader">SpringSpiLoaderServiceSPI</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="proxybuilder">ProxyBuilder</a></li>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="file">File</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-pathutils">PathUtils</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-filesutils">FilesUtils</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-unzip">Unzip</a></li>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="marshalling">Marshalling</a>
+                      <ul>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-builder">JsonBuilder</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-marshaller">JsonMarshaller</a></li>
+                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="yaml-marshaller">YamlMarshaller</a></li>
+                      </ul>
+                    </li>
+                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="security">Security</a>
+                    <ul>
+                      <li><a [routerLink]="['/inugami/framework/tools']" fragment="encryption-utils">EncryptionUtils</a></li>
+                    </ul>
+                    </li>
                 </ul>
             }
         </li>

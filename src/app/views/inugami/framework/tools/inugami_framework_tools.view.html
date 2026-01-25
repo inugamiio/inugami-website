@@ -324,10 +324,99 @@
                             <a href="inugami/framework/tools#collection"><h2 id="collection">Collection</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-    ListUtils (inugami_api_interfaces)
-    MapUtils (inugami_api_interfaces)
-                            -->
+
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_java"></inu-code>
+
+
+                          <inu-doc-item title="ListUtils" [level]="3" href="inugami/framework/tools#list-listutils" id="list-listutils">
+                            <p>
+                              The ListUtils class is an advanced collection manipulator designed to bridge the gap
+                              between simple list creation and complex batch processing. It is engineered to handle
+                              large volumes of data while maintaining a low memory footprint and ensuring null-safety.
+                            </p>
+
+                            <p>
+                              In distributed systems, processing massive collections at once is a common cause of failure
+                              timeouts, memory overflows, or service saturation). ListUtils solves this by promoting
+                              Bucket-based processing, allowing developers to split workloads into manageable,
+                              parallelizable chunks.
+                            </p>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>Smart Partitioning (Buckets)</dt>
+                              <dd>
+                                <p>
+                                  The split and processOverBucket methods allow you to slice any collection into smaller sub-lists.
+                                </p>
+                                <ul>
+                                  <li>
+                                    Load Balancing: Ideal for calling web services. Instead of one heavy request for
+                                    1,000 items, you can send 10 parallel requests of 100 items, distributing the load
+                                    across available service instances.
+                                  </li>
+                                  <li>
+                                    Default Sizing: Uses a DEFAULT_BUCKET_SIZE (100) tuned for optimal performance in
+                                    database batches and network calls.
+                                  </li>
+                                </ul>
+                              </dd>
+
+                              <dt>Functional Transformation</dt>
+                              <dd>
+                                <p>
+                                  The toList method goes beyond Arrays.asList() by integrating a functional converter
+                                  and an automatic null-check.
+                                </p>
+                                <ul>
+                                  <li>Filter-on-the-fly: Every item is passed through applyIfNotNull, ensuring the
+                                    resulting list is "clean" and ready for processing.</li>
+                                  <li>One-Liner Mapping: Replaces verbose Stream/Map/Filter/Collect blocks with a single, readable call.</li>
+                                </ul>
+                              </dd>
+                            </dl>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="ListUtils_usage"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="ListUtils"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="MapUtils" [level]="3" href="inugami/framework/tools#maputils" id="maputils">
+                            <p>
+                              The <code>MapUtils</code> class is a specialized utility designed to enforce <strong>determinism</strong> and
+                              <strong>predictability</strong> within data structures. While standard Java Maps
+                              (like HashMap) do not guarantee iteration order, <code>MapUtils</code> ensures that your
+                              data remains ordered, which is a critical requirement for reliable unit testing and
+                              consistent reporting.
+                            </p>
+
+                            <p>
+                              In the Inugami framework, many features rely on string-based comparisons
+                              (e.g., <code>assertText</code> in unit tests). If the order of elements in a Map changes
+                              between two executions, the tests will fail even if the data is correct. MapUtils eliminates
+                              this "flakiness" by standardizing how Maps are initialized and stored.
+                            </p>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>Natural Key Sorting</dt>
+                              <dd>
+                                <p>The initMapAndSort method transforms a volatile Map into a sorted, predictable structure.</p>
+                                <ul>
+                                  <li>Deterministic Output: It sorts keys based on their natural order (e.g., alphabetical for Strings).</li>
+                                  <li>Comparison Ready: Essential when generating logs, JSON outputs, or reports that
+                                    need to be compared against reference files.</li>
+                                </ul>
+                              </dd>
+
+                              <dt>Iteration Stability</dt>
+                              <dd>By converting generic Maps into LinkedHashMap, MapUtils guarantees that once the order
+                                is established (either by insertion or sorting), it will never change during
+                                subsequent iterations.</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="MapUtils"></inu-code>
+                          </inu-doc-item>
+
                         </div>
                     </article>
 
@@ -340,9 +429,25 @@
                             <a href="inugami/framework/tools#encoding"><h2 id="encoding">Encoding</h2></a>
                         </header>
                         <div class="content">
-                            <!--
- Hex (inugami_api_interfaces)
-                            -->
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_java"></inu-code>
+
+                          <inu-doc-item title="Hex" [level]="3" href="inugami/framework/tools#hex" id="hex">
+                            <p>
+                              The <code>Hex</code> class provides high-performance hexadecimal encoding for byte arrays.
+                              It is designed to be a lightweight alternative to external codec libraries, focusing on
+                              speed and memory efficiency through bitwise operations.
+                            </p>
+
+                            <p>
+                              Hexadecimal representation is the standard for displaying binary data (hashes, IDs,
+                              encrypted keys) in a human-readable format. By using bit-shifting instead of heavy string
+                              concatenation or formatting libraries, Hex ensures that even large byte arrays are
+                              converted with minimal CPU overhead.
+                            </p>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="Hex"></inu-code>
+                          </inu-doc-item>
+
                         </div>
                     </article>
 
@@ -355,9 +460,23 @@
                             <a href="inugami/framework/tools#infra"><h2 id="infra">Infrastructure</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-   PortGenerator  (inugami_api_interfaces)
-                            -->
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_maven"></inu-code>
+                          <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_java"></inu-code>
+
+                          <inu-doc-item title="PortGenerator" [level]="3" href="inugami/framework/tools#port-generator" id="port-generator">
+                            <p>
+                              The <code>PortGenerator</code> is a robust utility designed to find and reserve available
+                              network ports dynamically. It is primarily used during integration testing or local service
+                              orchestration to prevent "Address already in use" errors, especially in concurrent
+                              environments.
+                            </p>
+                            <p>
+                              Modern CI/CD pipelines often run multiple integration tests simultaneously. Hardcoding
+                              ports (like <code>8080</code>) is a recipe for failure. PortGenerator ensures that each service instance
+                              gets a unique, verified, and available port on the host machine.
+                            </p>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="PortGenerator"></inu-code>
+                          </inu-doc-item>
                         </div>
                     </article>
 
@@ -371,11 +490,141 @@
                             <a href="inugami/framework/tools#injection"><h2 id="injection">Injection</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-       SpiLoader (inugami_api_interfaces)
-      \-  SpiPriority (inugami_api_interfaces)
-    ProxyBuilder(inugami_common)
-                            -->
+
+
+                          <inu-doc-item title="SpiLoader" [level]="3" href="inugami/framework/tools#spiloader" id="spiloader">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_and_commons_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_and_commons_java"></inu-code>
+
+                            <p>
+                              The SpiLoader is a sophisticated implementation of the <strong>Service Provider Interface</strong>
+                              (SPI) pattern. It allows Inugami to discover and load implementations dynamically at runtime,
+                              ensuring complete decoupling between the API and its providers.
+                            </p>
+                            <inu-cite level="success" title="Core Philosophy: Plug & Play Architecture">
+                              <p>
+                                Inugami is designed to be customizable. Whether it's a specific logging strategy,
+                                a custom database connector, or a project-specific analyzer, the SpiLoader finds the
+                                right implementation without the core framework needing to know it exists.
+                              </p>
+                            </inu-cite>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>Priority-Based Loading</dt>
+                              <dd>
+                                <p>One of the most powerful features is the integration of the PriorityComparator.</p>
+                                <ul>
+                                  <li>
+                                    Overriding Capabilities: If multiple implementations of the same interface exist,
+                                    SpiLoader can pick the one with the highest priority.
+                                  </li>
+                                  <li>
+                                    Default Fallbacks: You can define a defaultImplementation that is used only if no
+                                    other providers are discovered in the classpath.
+                                  </li>
+                                </ul>
+                              </dd>
+
+                              <dt>Flexible Discovery (Naming & Annotations)</dt>
+                              <dd>
+                                <p>Unlike standard Java SPI which usually requires an exact class match, SpiLoader can find services by:</p>
+                                <ul>
+                                  <li>Fully Qualified Name: Match by the class name.</li>
+                                  <li>Simple Name: Case-insensitive match on the class name (e.g., "MyService").</li>
+                                  <li>NamedSpi Interface: Custom logic via a getName() method.</li>
+                                  <li>JSR-330 <code>Named</code> Annotation: Integration with standard Java injection annotations (javax.inject.Named).</li>
+                                </ul>
+                              </dd>
+
+                              <dt>Hot-Reloading Support</dt>
+                              <dd>
+                                The reloadLoaderService method allows developers to inject a custom SpiLoaderServiceSPI.
+                                This is incredibly useful for Unit Testing, where you might want to replace the standard
+                                discovery mechanism with a mock loader.
+                              </dd>
+                            </dl>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="SpiLoader"></inu-code>
+
+                          </inu-doc-item>
+
+                          <inu-doc-item title="SpringSpiLoaderServiceSPI: Framework Hybridization" [level]="3" href="inugami/framework/tools#spring-spiloader" id="spring-spiloader">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_spring_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_sping_java"></inu-code>
+
+                            <p>
+                              The <code>SpringSpiLoaderServiceSPI</code> is a bridge that allows Inugami to resolve
+                              services from the <strong>Spring ApplicationContext</strong> while still falling back to
+                              standard Java SPI discovery. This ensures that Inugami remains functional in any environment,
+                              whether it's managed by Spring or not.
+                            </p>
+                            <p>
+                              Why choose between Java SPI and Spring Beans? This implementation follows the Composite
+                              Pattern strategy: it gathers implementations from the Spring BeanFactory AND the classpath.
+                              This allows developers to define services as standard <code>Bean</code> or <code>Component</code>,
+                              which Inugami will find automatically.
+                            </p>
+
+                            <p>
+                              Inugami uses a Dual-Stage Loading strategy to solve the "Early Logging" problem.
+                            </p>
+                            <ol>
+                              <li>Early Protection (SPI): Critical services like log obfuscators are loaded via Java SPI.
+                                This ensures they are active even before Spring starts, protecting your sensitive data
+                                during the application's bootstrap phase.</li>
+                              <li>Late Enrichment (Spring): Once the Spring context is ready, Inugami automatically
+                                merges Spring Beans into its discovery engine. This allows your services to benefit
+                                from Spring's power (Dependency Injection, Database access) without compromising
+                                early-start security.</li>
+                            </ol>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="SpringSpiLoaderServiceSPI"></inu-code>
+
+                          </inu-doc-item>
+
+                          <inu-doc-item title="ProxyBuilder" [level]="3" href="inugami/framework/tools#proxybuilder" id="proxybuilder">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_java"></inu-code>
+
+                            <p>
+                              The <code>ProxyBuilder</code> is a fluent API wrapper around <strong>CGLIB</strong> (Code Generation Library).
+                              It allows Inugami to generate dynamic proxies by subclassing target classes or
+                              implementing interfaces at runtime.
+                            </p>
+                            <p>
+                              Standard Java Dynamic Proxies are limited to interfaces. By using CGLIB via ProxyBuilder,
+                              Inugami can proxy concrete classes. This is vital for intercepting calls to legacy code
+                              or services that do not follow an interface-first design.
+                            </p>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>Fluent Builder Pattern</dt>
+                              <dd>
+                                <p>The class uses a Builder pattern to make proxy configuration readable and safe.</p>
+                                <ul>
+                                  <li>addSuperClass: Defines the base class to extend.</li>
+                                  <li>addInterface: Allows the proxy to "pretend" to be one or more interfaces.</li>
+                                  <li>addCallback: Injects the logic (Method Interceptor) that will run when a method is called.</li>
+                                </ul>
+                              </dd>
+
+                              <dt>Default Callback Safety</dt>
+                              <dd>If no callback is defined, the builder automatically injects a "do-nothing"
+                                MethodInterceptor. This prevents the application from crashing if a proxy is instantiated
+                                without explicit logic, ensuring a fail-safe behavior.
+                              </dd>
+
+                              <dt>Bytecode Generation</dt>
+                              <dd>
+                                Because it uses <strong>CGLIB's Enhancer</strong>, the proxy is generated as a new class
+                                in the JVM. This provides better performance than standard reflection for repeated
+                                method calls.
+                              </dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="ProxyBuilder"></inu-code>
+                          </inu-doc-item>
                         </div>
                     </article>
 
@@ -389,21 +638,81 @@
                             <a href="inugami/framework/tools#file"><h2 id="file">File</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-PathUtils  (inugami_api_interfaces)
-    FilesUtils (inugami_common)
-    Unzip (inugami_common)
-                            -->
+
+                          <inu-doc-item title="PathUtils" [level]="3" href="inugami/framework/tools#file-pathutils" id="file-pathutils">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_java"></inu-code>
+                            <p>
+                              The PathUtils utility is the "Sanitizer" of Inugami. It ensures that regardless of the
+                              Operating System (Windows, Linux, macOS) or the protocol (file://), every path is
+                              converted into a Standardized Unix Format.
+                            </p>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="PathUtils"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="FilesUtils" [level]="3" href="inugami/framework/tools#file-filesutils" id="file-filesutils">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_java"></inu-code>
+                            <p>
+                              FilesUtils is the high-performance Swiss Army knife of the Inugami framework.
+                              It provides a hardened layer for file manipulation, classpath resource retrieval,
+                              and binary serialization, specifically optimized for environments where performance
+                              and reliability are non-negotiable.
+                            </p>
+                            <p>
+                              In a high-traffic or large-scale analysis environment, I/O operations are often the
+                              primary bottleneck. FilesUtils addresses this by:
+                            <dl>
+                              <dt>Fail-Fast Assertions</dt>
+                              <dd>Validating file states before attempting operations to prevent cryptic stack traces.</dd>
+
+                              <dt>Memory-Efficient Reading</dt>
+                              <dd>Using low-level NIO channels and pre-allocated buffers to handle large files without triggering GC pressure.</dd>
+
+                              <dt>Cross-Platform Consistency</dt>
+                              <dd>Seamlessly bridging the gap between Windows and Unix file systems</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="FilesUtils"></inu-code>
+
+                          </inu-doc-item>
+
+
+                          <inu-doc-item title="Unzip" [level]="3" href="inugami/framework/tools#file-unzip" id="file-unzip">
+                            <p>
+                              The <code>Unzip</code> utility is designed to handle compressed archives with a focus on
+                              Security First. In an industrial environment like Inugami, where archives might come from
+                              various automated sources or external partners, trusting a ZIP file blindly is a major
+                              vulnerability. This class mitigates those risks.
+                            </p>
+
+                            <dl>
+                              <dt>Protection against Zip Slips (Path Traversal)</dt>
+                              <dd>
+                                <p>A Zip Slip is an exploit where a malicious file name inside the ZIP
+                                  (e.g., ../../etc/passwd) forces the extractor to write files outside the
+                                  target directory.</p>
+                              </dd>
+
+                              <dt>Protection against Zip Bombs (Denial of Service)</dt>
+                              <dd>A Zip Bomb (or Decompression Bomb) is a small archive that expands into several
+                                petabytes of data, crashing the system by exhausting disk space or memory.</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="Unzip"></inu-code>
+
+                            <p>
+                              Inugami distinguishes between Utility access (convenience) and Thread-isolated execution
+                              (performance). This design is what allows the framework to scale from a single project to
+                              a massive corporate codebase without breaking a sweat.
+                            </p>
+                            <p>
+                              <code>UnzipUtils</code> is the "Shortcut" for standard, non-critical paths.
+                            </p>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="UnzipUtils"></inu-code>
+                          </inu-doc-item>
                         </div>
                     </article>
-
-
-
-
-
-
-
-
 
 
 
@@ -416,12 +725,60 @@ PathUtils  (inugami_api_interfaces)
                             <a href="inugami/framework/tools#marshalling"><h2 id="marshalling">Marshalling</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-Marshalling:
-    JsonMarshaller (inugami_api)
-    JsonBuilder(inugami_api_interfaces)
-    YamlMarshaller (inugami_api)
-                            -->
+                          <inu-doc-item title="JsonBuilder" [level]="3" href="inugami/framework/tools#json-builder" id="json-builder">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_interfaces_java"></inu-code>
+                            <p>
+                              The <code>JsonBuilder</code> is a performance-first utility designed to bypass the overhead of heavy
+                              JSON libraries. It provides a fluent API to manually construct JSON structures, ensuring
+                              <strong>zero reflection</strong> and <strong>minimal memory allocation</strong>.
+                            </p>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="JsonBuilder"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="JsonMarshaller" [level]="3" href="inugami/framework/tools#json-marshaller" id="json-marshaller">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_java"></inu-code>
+
+                            <p>
+                              The <code>JsonMarshaller</code> acts as a centralized, SPI-driven factory for Jackson
+                              <code>ObjectMappers</code>. It ensures that every component in the Inugami ecosystem
+                              peaks the same <code>JSON</code> dialect, especially when dealing with Java reflection
+                              types and framework-specific metadata.
+                            </p>
+                            <strong>Core Philosophy: "Extensible Metadata"</strong>
+                            <p>
+                              Unlike standard configurations, this Marshaller is built for a plugin-based architecture:
+                            </p>
+                            <dl>
+                              <dt>SPI Integration</dt>
+                              <dd>It uses SpiLoader to allow external modules to register their own Jackson modules
+                                (ModuleRegisterSpi). This means Inugami can be extended with new data types
+                                without touching the core code.</dd>
+
+                              <dt>Custom Type Awareness</dt>
+                              <dd>Through initInugamiModule(), it handles objects that are usually nightmare-ish to
+                                serialize, such as java.lang.reflect.Method or Throwable.</dd>
+
+                              <dt>Prioritized Configuration</dt>
+                              <dd>It allows an external JacksonMarshallerSpi to take over the Mapper creation,
+                                falling back to a sane DefaultObjectMapperBuilder if needed.</dd>
+                            </dl>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="JsonMarshaller"></inu-code>
+                          </inu-doc-item>
+
+                          <inu-doc-item title="YamlMarshaller" [level]="3" href="inugami/framework/tools#yaml-marshaller" id="yaml-marshaller">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_api_java"></inu-code>
+                            <p>
+                              The <code>YamlMarshaller</code> is a specialized implementation of the Jackson ObjectMapper
+                              tailored for YAML. It is designed to be the robust entry point for reading and writing
+                              configuration files, ensuring that human-readable formats.
+                            </p>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="YamlMarshaller"></inu-code>
+                          </inu-doc-item>
+
                         </div>
                     </article>
 
@@ -438,10 +795,40 @@ Marshalling:
                             <a href="inugami/framework/tools#security"><h2 id="security">Security</h2></a>
                         </header>
                         <div class="content">
-                            <!--
-Security :
-    EncryptionUtils (inugami_common)
-                            -->
+                          <inu-doc-item title="EncryptionUtils" [level]="3" href="inugami/framework/tools#encryption-utils" id="encryption-utils">
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_maven"></inu-code>
+                            <inu-code url="data/inugami/framework/tools.xml" tag="dep_inugami_commons_java"></inu-code>
+
+                            <p>
+                              The <code>EncryptionUtils</code> class provides a standardized interface for cryptographic operations,
+                              token generation, and secure data serialization. It is built to be configurable at runtime,
+                              allowing Inugami to adapt its security level to the hosting environment.
+                            </p>
+
+                            <strong>Key Features</strong>
+                            <dl>
+                              <dt>High-Entropy Token Generation</dt>
+                              <dd>The makeUniqueToken() method is a masterpiece of collision avoidance</dd>
+
+                              <dt>Industry-Standard AES & SHA</dt>
+                              <dd>
+                                <p>The utility provides clean wrappers for heavy Java Cryptography Architecture (JCA) calls:</p>
+                                <ul>
+                                  <li><strong>AES Encryption</strong>: Uses a configurable cipher and secret key
+                                    (16-byte default) to encrypt strings into Base64 format.</li>
+                                  <li><strong>SHA-512 Hashing:</strong>Salts the hash with the SECRET_KEY during the
+                                    update() phase, protecting against simple rainbow table attacks.</li>
+                                </ul>
+                              </dd>
+
+                              <dt>Secure Map Serialization</dt>
+                              <dd>The encodeMap and decodeMap methods allow for "flattening" a Map into a single String
+                                using custom delimiters (CHAR_MINUS and CHAR_AT).</dd>
+                            </dl>
+
+                            <inu-code url="data/inugami/framework/tools.xml" tag="EncryptionUtils"></inu-code>
+                          </inu-doc-item>
+
                         </div>
                     </article>
 

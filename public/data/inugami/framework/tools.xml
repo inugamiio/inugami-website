@@ -17,6 +17,20 @@ requires io.inugami.framework.interfaces;
 ]]>
   </src>
 
+  <src name="dep_inugami_api_maven" type="xml" title="Maven inugami_api">
+    <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework</groupId>
+    <artifactId>inugami_api</artifactId>
+</dependency>
+]]>
+  </src>
+  <src name="dep_inugami_api_java" type="java" title="Java inugami_api">
+    <![CDATA[
+requires io.inugami.framework.api;
+]]>
+  </src>
+
   <src name="dep_inugami_commons_maven" type="xml" title="Maven inugami_commons">
     <![CDATA[
 <dependency>
@@ -31,6 +45,21 @@ requires io.inugami.framework.commons;
 ]]>
   </src>
 
+
+
+  <src name="dep_inugami_commons_spring_maven" type="xml" title="Maven inugami_commons_spring">
+    <![CDATA[
+<dependency>
+    <groupId>io.inugami.framework.commons</groupId>
+    <artifactId>inugami_commons_spring</artifactId>
+</dependency>
+]]>
+  </src>
+  <src name="dep_inugami_commons_sping_java" type="java" title="Java inugami_commons_spring">
+    <![CDATA[
+requires io.inugami.framework.commons.spring;
+]]>
+  </src>
   <!--==================================================================================================================
   = EXAMPLES
   ===================================================================================================================-->
@@ -164,7 +193,10 @@ public final class StringTools {
 
   <src name="MessagesFormatter" type="java" title="MessagesFormatter">
     <![CDATA[
-
+@UtilityClass
+public final class MessagesFormatter {
+    public static String format(final String format, final Object... values) {}
+}
 ]]>
   </src>
 
@@ -177,6 +209,475 @@ String msg = MessagesFormatter.format("Error on service {0}: {1}", "AuthService"
 // Handling the single quote trap automatically
 String tricky = MessagesFormatter.format("It's a process for {0}", "Inugami");
 // Native Java would fail. Inugami result: "It's a process for Inugami"
+]]>
+  </src>
+
+  <src name="ListUtils" type="java" title="ListUtils">
+    <![CDATA[
+@UtilityClass
+public class ListUtils {
+
+    public static final int DEFAULT_BUCKET_SIZE = 100;
+
+    public static <I, O> List<O> toList(final Function<I, O> convertor, final I... values) { }
+
+    public static <T> List<T> toList(final T... values) { }
+
+    public static <T> List<Collection<T>> split(final Collection<T> values) { }
+
+    public static <T> List<Collection<T>> split(final Collection<T> values, final int size) { }
+
+    public static <T> void processOverBucket(final Collection<T> values,
+                                             final Consumer<Collection<T>> consumer) { }
+
+    public static <T> void processOverBucket(final Collection<T> values,
+                                             final int size,
+                                             final Consumer<Collection<T>> consumer) { }
+
+
+    public static <T> Set<T> toSet(T... values) { }
+
+    public static <T> boolean isEmpty(final Collection<T> values) { }
+
+    public static <T> boolean isNotEmpty(final Collection<T> values) { }
+}
+]]>
+  </src>
+
+  <src name="ListUtils_usage" type="java" title="ListUtils usage">
+    <![CDATA[
+// We have 1000 IDs to fetch from a remote Partner
+Collection<String> ids = getLargeListOfIds();
+
+// Process by buckets of 100 to leverage partner instances without saturating them
+ListUtils.processOverBucket(ids, 100, bucket -> {
+    // This consumer can be wrapped in a Parallel Stream or CompletableFuture
+    partnerClient.fetchData(bucket);
+});
+]]>
+  </src>
+
+
+
+  <src name="MapUtils" type="java" title="MapUtils">
+    <![CDATA[
+@UtilityClass
+public class MapUtils {
+
+    public static <K extends Comparable<K>, V> Map<K, V> initMapAndSort(final Map<K, V> value) { }
+
+    public static <K, V> Map<K, V> initMap(final Map<K, V> value) { }
+}
+
+]]>
+  </src>
+
+
+  <src name="MapUtils" type="java" title="MapUtils">
+    <![CDATA[
+@UtilityClass
+public class MapUtils {
+
+    public static <K extends Comparable<K>, V> Map<K, V> initMapAndSort(final Map<K, V> value) { }
+
+    public static <K, V> Map<K, V> initMap(final Map<K, V> value) { }
+}
+
+]]>
+  </src>
+
+  <src name="Hex" type="java" title="Hex">
+    <![CDATA[
+@UtilityClass
+public class Hex {
+    public static String encodeHexString(final byte[] data) { }
+
+    public static char[] encodeHex(final byte[] data) { }
+
+    public static char[] encodeHex(final byte[] data, final boolean toLowerCase) { }
+
+    public static char[] encodeHex(final byte[] data, final char[] toDigits) {  }
+}
+]]>
+  </src>
+
+
+  <src name="PortGenerator" type="java" title="PortGenerator">
+    <![CDATA[
+@UtilityClass
+public class PortGenerator {
+    public static int generateFor(@NonNull final String service) { }
+}
+]]>
+  </src>
+
+  <src name="PortGenerator" type="java" title="PortGenerator">
+    <![CDATA[
+@UtilityClass
+public class PortGenerator {
+    public static int generateFor(@NonNull final String service) { }
+}
+]]>
+  </src>
+
+  <src name="SpiLoader" type="java" title="SpiLoader">
+    <![CDATA[
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class SpiLoader {
+
+
+    public void reloadLoaderService(SpiLoaderServiceSPI loaderService) { }
+    public static SpiLoader getInstance() { }
+
+
+    public synchronized <T> List<T> loadSpiService(final Class<?> type) {}
+
+    public synchronized <T> T loadSpiSingleService(final Class<?> type) { }
+
+    public synchronized <T> List<T> loadSpiService(final Class<?> type, final T defaultImplementation) { }
+
+    public synchronized <T> List<T> loadSpiServicesWithDefault(final Class<?> type, final T defaultImplementation) { }
+
+    public synchronized <T> T loadSpiServiceByPriority(final Class<?> type, final T defaultImplementation) {  }
+
+    public synchronized <T> List<T> loadSpiServicesByPriority(final Class<?> type) { }
+
+    public synchronized <T> T loadSpiSingleServicesByPriority(final Class<?> type) {  }
+
+    public synchronized <T> List<T> loadSpiServicesByPriority(final Class<?> type, final T defaultImplementation) { }
+
+    public <T> T loadSpiService(final String name, final Class<?> type) { }
+
+    public synchronized <T> T loadSpiService(final String name, final Class<?> type, final boolean mandatory) { }
+
+    public static Annotation searchAnnotation(final Annotation[] annotations, final String... names) { }
+
+    public static Method searchMethod(final Annotation annotation, final String method) { }
+
+    public static <T> T invoke(final Method method, final Object object, final Object... params) { }
+}
+]]>
+  </src>
+
+  <src name="SpringSpiLoaderServiceSPI" type="java" title="SpringSpiLoaderServiceSPI">
+    <![CDATA[
+@Slf4j
+public class SpringSpiLoaderServiceSPI implements SpiLoaderServiceSPI {
+    public static synchronized void initSpringContext(final ConfigurableListableBeanFactory context) {  }
+
+    @Override
+    public <T> List<T> loadServices(final Class<?> type) { }
+
+    @Override
+    public <T> List<T> loadSpiServicesByPriority(final Class<?> type, final T defaultImplementation) { }
+}
+]]>
+  </src>
+
+  <src name="ProxyBuilder" type="java" title="ProxyBuilder">
+    <![CDATA[
+public final class ProxyBuilder<T> {
+    public ProxyBuilder<T> addSuperClass(final Class<?> superClass) { }
+
+    public ProxyBuilder<T> addCallback(final Callback... callbacks) {  }
+
+    public ProxyBuilder<T> addInterface(final Class<?>... classes) {  }
+
+    public T build() {  }
+}
+]]>
+  </src>
+
+  <src name="PathUtils" type="java" title="PathUtils">
+    <![CDATA[
+@UtilityClass
+public class PathUtils {
+    public static String toUnixPath(final String file) { }
+}
+]]>
+  </src>
+
+  <src name="FilesUtils" type="java" title="FilesUtils">
+    <![CDATA[
+@Slf4j
+public class FilesUtils {
+    public static void assertFileExists(final File file) { }
+
+    private static Map<String, String> initFilesMapping() {  }
+
+    public static void assertCanRead(final File file) { }
+
+    public static void assertCanWrite(final File file) { }
+
+    public static void assertIsFolder(final File file) { }
+
+    public static void assertIsFile(final File file) {  }
+
+    public static File buildFile(final File file, final String... part) { }
+
+    public static String buildPath(final File file, final String... part) { }
+
+    public static String getCanonicalPath(final File file) { }
+
+    public static String getContentType(final File resource) { }
+
+    public static long getContentLength(final File resource) { }
+
+    public static String readFileFromClassLoader(final String resourceName) { }
+
+    public static String readFileFromClassLoader(final String resourceName, final Charset charset) { }
+
+    public static byte[] readFromClassLoader(final String resourceName) throws TechnicalException { }
+
+    public String read(final File file, final String encoding) throws IOException { }
+
+    public String read(final File file) throws IOException {  }
+
+    public String read(final File file, final int bufferSize) throws IOException { }
+
+    public String read(final File file, final int bufferSize, final String encoding) throws IOException { }
+
+    public static void readLineByLine(final File file, final Consumer<String> consumer) throws IOException { }
+
+    public static Map<String, String> readPropertiesInClassLoader(final String path) {  }
+
+    public static Map<String, String> readProperties(final String content) { }
+
+    public static void write(final String content, final String file) throws FilesUtilsException {  }
+
+    public static void write(final String content, final File file) throws FilesUtilsException {  }
+
+    public static void write(final String content, final File file, final String encoding) throws FilesUtilsException { }
+
+    public static URL convertToUrl(final File file) { }
+
+    public static List<File> list(final File folder) { }
+
+    public static List<File> list(final File folder, final FilenameFilter filter) { }
+
+    public static List<File> scanFilesystem(final File path, final FilenameFilter filter) { }
+
+    public static List<File> scanFilesystem(final File path,
+                                            final FilenameFilter filter,
+                                            final Predicate<File> directoryFilter) { }
+
+    public static <T extends Serializable> T readFromBinary(final File file, final T defaultValue) { }
+
+    public static void writeToBinary(final File file, final Serializable data) { }
+
+    public static boolean isAbsoluteFile(final String path) { }
+
+    public static File resolveJarFile(final URL url) { }
+
+    public static void unzip(final File zipFile, final File destination) throws IOException { }
+
+    public static void unzipLogless(final File zipFile, final File destination) throws IOException { }
+
+    public static boolean delete(final File file) {  }
+
+    public static boolean copy(final File source, final File destination) { }
+
+    public static String readContent(final File file) throws IOException {   }
+
+    public static String readContent(final URL url) throws IOException { }
+
+    public static byte[] readBytes(final URL url) throws IOException {  }
+
+    public static byte[] readBytes(final File file) throws IOException {  }
+
+    public static File getTmpDir() { }
+
+    public static boolean isWindows() {  }
+
+    public static void close(final Closeable closable) {  }
+
+}
+
+]]>
+  </src>
+
+
+  <src name="Unzip" type="java" title="Unzip">
+    <![CDATA[
+@Slf4j
+public class Unzip {
+    private static final long MAX_SIZE = 2000000000;
+
+    public void unzipLogLess(final File zipFile, final File destination) throws IOException {  }
+
+    public void unzip(final File zipFile, final File destination) throws IOException {  }
+}
+]]>
+  </src>
+  <src name="UnzipUtils" type="java" title="UnzipUtils">
+    <![CDATA[
+@UtilityClass
+public class UnzipUtils {
+    public static void unzipLogLess(final File zipFile, final File destination) throws IOException {}
+
+    public static  void unzip(final File zipFile, final File destination) throws IOException { }
+}
+]]>
+  </src>
+
+  <src name="JsonBuilder" type="java" title="JsonBuilder">
+    <![CDATA[
+public class JsonBuilder {
+    public <E extends JsonBuilder> E returnInstance() { }
+
+    public <E extends JsonBuilder> E writeFunction(final String name, final String... params) { }
+
+    public <E extends JsonBuilder> E addReturnKeyword() { }
+
+    public <E extends JsonBuilder> E openObject() { }
+    public <E extends JsonBuilder> E closeObject() { }
+
+    public <E extends JsonBuilder> E openList() { }
+    public <E extends JsonBuilder> E closeList() { }
+
+    public <E extends JsonBuilder> E openTuple() { }
+    public <E extends JsonBuilder> E closeTuple() { }
+
+    public <E extends JsonBuilder> E openComment() { }
+    public <E extends JsonBuilder> E closeComment() { }
+
+    public <E extends JsonBuilder> E addField(final String name) { }
+
+    public <E extends JsonBuilder> E write(final Object value) { }
+    public <E extends JsonBuilder> E write(final boolean value) { }
+    public <E extends JsonBuilder> E write(final byte value) { }
+    public <E extends JsonBuilder> E write(final short value) { }
+    public <E extends JsonBuilder> E write(final int value) { }
+    public <E extends JsonBuilder> E write(final long value) { }
+    public <E extends JsonBuilder> E write(final float value) { }
+    public <E extends JsonBuilder> E write(final double value) { }
+
+    public <E extends JsonBuilder> E writeSpace() { }
+    public <E extends JsonBuilder> E writeSpace(final int size) { }
+    public <E extends JsonBuilder> E writeParam(final String key, final String value) { }
+    public <E extends JsonBuilder> E valueQuot(final Object value) { }
+    public <E extends JsonBuilder> E valueNull() { }
+    public <E extends JsonBuilder> E addLine() { }
+
+    public <E extends JsonBuilder> E addSeparator() {  }
+    public <E extends JsonBuilder> E addEndLine() { }
+    public  <E extends JsonBuilder> E quot() { }
+    public  <E extends JsonBuilder> E  tripeQuot() { }
+    public <E extends JsonBuilder> E writeListString(final List<String> values) { }
+    public <E extends JsonBuilder> E line() { }
+    public <E extends JsonBuilder> E tab() { }
+    public  <E extends JsonBuilder> E eq() { }
+
+
+    public StringBuilder append(final Object value) { }
+    public StringBuilder append(final String value) { }
+    public StringBuilder append(final StringBuffer value) { }
+    public StringBuilder append(final CharSequence value) { }
+    public StringBuilder append(final CharSequence value, final int start, final int end) { }
+    public StringBuilder append(final char... str) { }
+    public StringBuilder append(final char[] str, final int offset, final int len) { }
+    public StringBuilder append(final boolean value) { }
+    public StringBuilder append(final char value) { }
+    public StringBuilder append(final int value) { }
+    public StringBuilder append(final long value) { }
+    public StringBuilder append(final float value) { }
+    public StringBuilder append(final double value) { }
+
+    public JsonBuilder dot() { }
+    public JsonBuilder doubleDot() { }
+
+    public JsonBuilder deco(final int nbChar) { }
+    public JsonBuilder deco(final String deco, final int nbChar) { }
+
+    public String toString() {  }
+    public <E extends JsonBuilder> E clear() { }
+}
+]]>
+  </src>
+
+
+  <src name="JsonMarshaller" type="java" title="JsonMarshaller">
+    <![CDATA[
+public class JsonMarshaller {
+    public static JsonMarshaller getInstance() {  }
+}
+]]>
+  </src>
+
+  <src name="YamlMarshaller" type="java" title="YamlMarshaller">
+    <![CDATA[
+public class YamlMarshaller {
+    public static final YamlMarshaller getInstance() {  }
+
+    public <T> T convertFromYaml(final String content, final Class<? extends T> objectClass) { }
+
+    public <T> T convertFromYaml(final String content, final TypeReference<T> objectClass) { }
+
+    public JsonNode convertFromYaml(final String content) { }
+
+    public <T> String convertToYaml(final T object) { }
+}
+]]>
+  </src>
+
+
+  <src name="EncryptionUtils" type="java" title="EncryptionUtils">
+    <![CDATA[
+public class EncryptionUtils {
+    /**
+     * @see io.inugami.framework.interfaces.configurtation.JvmKeyValues.SECURITY_CRYPTOGRAPHIC_KEYS
+     */
+    private static final  String[] CRYPTO_DEFINITION = initCryptoDefinition();
+
+
+    /**
+     * The Constant CHAR_DOUBLE_DOT.
+     */
+    protected static final String CHAR_MINUS = assertLenght(CRYPTO_DEFINITION[2], 1, "invalide char minus definition");
+
+
+    /**
+     * The Constant CHAR_AT.
+     */
+    protected static final String CHAR_AT = assertLenght(CRYPTO_DEFINITION[4], 1, "invalide char at definition");
+
+
+
+    /**
+     * @see io.inugami.framework.interfaces.configurtation.JvmKeyValues.SECURITY_TOKEN_MAX_SIZE
+     */
+    private static final int TOKEN_MAX_SIZE = Integer.parseInt(load(JvmKeyValues.SECURITY_TOKEN_MAX_SIZE));
+
+    /**
+     * @see io.inugami.framework.interfaces.configurtation.JvmKeyValues.SERCURITY_CIPHER
+     */
+    private static final String CIPHER_ALGORITHM = load(JvmKeyValues.SERCURITY_CIPHER_ALGO);
+
+    private static final String KEY_ALGORITHM = load(JvmKeyValues.SERCURITY_CIPHER_ALGO_KEY);
+
+    private static final Charset UTF_8 = Charset.forName(load(JvmKeyValues.SERCURITY_ENCODING));
+
+    /**
+     * @see io.inugami.framework.interfaces.configurtation.JvmKeyValues.SECURITY_AES_SECRET_KET
+     */
+    private static final byte[] SECRET_KEY = loadSecretKey();
+
+    public synchronized String makeUniqueToken() { }
+
+    public String encodeSha1(final String value) {}
+
+    public String encodeAES(final String value) { }
+    public String decodeAES(final String value) { }
+
+    public String encodeBase64(final String value) { }
+    public String encodeBase64(final byte[] value) { }
+
+    public String decodeBase64(final String value) { }
+    public byte[] decodeBase64Bytes(final String value) { }
+
+    public String encodeMap(final Map<String, String> value) { }
+    public Map<String, String> decodeMap(final String value) { }
+}
 ]]>
   </src>
 </xml>
