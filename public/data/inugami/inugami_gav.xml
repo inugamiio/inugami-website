@@ -340,7 +340,7 @@ open module my.module {
 mvn archetype:generate \
   -DarchetypeGroupId=io.inugami.maven \
   -DarchetypeArtifactId=inugami_maven_springboot \
-  -DarchetypeVersion=4.2.4 \
+  -DarchetypeVersion=4.2.5 \
   -DgroupId=com.my.project \
   -DartifactId=demo \
   -DinteractiveMode=true
