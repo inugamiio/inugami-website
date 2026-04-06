@@ -1,21 +1,22 @@
 import {Component, signal, WritableSignal} from '@angular/core';
 import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
-import {InuDocItemComponent} from '../../../../components/doc-item/doc-item.component';
+
 import {RouterLink} from '@angular/router';
-import {InuCopyComponent} from '../../../../components/copy/copy.component';
 import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuCopy} from 'inugami-ng/components/inu-copy';
+import {InuDocItem} from 'inugami-ng/components/inu-doc-item';
 
 @Component({
-  templateUrl: './inugami_framework_exception.view.html',
-  styleUrls: ['./inugami_framework_exception.view.scss'],
-  imports: [
-    FrameworkAsideComponent,
-    InuDocItemComponent,
-    InuCopyComponent,
-    RouterLink,
-    InuCode
-  ]
-})
+             templateUrl: './inugami_framework_exception.view.html',
+             styleUrls  : ['./inugami_framework_exception.view.scss'],
+             imports    : [
+               FrameworkAsideComponent,
+               InuDocItem,
+               InuCopy,
+               RouterLink,
+               InuCode
+             ]
+           })
 export class InugamiFrameworkExceptionView {
 
 
@@ -43,7 +44,7 @@ export class InugamiFrameworkExceptionView {
 </dependency>
         `
   );
-  protected javaDependencies: WritableSignal<string> = signal<string>(
+  protected javaDependencies: WritableSignal<string>  = signal<string>(
     `
 requires io.inugami.framework.interfaces;
 requires io.inugami.monitoring.core;

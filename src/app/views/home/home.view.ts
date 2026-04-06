@@ -3,19 +3,17 @@ import {InuAnnoncement} from '../../components/annoncement/annoncement.component
 import {HttpServices} from '../../services/http.service';
 import {Annoncement, AnnoncementExample, AnnoncementItem} from '../../components/annoncement/annoncement.model';
 import {InuIcon} from 'inugami-icons';
-import {InuCite} from 'inugami-ng/components/inu-cite';
 import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
-  templateUrl: './home.view.html',
-  styleUrls: ['./home.view.scss'],
-  imports: [
-    InuAnnoncement,
-    InuCode,
-    InuIcon,
-    InuCite
-  ]
-})
+             templateUrl: './home.view.html',
+             styleUrls  : ['./home.view.scss'],
+             imports: [
+               InuAnnoncement,
+               InuCode,
+               InuIcon
+             ]
+           })
 export class HomeView implements OnInit {
 
   //==================================================================================================================
@@ -29,10 +27,10 @@ export class HomeView implements OnInit {
   ngOnInit(): void {
     this.httpServices.getSourceCode('data/annoncements.xml')
       .subscribe({
-        next: res => {
-          this.annoncements.set(this.parseAnnoncements(res));
-        }
-      });
+                   next: res => {
+                     this.annoncements.set(this.parseAnnoncements(res));
+                   }
+                 });
 
   }
 
@@ -42,9 +40,9 @@ export class HomeView implements OnInit {
   //==================================================================================================================
   parseAnnoncements(values: string): Annoncement[] {
     const result: Annoncement[] = [];
-    const parser = new DOMParser();
-    const node = parser.parseFromString(values, "text/xml");
-    const annoncements = node.getElementsByTagName("annoncements")[0];
+    const parser                = new DOMParser();
+    const node                  = parser.parseFromString(values, "text/xml");
+    const annoncements          = node.getElementsByTagName("annoncements")[0];
 
     for (let i = 0; i < annoncements.childNodes.length; i++) {
       if (annoncements.childNodes[i].nodeName == 'annoncement') {
@@ -57,8 +55,8 @@ export class HomeView implements OnInit {
 
   private parseAnnoncement(node: Element, index: number): Annoncement {
     let features: AnnoncementItem[] = [];
-    let fix: AnnoncementItem[] = [];
-    let description = null;
+    let fix: AnnoncementItem[]      = [];
+    let description                 = null;
     for (let i = 0; i < node.childNodes.length; i++) {
       if (node.childNodes[i].nodeName == 'features') {
         for (let j = 0; j < node.childNodes[i].childNodes.length; j++) {
@@ -80,12 +78,12 @@ export class HomeView implements OnInit {
     }
 
     return {
-      id: index,
+      id         : index,
       application: node.getAttribute('application'),
-      version: node.getAttribute('version'),
-      date: node.getAttribute('date'),
-      features: features,
-      fix: fix,
+      version    : node.getAttribute('version'),
+      date       : node.getAttribute('date'),
+      features   : features,
+      fix        : fix,
       description: description
     };
   }
@@ -100,14 +98,14 @@ export class HomeView implements OnInit {
 
 
     return {
-      link: node.getAttribute('link'),
-      title: node.getAttribute('title'),
+      link    : node.getAttribute('link'),
+      title   : node.getAttribute('title'),
       examples: examples
     };
   }
 
   private parseExample(node: Element): AnnoncementExample {
-    let value = null;
+    let value       = null;
     let description = null;
 
     for (let i = 0; i < node.childNodes.length; i++) {
@@ -120,9 +118,9 @@ export class HomeView implements OnInit {
     }
 
     return {
-      value: value == null ? '' : value,
+      value      : value == null ? '' : value,
       description: description,
-      type: node.getAttribute('type')
+      type       : node.getAttribute('type')
     }
   }
 

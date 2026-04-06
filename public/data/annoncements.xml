@@ -2,6 +2,21 @@
 
     <annoncements>
       <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+      <annoncement application="inugami" version="4.2.6" date="2026-04-06">
+        <features>
+          <item title="[#444] FEAT : Migrating to virtual threads"
+                link="https://github.com/inugamiio/inugami/pull/442/changes/cf17b082298292178bdbda7aad260cc99a431e0e">
+          </item>
+          <item title="[#421] FEAT : add angular frontend into springboot archetype"
+                link="https://github.com/inugamiio/inugami/pull/442/changes/cf17b082298292178bdbda7aad260cc99a431e0e">
+          </item>
+          <item title="[#441] FEAT : add spring external configuration loader"
+                link="https://github.com/inugamiio/inugami/pull/442/changes/fd02726d0ad71797533693902d2f172eb972f2fa">
+          </item>
+        </features>
+      </annoncement>
+
+      <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
       <annoncement application="inugami" version="4.2.5" date="2026-01-25">
         <features>
           <item title="[#437] FEAT : Hardened Feign SSRF protection"

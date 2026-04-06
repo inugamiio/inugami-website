@@ -1,16 +1,15 @@
 import {Component, signal, WritableSignal} from '@angular/core';
 import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
-import {InuCopyComponent} from '../../../../components/copy/copy.component';
 import {RouterLink} from '@angular/router';
 import {InuCode} from 'inugami-ng/components/inu-code';
-
+import { InuCopy } from 'inugami-ng/components/inu-copy';
 @Component({
   templateUrl: './inugami_framework_testability.view.html',
   styleUrls: ['./inugami_framework_testability.view.scss'],
   imports: [
     FrameworkAsideComponent,
     InuCode,
-    InuCopyComponent,
+    InuCopy,
     RouterLink
   ]
 })

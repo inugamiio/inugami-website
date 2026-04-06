@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
-import {InuDocItemComponent} from '../../../../components/doc-item/doc-item.component';
 import {RouterLink} from '@angular/router';
 import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuDocItem} from 'inugami-ng/components/inu-doc-item';
 
 @Component({
   templateUrl: './inugami_framework_getting_started.view.html',
@@ -10,7 +10,7 @@ import {InuCode} from 'inugami-ng/components/inu-code';
   imports: [
     FrameworkAsideComponent,
     InuCode,
-    InuDocItemComponent,
+    InuDocItem,
     RouterLink
   ]
 })

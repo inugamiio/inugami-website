@@ -1,9 +1,9 @@
 import {Component, signal, WritableSignal} from '@angular/core';
 import { FrameworkAsideComponent } from '../framework-aside/framework-aside.component';
 import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuCopyComponent} from '../../../../components/copy/copy.component';
 import {RouterLink} from '@angular/router';
 import {InuCite} from 'inugami-ng/components/inu-cite';
+import { InuCopy } from 'inugami-ng/components/inu-copy';
 
 @Component({
     templateUrl: './inugami_framework_monitoring_feign.view.html',
@@ -11,7 +11,7 @@ import {InuCite} from 'inugami-ng/components/inu-cite';
   imports: [
     FrameworkAsideComponent,
     InuCode,
-    InuCopyComponent,
+    InuCopy,
     RouterLink,
     InuCite
   ]

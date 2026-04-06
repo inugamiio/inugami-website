@@ -1,9 +1,10 @@
 import {Component, signal, WritableSignal} from '@angular/core';
 import {FrameworkAsideComponent} from '../framework-aside/framework-aside.component';
-import {InuDocItemComponent} from '../../../../components/doc-item/doc-item.component';
-import {InuCopyComponent} from '../../../../components/copy/copy.component';
+
 import {RouterLink} from '@angular/router';
 import {InuCode} from 'inugami-ng/components/inu-code';
+import { InuCopy } from 'inugami-ng/components/inu-copy';
+import {InuDocItem} from 'inugami-ng/components/inu-doc-item';
 
 @Component({
   templateUrl: './inugami_framework_functional.view.html',
@@ -11,8 +12,8 @@ import {InuCode} from 'inugami-ng/components/inu-code';
   imports: [
     FrameworkAsideComponent,
     InuCode,
-    InuDocItemComponent,
-    InuCopyComponent,
+    InuDocItem,
+    InuCopy,
     RouterLink
   ]
 })

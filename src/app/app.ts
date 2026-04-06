@@ -1,27 +1,23 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-  UrlSegment
-} from '@angular/router';
-import {SiteLink, TARGET_BLANK, TARGET_PARENT} from './models/website-model';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {SiteLink, TARGET_BLANK} from './models/website-model';
 import {ViewportScroller} from '@angular/common';
 import {GaActionEnum, GoogleAnalyticsService} from 'ngx-google-analytics';
 import {filter} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Title} from '@angular/platform-browser';
+import {InuMainHeader} from 'inugami-ng/components/inu-main-header';
+import {InuToast} from 'inugami-ng/components/inu-toast';
+import {InuFooter} from 'inugami-ng/components/inu-footer';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive
-  ],
+             imports: [
+               RouterOutlet,
+               InuMainHeader,
+               InuToast,
+               InuFooter
+             ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
