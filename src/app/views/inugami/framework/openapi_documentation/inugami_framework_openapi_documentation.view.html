@@ -1,0 +1,144 @@
+<section id="framework-getting-started" class="page-section">
+
+  <div class="page-section-content">
+    <aside class="bd-sidebar">
+      <framework-aside></framework-aside>
+    </aside>
+    <div class="bd-content">
+      <section>
+        <header>
+          <h1>Inugami Framework : OpenApi generated documentation</h1>
+        </header>
+        <!--************************************************************************************************************
+        ** DOC
+        *************************************************************************************************************-->
+        <article>
+          <cite class="success">
+            <header>
+              <i></i>
+              <div>
+                <strong>Test-Driven Reliability</strong>: By tying OpenAPI generation
+                to unit tests, Inugami guarantees that your API documentation is
+                never an afterthought—it's a verified byproduct of your
+                testing suite.
+              </div>
+            </header>
+          </cite>
+
+          <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestControllerTest"></inu-code>
+
+          <p>
+            Just like in other layers, assertText methods are heavily used here to validate the response structure.
+            To generate the documentation, we call the generate method of the MockGenerator class,
+            providing it with a specific context (input payload, response, headers, etc.).
+            This context can also include various error codes for documented failure scenarios.
+          </p>
+
+          <p>
+            While individual tests collect data, the <strong>actual generation</strong>
+            of the OpenAPI specification is performed by the
+            <code>generateOpenApiDocumentation</code> method within the
+            <code>MockGenerator</code> class.
+          </p>
+          <inu-code url="data/inugami/framework/source_code.xml" tag="generateOpenApiDocumentation"></inu-code>
+
+          <p>
+            The <code>generateOpenApiDocumentation</code> method produces two essential artifacts:
+          </p>
+
+          <ul>
+            <li>
+              <strong>Execution Mocks</strong>: These files store the complete state of
+              the exchange (request, response, headers, and status), providing a
+              ready-to-use dataset for frontend developers.
+            </li>
+            <li>
+              <strong>Decoupled OpenAPI Annotations</strong>: Instead of cluttering your
+              Java code, the metadata is generated as external attributes, which are
+              then seamlessly integrated to build the final API contract.
+            </li>
+          </ul>
+          <cite class="warning">
+            <header>
+              <i></i>
+              <div>
+                <p>
+                  The generation process requires a target destination. You must define the
+                  <code>mock.generator.path</code> property using one of the following methods:
+                </p>
+
+                <ul>
+                  <li>
+                    <strong>JVM Argument</strong>: Add <code>-Dmock.generator.path=../demo-interfaces-api/</code>
+                    to your test execution command.
+                  </li>
+                  <li>
+                    <strong>Maven Property</strong>: Define it within your <code>pom.xml</code>
+                    <div class=""></div>
+                  </li>
+                </ul>
+              </div>
+            </header>
+          </cite>
+          <inu-code url="data/inugami/framework/source_code.xml" tag="context_json"></inu-code>
+
+          <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClientDOC"></inu-code>
+
+          <p>
+            Once the generation process is complete, the final step is to link the
+            produced metadata back to your interface. This is done by adding the
+            generated annotations:
+          </p>
+          <inu-code url="data/inugami/framework/source_code.xml" tag="UserRestClient_withDoc"></inu-code>
+
+
+          <p>
+            Inugami goes beyond simple success scenarios. <strong>Defining error codes
+            within the OpenAPI generation context will produce a dedicated section
+            in the documentation to highlight them.</strong>
+          </p>
+          <p>
+            This ensures that frontend developers and API consumers can easily
+            identify all potential business exceptions, their HTTP status, and
+            the specific error structures associated with each domain.
+          </p>
+          <figure>
+            <img src="images/framework/openapi_02.png" alt="Error code in OpenApi documentation" width="90%"/>
+          </figure>
+
+          <p>
+            It is also possible to display the actual data structure that will be returned by the server.
+          </p>
+          <figure>
+            <img src="images/framework/openapi_03.png" alt="Error code in OpenApi documentation" width="90%"/>
+          </figure>
+
+          <cite class="success">
+            <header>
+              <i></i>
+              <div>
+                Clean Interfaces through Composed Annotations
+              </div>
+            </header>
+            <p>
+              Inugami solves the "Annotation Hell" problem by generating a dedicated
+              documentation utility class. Instead of polluting your REST interfaces
+              with dozens of lines of Swagger metadata, the <code>MockGenerator</code>
+              produces a companion class like <code>UserRestClientDOC</code>.
+            </p>
+
+            <p>
+              By using these <strong>Composed Annotations</strong>, your REST interface
+              remains concise and focused on its primary role: defining the API contract.
+              The heavy lifting of documentation is offloaded to these generated markers.
+            </p>
+          </cite>
+
+        </article>
+      </section>
+    </div>
+
+
+  </div>
+
+</section>

@@ -1,346 +1,391 @@
 <menu>
-    <ul>
-        <li>
-            <a target="_blank" href="https://github.com/inugamiio/inugami/tree/master">GitHub</a>
-        </li>
+  <ul>
+    <li>
+      <a target="_blank" href="https://github.com/inugamiio/inugami/tree/master">GitHub</a>
+    </li>
 
-        <li>
-            <a routerLink="/inugami/framework/getting-started"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Getting started
-            </a>
-            @if (gettingStarted()) {
+    <li>
+      <a routerLink="/inugami/framework/getting-started"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Getting started
+      </a>
+      @if (gettingStarted()) {
+        <ul>
+          <li>
+            <a [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Archetype</a>
             <ul>
-                <li>
-                    <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype">Archetype</a>
-                    <ul>
-                        <li>
-                            <a  [routerLink]="['/inugami/framework/getting-started']" fragment="archetype-architecture">Archetype architecture</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a  [routerLink]="['/inugami/framework/getting-started']" fragment="first-run">First run</a>
-                </li>
-                <li>
-                    <a  [routerLink]="['/inugami/framework/getting-started']" fragment="modules-details">Modules details</a>
-
-                    <ul>
-                        <li>
-                            <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-api">Module-api</a>
-                            <ul>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userDto">UserDTO</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userDTOSearchRequestDTO">UserDTOSearchRequestDTO</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userFilters">UserFilters</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">Services interfaces</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userErrors">UserErrors</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core">Module-core</a>
-                            <ul>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-standard-crud">Standard CRUD</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-dbc">Design by Contract</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure">Module-infrastructure</a>
-                            <ul>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct Mappers</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-it">Integration tests</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                             <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces">Module-interfaces</a>
-                            <ul>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-api">REST interfaces</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-core">REST controllers</a></li>
-                                <li><a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-feign">REST feign</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a  [routerLink]="['/inugami/framework/getting-started']" fragment="module-webapp">Module-webapp</a>
-                        </li>
-                    </ul>
-                </li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']" fragment="archetype-architecture">Archetype
+                  architecture</a>
+              </li>
             </ul>
-            }
-        </li>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/getting-started']" fragment="first-run">First run</a>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/getting-started']" fragment="modules-details">Modules details</a>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/components"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Components
-            </a>
-        </li>
-
-        <li>
-            <a routerLink="/inugami/framework/exception"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Exception management
-            </a>
-            @if (exceptionManagement()) {
-                <ul>
-                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="error-code">Error Code</a></li>
-                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="exception-type">Exception type</a></li>
-                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="asserts">Asserts</a></li>
-                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="repsonse">Server response</a>
-                        <ul>
-                            <li><a  [routerLink]="['/inugami/framework/exception']" fragment="exploitation-error">Exploitation error</a>
-                            <li><a  [routerLink]="['/inugami/framework/exception']" fragment="dynamic-meta">Dynamic Metadata Enrichment</a>
-                            <li><a  [routerLink]="['/inugami/framework/exception']" fragment="dynamic-resolver">Dynamic Error code resolver</a>
-                                <li><a  [routerLink]="['/inugami/framework/exception']" fragment="mdc">MDC</a>
-                        </ul>
-                    </li>
-                    <li><a  [routerLink]="['/inugami/framework/exception']" fragment="warning">Warning</a></li>
-                </ul>
-            }
-        </li>
-
-        <li>
-            <a routerLink="/inugami/framework/functional"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Functional
-            </a>
-            @if (functional()) {
-                <ul>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="action_With_exception">ActionWithException</a></li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer">Consumer</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="bi_consumer_with_exception">BiConsumerWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer_with_exception">ConsumerWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="tri_consumer">TriConsumer</a></li>
-                        </ul>
-                    </li>
-
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="function">Function</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="function_with_exception">FunctionWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="generic_action_with_exception">GenericActionWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function">VoidFunction</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function_with_exception">VoidFunctionWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="validator_function">ValidatorFunction</a></li>
-                        </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="is_empty_facet">IsEmptyFacet</a></li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a></li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="task">Task</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="task_start_listener">TaskStartListener</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="task_finish_listener">TaskFinishListener</a></li>
-                        </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier">Supplier</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a></li>
-                            <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
-                        </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a></li>
-                    <li><a [routerLink]="['/inugami/framework/functional']" fragment="functional_utils">FunctionalUtils</a></li>
-                </ul>
-            }
-        </li>
-
-        <li>
-            <a routerLink="/inugami/framework/monitoring"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Monitoring
-            </a>
-            @if (monitoring()) {
-                <ul>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="getting-started">Getting started</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="dependencies">Dependencies</a></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="lifecycle">Lifecycle</a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types">Logs types</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-iolog">IOLOG</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-partnerlog">PARTNERLOG</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-others">OTHERS</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="log-masking">Log Data Sensitive Masking</a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="metrics">Metrics</a>
-                         <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="services-sensor">ServicesSensor</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="sensor-spi">Sensor SPI</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="kpi_extractor_spi">KpiExtractorSPI</a></li>
-                         </ul>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="mdcService">MdcService</a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="interception">Interception</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_properties">Exclude by properties</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_spi">Exclude by SPI</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/inugami/framework/monitoring']" fragment="tools">Tools</a>
-                        <ul>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="log_info_dto">LogInfoDTOs</a></li>
-                            <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="console_colors">ConsoleColors</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            }
-        </li>
-
-        <li class="wip">
-            <a routerLink="/inugami/framework/monitoring-activemq"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Monitoring ActiveMq
-            </a>
-        </li>
-
-        <li>
-            <a routerLink="/inugami/framework/monitoring-feign"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Monitoring Feign
-            </a>
-          @if (feign()) {
             <ul>
-              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="integration">Integration</a></li>
-              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="steps">Step by step</a></li>
-              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="configs">Configuration</a></li>
-              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="mdc">MDC</a></li>
-              <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="error_resolver">Error code resolver</a></li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']" fragment="module-api">Module-api</a>
+                <ul>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userDto">UserDTO</a>
+                  </li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']"
+                         fragment="demo-api-userDTOSearchRequestDTO">UserDTOSearchRequestDTO</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-userFilters">UserFilters</a>
+                  </li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="demo-api-service">Services
+                    interfaces</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']"
+                         fragment="demo-api-userErrors">UserErrors</a></li>
+                </ul>
+              </li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']" fragment="module-core">Module-core</a>
+                <ul>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-standard-crud">Standard
+                    CRUD</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-core-dbc">Design by
+                    Contract</a></li>
+                </ul>
+              </li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure">Module-infrastructure</a>
+                <ul>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-mapper">MapStruct
+                    Mappers</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-infrastructure-it">Integration
+                    tests</a></li>
+                </ul>
+              </li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']"
+                   fragment="module-interfaces">Module-interfaces</a>
+                <ul>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-api">REST
+                    interfaces</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-core">REST
+                    controllers</a></li>
+                  <li><a [routerLink]="['/inugami/framework/getting-started']" fragment="module-interfaces-feign">REST
+                    feign</a></li>
+                </ul>
+              </li>
+              <li>
+                <a [routerLink]="['/inugami/framework/getting-started']" fragment="module-webapp">Module-webapp</a>
+              </li>
             </ul>
-          }
+          </li>
+        </ul>
+      }
+    </li>
 
-        </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/monitoring-provider"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Monitoring Provider
-            </a>
-        </li>
+    <li class="wip">
+      <a routerLink="/inugami/framework/components"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Components
+      </a>
+    </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/monitoring-sensor"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Monitoring Sensor
-            </a>
-        </li>
+    <li>
+      <a routerLink="/inugami/framework/exception"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Exception management
+      </a>
+      @if (exceptionManagement()) {
+        <ul>
+          <li><a [routerLink]="['/inugami/framework/exception']" fragment="error-code">Error Code</a></li>
+          <li><a [routerLink]="['/inugami/framework/exception']" fragment="exception-type">Exception type</a></li>
+          <li><a [routerLink]="['/inugami/framework/exception']" fragment="asserts">Asserts</a></li>
+          <li><a [routerLink]="['/inugami/framework/exception']" fragment="repsonse">Server response</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/exception']" fragment="exploitation-error">Exploitation
+                error</a>
+              <li><a [routerLink]="['/inugami/framework/exception']" fragment="dynamic-meta">Dynamic Metadata
+                Enrichment</a>
+              <li><a [routerLink]="['/inugami/framework/exception']" fragment="dynamic-resolver">Dynamic Error code
+                resolver</a>
+              <li><a [routerLink]="['/inugami/framework/exception']" fragment="mdc">MDC</a>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/exception']" fragment="warning">Warning</a></li>
+        </ul>
+      }
+    </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/multithreading"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Multi-threading
-            </a>
-        </li>
+    <li>
+      <a routerLink="/inugami/framework/functional"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Functional
+      </a>
+      @if (functional()) {
+        <ul>
+          <li><a [routerLink]="['/inugami/framework/functional']"
+                 fragment="action_With_exception">ActionWithException</a></li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer">Consumer</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="bi_consumer_with_exception">BiConsumerWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="consumer_with_exception">ConsumerWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="tri_consumer">TriConsumer</a></li>
+            </ul>
+          </li>
 
-        <li class="wip">
-            <a routerLink="/inugami/framework/reflection"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Reflection
-            </a>
-        </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="function">Function</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="function_with_exception">FunctionWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="generic_action_with_exception">GenericActionWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function">VoidFunction</a></li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="void_function_with_exception">VoidFunctionWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']"
+                     fragment="validator_function">ValidatorFunction</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="is_empty_facet">IsEmptyFacet</a></li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="task">Task</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/functional']"
+                     fragment="task_start_listener">TaskStartListener</a></li>
+              <li><a [routerLink]="['/inugami/framework/functional']"
+                     fragment="task_finish_listener">TaskFinishListener</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier">Supplier</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_exception">SupplierWithException</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a>
+              </li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="supplier_with_throwable">SupplierWithThrowable</a>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/functional']" fragment="functional_utils">FunctionalUtils</a></li>
+        </ul>
+      }
+    </li>
 
-        <li>
-            <a routerLink="/inugami/framework/testability"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Testability
-            </a>
+    <li>
+      <a routerLink="/inugami/framework/monitoring"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Monitoring
+      </a>
+      @if (monitoring()) {
+        <ul>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="getting-started">Getting started</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="dependencies">Dependencies</a></li>
+            </ul>
+          </li>
 
-             @if (testability()) {
-                <ul>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="dto">Test your DTO</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="error">Test your ErrorCodes</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="services">Test your Services</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="integration">Integration testing</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="rest">Test your REST controller</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="logs">Test your Logs</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_helper">UnitTestHelper</a></li>
-                    <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_data">UnitTestData</a></li>
-                </ul>
-             }
-        </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="lifecycle">Lifecycle</a>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types">Logs types</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-iolog">IOLOG</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-partnerlog">PARTNERLOG</a>
+              </li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="logs-types-others">OTHERS</a></li>
+            </ul>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="log-masking">Log Data Sensitive Masking</a>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="metrics">Metrics</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="services-sensor">ServicesSensor</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="sensor-spi">Sensor SPI</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="kpi_extractor_spi">KpiExtractorSPI</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="mdcService">MdcService</a>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="interception">Interception</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_properties">Exclude by
+                properties</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="exclude_by_spi">Exclude by SPI</a></li>
+            </ul>
+          </li>
+          <li>
+            <a [routerLink]="['/inugami/framework/monitoring']" fragment="tools">Tools</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="log_info_dto">LogInfoDTOs</a></li>
+              <li><a [routerLink]="['/inugami/framework/monitoring']" fragment="console_colors">ConsoleColors</a></li>
+            </ul>
+          </li>
+        </ul>
+      }
+    </li>
 
-        <li>
-            <a routerLink="/inugami/framework/tools"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: false }">Tools
-            </a>
-            @if (tools()) {
-                <ul>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="cron">Cron</a></li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="documentation">Documentation</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-description">Description</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-glossaries">Glossaries</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-partner">Partner</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-potential-errors">PotentialErrors</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-jms">JMS</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-rabbit-mq">RabbitMQ</a>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="string">String</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringcomparator">StringComparator</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringtools">StringTools</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-messagesformatter">MessagesFormatter</a>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="list-listutils">ListUtils</a>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="maputils">MapUtils</a>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="hex">Hex</a>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="port-generator">PortGenerator</a></li>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="injection">Injection</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="spiloader">Spiloader</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="spring-spiloader">SpringSpiLoaderServiceSPI</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="proxybuilder">ProxyBuilder</a></li>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="file">File</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-pathutils">PathUtils</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-filesutils">FilesUtils</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-unzip">Unzip</a></li>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="marshalling">Marshalling</a>
-                      <ul>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-builder">JsonBuilder</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-marshaller">JsonMarshaller</a></li>
-                        <li><a [routerLink]="['/inugami/framework/tools']" fragment="yaml-marshaller">YamlMarshaller</a></li>
-                      </ul>
-                    </li>
-                    <li><a [routerLink]="['/inugami/framework/tools']" fragment="security">Security</a>
-                    <ul>
-                      <li><a [routerLink]="['/inugami/framework/tools']" fragment="encryption-utils">EncryptionUtils</a></li>
-                    </ul>
-                    </li>
-                </ul>
-            }
-        </li>
-    </ul>
+    <li class="wip">
+      <a routerLink="/inugami/framework/monitoring-activemq"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Monitoring ActiveMq
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/inugami/framework/monitoring-feign"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Monitoring Feign
+      </a>
+      @if (feign()) {
+        <ul>
+          <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="integration">Integration</a></li>
+          <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="steps">Step by step</a></li>
+          <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="configs">Configuration</a></li>
+          <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="mdc">MDC</a></li>
+          <li><a [routerLink]="['/inugami/framework/monitoring-feign']" fragment="error_resolver">Error code
+            resolver</a></li>
+        </ul>
+      }
+
+    </li>
+
+    <li class="wip">
+      <a routerLink="/inugami/framework/monitoring-provider"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Monitoring Provider
+      </a>
+    </li>
+
+    <li class="wip">
+      <a routerLink="/inugami/framework/monitoring-sensor"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Monitoring Sensor
+      </a>
+    </li>
+
+    <li class="wip">
+      <a routerLink="/inugami/framework/multithreading"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Multi-threading
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/inugami/framework/openapi-documentation"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">OpenApi Documentation
+      </a>
+    </li>
+
+    <li class="wip">
+      <a routerLink="/inugami/framework/reflection"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Reflection
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/inugami/framework/testability"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Testability
+      </a>
+
+      @if (testability()) {
+        <ul>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="dto">Test your DTO</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="error">Test your ErrorCodes</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="services">Test your Services</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="integration">Integration testing</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="rest">Test your REST controller</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="logs">Test your Logs</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_helper">UnitTestHelper</a></li>
+          <li><a [routerLink]="['/inugami/framework/testability']" fragment="unittest_data">UnitTestData</a></li>
+        </ul>
+      }
+    </li>
+
+    <li>
+      <a routerLink="/inugami/framework/tools"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }">Tools
+      </a>
+      @if (tools()) {
+        <ul>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="cron">Cron</a></li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="documentation">Documentation</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-description">Description</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-glossaries">Glossaries</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-partner">Partner</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-potential-errors">PotentialErrors</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-jms">JMS</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="doc-rabbit-mq">RabbitMQ</a>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="string">String</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringcomparator">StringComparator</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="string-stringtools">StringTools</a>
+              <li><a [routerLink]="['/inugami/framework/tools']"
+                     fragment="string-messagesformatter">MessagesFormatter</a>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="collection">Collection</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="list-listutils">ListUtils</a>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="maputils">MapUtils</a>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="encoding">Encoding</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="hex">Hex</a>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="infra">Infrastructure</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="port-generator">PortGenerator</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="injection">Injection</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="spiloader">Spiloader</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']"
+                     fragment="spring-spiloader">SpringSpiLoaderServiceSPI</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="proxybuilder">ProxyBuilder</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="file">File</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-pathutils">PathUtils</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-filesutils">FilesUtils</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="file-unzip">Unzip</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="marshalling">Marshalling</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-builder">JsonBuilder</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="json-marshaller">JsonMarshaller</a></li>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="yaml-marshaller">YamlMarshaller</a></li>
+            </ul>
+          </li>
+          <li><a [routerLink]="['/inugami/framework/tools']" fragment="security">Security</a>
+            <ul>
+              <li><a [routerLink]="['/inugami/framework/tools']" fragment="encryption-utils">EncryptionUtils</a></li>
+            </ul>
+          </li>
+        </ul>
+      }
+    </li>
+  </ul>
 </menu>

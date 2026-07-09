@@ -15,6 +15,9 @@ import { InugamiFrameworkMonitoringSensorView } from './views/inugami/framework/
 import { InugamiFrameworkMonitoringProviderView } from './views/inugami/framework/monitoring_provider/inugami_framework_monitoring_provider.view';
 import { InugamiFrameworkMonitoringActiveMqView } from './views/inugami/framework/monitoring_activemq/inugami_framework_monitoring_activemq.view';
 import { InugamiFrameworkMonitoringFeignView } from './views/inugami/framework/monitoring_feign/inugami_framework_monitoring_feign.view';
+import {
+  InugamiFrameworkOpenApiDocumentationView
+} from './views/inugami/framework/openapi_documentation/inugami_framework_openapi_documentation.view'
 
 
 export const routes: Routes = [
@@ -32,10 +35,11 @@ export const routes: Routes = [
             { path: "monitoring-provider", component: InugamiFrameworkMonitoringProviderView },
             { path: "monitoring-sensor", component: InugamiFrameworkMonitoringSensorView },
             { path: "multithreading", component: InugamiFrameworkMultithreadingView },
+            { path: "openapi-documentation", component: InugamiFrameworkOpenApiDocumentationView },
             { path: "reflection", component: InugamiFrameworkReflectionView },
             { path: "testability", component: InugamiFrameworkTestabilityView },
             { path: "tools", component: InugamiFrameworkToolsView }
-            
+
         ]},
         { path: "dashboard", children:[
             { path: "", redirectTo:"getting-started",pathMatch: 'full'},
@@ -45,11 +49,11 @@ export const routes: Routes = [
     { path: "maven", children:[
         { path: "inugami_project_analysis_maven_plugin", children:[
             { path: "", component: InugamiMavenGettingStartedView },
-            { path: "getting-started", component: InugamiMavenGettingStartedView }    
+            { path: "getting-started", component: InugamiMavenGettingStartedView }
         ]}
 
 
 
     ]},
-    
-]; 
+
+];

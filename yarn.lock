@@ -2673,17 +2673,17 @@ ini@^6.0.0:
   resolved "https://registry.npmjs.org/ini/-/ini-6.0.0.tgz"
   integrity sha512-IBTdIkzZNOpqm7q3dRqJvMaldXjDHWkEDfrwGEQTs5eaQMWV+djAhR+wahyNNMAa+qpbDUhBMVt4ZKNwpPm7xQ==
 
-inugami-icons@0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.15.tgz#f97bae9750f9f4f23736230154e0e77d924ea82e"
-  integrity sha512-aB7NeDhynhuB3AtE5rZw3e1tLnWyY1kd2tpBzwPamYrh+GNPMHJnf3Jahof3ebLO7wlYsY36+RHpJKrflvLYvQ==
+inugami-icons@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.20.tgz#9094b5c5db3a6a20c217c05d23017af12ed612e7"
+  integrity sha512-Tbw8H+hUzEOGnDM772QM+1KgeYYgvZnY7gnEBUPl7sKs3fkPOD/MD/NoQ9MtvvszdefHL8t5lk+YUYQpwboKTg==
   dependencies:
     tslib "^2.3.0"
 
-inugami-ng@0.0.23:
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/inugami-ng/-/inugami-ng-0.0.23.tgz#e1db3a39afecb643b91fc2e59a567d37f7c9f822"
-  integrity sha512-ZLi5++9ga21xGQHSB6t+nk8c+plN4yUg2k3Awn53w0hz/vRxfI+hijCri7BTOJUsZJfV7XbYeqsKUHOKqpn+Fw==
+inugami-ng@^0.0.35:
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/inugami-ng/-/inugami-ng-0.0.35.tgz#696df7d7b012e18574cdf07d4e6a68b6d1c64acd"
+  integrity sha512-0UUIMXeEEiggBJmxPVzCyAE4QqGV3QOrb/ZEaab8fCzmAhlkXeNXCgRUogBjeoWsrjtPkxtTExidQeW/rJwvzQ==
   dependencies:
     tslib "^2.3.0"
 
